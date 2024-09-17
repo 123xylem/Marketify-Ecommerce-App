@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <h1>HOMEPAGE</h1>
+  {% if product_list %}
+    <div class="grid-box">
+      {% for product in product_list %}
+        {{ product }}
+        <div class="product grid-item">
+          <div class="product-img">
+            <a href="/{{ product.id }}" class="product-link">
+              <img src="{{ product.image.url }}" alt="{{ product.title }}">
+              <h3 class="product-title">{{ product.title }}</h3>
+              <p>{{ product.description }}</p>
+              <p class="product-price">{{ product.price }}</p>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}

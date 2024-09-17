@@ -11,11 +11,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os 
 from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
+PROJECT_DIR = Path(__file__).resolve().parent.parent
+PRODUCT_DIR = os.path.join(PROJECT_DIR, 'product')
+BASE_DIR = os.path.join(PROJECT_DIR, 'base')
 DB_NAME = config('DB_NAME')
 DB_PW = config('DB_PW')
 DB_USER = config('DB_USER')
@@ -26,7 +27,7 @@ DB_USER = config('DB_USER')
 SECRET_KEY = 'django-insecure-hzmt=xtcc1)djj&p^dddf1v@7b(e&=#z43(x(xe)+8kpka)ysl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -41,10 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'product',
+
     'django_rename_app',
     'base',
     'versatileimagefield',
-
+    'django_sass',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +65,7 @@ ROOT_URLCONF = 'base.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['product/templates/product', 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,9 +77,6 @@ TEMPLATES = [
         },
     },
 ]
-
-MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_URL = '/media/'
 
 
 WSGI_APPLICATION = 'base.wsgi.application'
@@ -135,6 +135,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    os.path.join(PROJECT_DIR, 'static'),
+    os.path.join(PRODUCT_DIR, 'static'),
+]
+
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'staticfiles')
+
+
+MEDIA_ROOT = PROJECT_DIR / 'media'
+MEDIA_URL = '/media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
