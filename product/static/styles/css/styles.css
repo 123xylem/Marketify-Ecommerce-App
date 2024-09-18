@@ -10,3 +10,30 @@
   border: 1px solid white;
   border-radius: 2px;
 }
+
+.product-detail-container {
+  display: flex;
+}
+
+.product-detail-container .product-detail-view {
+  margin-right: auto;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product-detail-container .product-sidebar {
+  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+}
+
+.product-detail-container .product-sidebar .related-item {
+  border: 1px solid black;
+  padding: 6px;
+}
+
+.product-detail-container .product-sidebar .related-item img {
+  max-width: 200px;
+}

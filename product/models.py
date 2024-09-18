@@ -26,7 +26,8 @@ class Category(models.Model):
 
 class Product(models.Model):
   category = models.ManyToManyField(Category, blank=True)
-  title = models.CharField(max_length=30)
+  title = models.CharField(max_length=40, unique=True)
+  slug = models.CharField(max_length=100, blank=True, null=True)
   image = VersatileImageField(
         'Image',
         upload_to='images/products/',
@@ -48,6 +49,7 @@ class Product(models.Model):
   image_tag.short_description = 'Image'
   image_tag.allow_tags = True
 
+
 @receiver(models.signals.post_save, sender=Product)
 def warm_product_list_img(sender, instance, **kwargs):
     """Ensures Product List images are created post-save"""
@@ -57,4 +59,3 @@ def warm_product_list_img(sender, instance, **kwargs):
         image_attr='image'
     )
     num_created, failed_to_create = product_img_warmer.warm()
-    print(num_created, failed_to_create)
