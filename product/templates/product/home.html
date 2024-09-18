@@ -2,14 +2,13 @@
 {% load static %}
 {% block content %}
   <h1>HOMEPAGE</h1>
-  {% if product_list %}
+  {% if object_list %}
     <div class="grid-box">
-      {% for product in product_list %}
-        {{ product }}
+      {% for product in object_list %}
         <div class="product grid-item">
-          <div class="product-img">
-            <a href="/product/{{ product.slug }}" class="product-link">
-              <img src="{{ product.image.crop.200x200.url }}" alt="{{ product.title }}">
+          <a href="/product/{{ product.slug }}" class="product-link">
+            <div class="product-img">
+              <img src="{{ product.image.crop.200x200.url }}" alt="{{ product }}">
               <h3 class="product-title">{{ product.title }}</h3>
               <p>{{ product.description }}</p>
               <p class="product-price">{{ product.price }}</p>

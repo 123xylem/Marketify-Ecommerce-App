@@ -1,8 +1,11 @@
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import path
+from .views import *
 
 urlpatterns = [
-    # Your URL patterns
+    path('', ProductListView.as_view(), name='home'),
+    path("product/<slug:slug>/", ProductDetailView.as_view(), name="product-detail"),
 ]
 
 if settings.DEBUG:
