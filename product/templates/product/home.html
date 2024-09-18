@@ -8,8 +8,8 @@
         {{ product }}
         <div class="product grid-item">
           <div class="product-img">
-            <a href="/{{ product.id }}" class="product-link">
-              <img src="{{ product.image.url }}" alt="{{ product.title }}">
+            <a href="/product/{{ product.slug }}" class="product-link">
+              <img src="{{ product.image.crop.200x200.url }}" alt="{{ product.title }}">
               <h3 class="product-title">{{ product.title }}</h3>
               <p>{{ product.description }}</p>
               <p class="product-price">{{ product.price }}</p>
