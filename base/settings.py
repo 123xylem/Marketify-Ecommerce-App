@@ -16,6 +16,7 @@ from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 PRODUCT_DIR = os.path.join(PROJECT_DIR, 'product')
+CART_DIR = os.path.join(PROJECT_DIR, 'cart')
 BASE_DIR = os.path.join(PROJECT_DIR, 'base')
 DB_NAME = config('DB_NAME')
 DB_PW = config('DB_PW')
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'product',
+    'cart',
+    'user',
 
     'django_rename_app',
     'base',
@@ -138,6 +141,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static/'),
     os.path.join(PRODUCT_DIR, 'static/'),
+    # os.path.join(CART_DIR, 'static/'),
 ]
 
 # STATIC_ROOT = os.path.join(PROJECT_DIR, STATIC_URL)

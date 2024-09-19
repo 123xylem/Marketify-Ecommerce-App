@@ -4,13 +4,16 @@ colorama==0.4.6
 cssbeautifier==1.15.1
 Django==5.1.1
 django-rename-app==0.1.7
+django-sass==1.1.0
 django-versatileimagefield==3.1
+djangorestframework==3.15.2
 djlint==1.35.2
 EditorConfig==0.12.4
 html-tag-names==0.1.2
 html-void-elements==0.1.0
 jsbeautifier==1.15.1
 json5==0.9.25
+libsass==0.23.0
 pathspec==0.12.1
 pillow==10.4.0
 psycopg2-binary==2.9.9
