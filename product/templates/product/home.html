@@ -6,16 +6,21 @@
     <div class="grid-box">
       {% for product in object_list %}
         <div class="product grid-item">
-          <a href="/product/{{ product.slug }}" class="product-link">
+          <a href="{% url  'product:product_detail' product.slug %}"
+             class="product-link">
             <div class="product-img">
               <img src="{{ product.image.crop.200x200.url }}" alt="{{ product }}">
-              <h3 class="product-title">{{ product.title }}</h3>
-              <p>{{ product.description }}</p>
-              <p class="product-price">{{ product.price }}</p>
-            </a>
-          </div>
+            </div>
+            <h3 class="product-title">{{ product.title }}</h3>
+            <p>{{ product.description }}</p>
+            <p class="product-price">{{ product.price }}</p>
+            <a href="{% url 'cart:add_to_cart' product.id %}" class="add-to-cart">Add to Cart</a>
+            <a href="{% url 'cart:checkout_item' product.id %}"
+               class="buy-now-button">Buy Now</a>
+          </a>
         </div>
       {% endfor %}
     </div>
-  {% endif %}
+  </div>
+{% endif %}
 {% endblock %}
