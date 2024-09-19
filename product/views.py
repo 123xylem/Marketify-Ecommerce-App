@@ -1,18 +1,40 @@
 from typing import Any
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+# from django.http.response import Response
 
 from django.views.generic import ListView, DetailView
 
 from .models import Product, Category
+from .serializers import ProductSerializer
+from rest_framework import viewsets
+from rest_framework.response import Response
 
+# class ProductListView(ListView):
+#     model = Product
+#     paginate_by = 100  # if pagination is desired
+#     template_name = 'home.html'
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         return context
+    
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
 
-class ProductListView(ListView):
-    model = Product
-    paginate_by = 100  # if pagination is desired
-    template_name = 'home.html'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    def list(self, request):
+        serializer = ProductSerializer(self.queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        Product = get_object_or_404(self.queryset, pk=pk)
+        serializer = ProductSerializer(Product)
+        categories = Product.category.all()
+        if categories:
+            related_products = Product.objects.filter(category=categories.first()).exclude(pk=product.pk)
+        
+        print(serializer, type(serializer))
+
+        return Response(serializer.data)
+
 
 class ProductDetailView(DetailView):
     model= Product

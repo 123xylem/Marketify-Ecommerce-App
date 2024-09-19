@@ -10,11 +10,10 @@
 .grid-box .grid-item {
   max-width: calc(25% - 4rem);
   display: flex;
-  border: 1px dashed white;
+  border: 1px solid white;
   border-radius: 2px;
   margin: 0.5rem;
   flex-direction: column;
-  padding: 4px;
 }
 
 .grid-box .grid-item img {
