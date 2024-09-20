@@ -15,7 +15,7 @@
             <p>{{ product.description }}</p>
             <p class="product-price">{{ product.price }}</p>
             <a href="{% url 'cart:add_to_cart' product.id %}" class="add-to-cart">Add to Cart</a>
-            <a href="{% url 'cart:checkout_item' product.id %}"
+            <a href="{% url 'cart:checkout_with_id' product.id %}"
                class="buy-now-button">Buy Now</a>
           </a>
         </div>

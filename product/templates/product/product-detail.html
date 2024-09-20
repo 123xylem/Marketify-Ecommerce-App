@@ -15,7 +15,8 @@
       <div class="row">
         <p class="price">$ {{ object.price }}</p>
         <a href="{% url 'cart:add_to_cart' object.id %}" class="add-to-cart">Add to Cart</a>
-        <a href="{% url 'cart:checkout' object.id %}" class="buy-now-button">Buy Now</a>
+        <a href="{% url 'cart:checkout_with_id' object.id %}"
+           class="buy-now-button">Buy Now</a>
       </div>
     </div>
     <div class="product-sidebar">

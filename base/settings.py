@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'versatileimagefield',
     'django_sass',
     'rest_framework',
+    'drf_spectacular',
+
 ]
 
 MIDDLEWARE = [
@@ -200,4 +202,16 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ('list', 'crop__200x200'),
         ('detail', 'crop__400x400'),
     ],
+}
+
+
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Marketify - Create a market for anything!',
+    'DESCRIPTION': 'Decoupled Ecommerce Theme',
+    'VERSION': '1.0.0',
 }

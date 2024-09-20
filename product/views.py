@@ -3,12 +3,13 @@ from django.shortcuts import render, get_object_or_404
 # from django.http.response import Response
 
 from django.views.generic import ListView, DetailView
+from rest_framework.views import APIView
 
 from .models import Product, Category
 from .serializers import ProductSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
-
+from drf_spectacular.utils import extend_schema
 # class ProductListView(ListView):
 #     model = Product
 #     paginate_by = 100  # if pagination is desired
@@ -16,25 +17,34 @@ from rest_framework.response import Response
 #     def get_context_data(self, **kwargs):
 #         context = super().get_context_data(**kwargs)
 #         return context
-    
+
+
+class HomePageView(ListView):
+    model = Product
+    template_name = 'home.html'
+    context_object_name = 'products'
+
+@extend_schema(responses=ProductSerializer)
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
     def list(self, request):
-        serializer = ProductSerializer(self.queryset, many=True)
+        serializer = self.get_serializer(self.queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
-        Product = get_object_or_404(self.queryset, pk=pk)
-        serializer = ProductSerializer(Product)
-        categories = Product.category.all()
-        if categories:
-            related_products = Product.objects.filter(category=categories.first()).exclude(pk=product.pk)
-        
-        print(serializer, type(serializer))
+        product = get_object_or_404(self.queryset, pk=pk)
+        serializer = self.get_serializer(product)
+        categories = product.category.all()
 
-        return Response(serializer.data)
+        related_products = Product.objects.filter(category__in=categories).exclude(pk=product.pk).distinct()
+        related_serializer = self.get_serializer(related_products, many=True)
 
+        return Response({
+            'product': serializer.data,
+            'related_products': related_serializer.data
+        })
 
 class ProductDetailView(DetailView):
     model= Product

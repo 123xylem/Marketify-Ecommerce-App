@@ -4,15 +4,15 @@ from django.urls import path, include
 from .views import *
 from rest_framework import routers
 
-# app_name='product'
+app_name='product'
 
 router = routers.DefaultRouter()
-router.register(r'', ProductViewSet)
+router.register(r'products', ProductViewSet)
 
 urlpatterns = [
-    # path('', ProductListView.as_view(), name='home'),
-    path('', include(router.urls)),
-    path('auth-editor/', include('rest_framework.urls'), name='rest_framework'),
+    path('', HomePageView.as_view(), name='home'),
+    path('api/', include(router.urls)),
+
     path("product/<slug:slug>/", ProductDetailView.as_view(), name="product_detail"),
 ]
 
