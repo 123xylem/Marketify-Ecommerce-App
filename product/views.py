@@ -1,6 +1,5 @@
 from typing import Any
 from django.shortcuts import render, get_object_or_404
-# from django.http.response import Response
 
 from django.views.generic import ListView, DetailView
 from rest_framework.views import APIView
@@ -23,6 +22,7 @@ class HomePageView(ListView):
     model = Product
     template_name = 'home.html'
     context_object_name = 'products'
+
 
 @extend_schema(responses=ProductSerializer)
 class ProductViewSet(viewsets.ModelViewSet):

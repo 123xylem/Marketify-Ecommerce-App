@@ -23,7 +23,7 @@
       {% if related_products %}
         {% for related in related_products %}
           <div class="related-item">
-            <a href="product/{{ related.slug }}" class="related-item-link">
+            <a href="/product/{{ related.slug }}" class="related-item-link">
               <p>{{ related.title }}</p>
               <img src="{{ related.image.crop.200x200.url }}" alt="{{ related }}">
             </a>

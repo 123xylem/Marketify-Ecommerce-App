@@ -23,7 +23,7 @@ DB_PW = config('DB_PW')
 DB_USER = config('DB_USER')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
+LOGIN_URL = 'marketify_login'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-hzmt=xtcc1)djj&p^dddf1v@7b(e&=#z43(x(xe)+8kpka)ysl'
 
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 
     'product',
     'cart',
-    'user',
+    'account',
 
     'django_rename_app',
     'base',
@@ -65,6 +65,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 ROOT_URLCONF = 'base.urls'
 
