@@ -14,10 +14,11 @@
             <h3 class="product-title">{{ product.title }}</h3>
             <p>{{ product.description }}</p>
             <p class="product-price">{{ product.price }}</p>
-            <a href="{% url 'cart:add_to_cart' product.id %}" class="add-to-cart">Add to Cart</a>
-            <a href="{% url 'cart:checkout_with_id' product.id %}"
-               class="buy-now-button">Buy Now</a>
+            <!-- <a href="{% url 'cart:add_to_cart' product.id %}" class="add-to-cart-btn">Add to Cart</a>
+            <a href="{% url 'cart:checkout_with_id' product.id %}" class="buy-now-btn">Buy Now</a> -->
           </a>
+          <btn data-product-id="{{ product.id }}" class="add-to-cart-btn">Add to Cart</btn>
+          <btn data-product-id="{{ product.id }}" class="buy-now-btn">Buy Now</btn>
         </div>
       {% endfor %}
     </div>

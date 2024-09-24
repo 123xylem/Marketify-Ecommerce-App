@@ -27,6 +27,7 @@
     {% block extrahead %}{% endblock %}
     {% block responsive %}
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="csrf-token" content="{{ csrf_token }}">
       <link rel="stylesheet" href="{% static "admin/css/responsive.css" %}">
     {% endblock %}
     {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
@@ -124,6 +125,7 @@
       <footer id="footer">
         {% block footer %}{% endblock %}
       </footer>
+      <script src="{% static "js/main.js" %}"></script>
     </div>
     <!-- END Container -->
     <!-- SVGs -->

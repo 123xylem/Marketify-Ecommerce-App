@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'product',
     'cart',
     'account',
+    'order',
 
     'django_rename_app',
     'base',
