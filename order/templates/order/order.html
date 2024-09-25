@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="order-page">
+    <h1>here is your order {{ user }}</h1>
+    {% for data in order_data %}{{ data }}{% endfor %}
+    {% for product in product_data %}{{ product }}{% endfor %}
+  </div>
+{% endblock %}

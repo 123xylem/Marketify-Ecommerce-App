@@ -1,7 +1,9 @@
 from django.db import models
+from django.shortcuts import render
 from django.conf import settings
 from product.models import Product
 from account.models import AccountProfile
+from order.models import *
 
 # Create your models here.
 class Cart(models.Model):
@@ -26,5 +28,12 @@ class Cart(models.Model):
   def buy_product_now(self, product_id):
     print('Buying Products!: ', Product.objects.get(id=product_id))
 
-  def make_order(self):
-     pass
+  def make_order(self, request):
+    currentUser = AccountProfile.objects.get(user=request.user)
+    print(currentUser.id)
+
+    order, created = Order.objects.get_or_create(user=currentUser)
+    print(f'ORDER IS {order} {type(order)}')
+    for product in self.product_list.all():
+      orderProduct, created = OrderProduct.objects.get_or_create(order=order, product=product)
+    return render(request, 'order/order.html', {'order_data': order, 'order_id': order.id, 'user': request.user})

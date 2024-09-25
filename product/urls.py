@@ -11,7 +11,7 @@ router.register(r'', ProductViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path("product/<slug:slug>/", ProductDetailView.as_view(), name="product_detail"),
+    path("frontend/product/<slug:slug>/", ProductDetailView.as_view(), name="product_detail"),
 
 ]
 

@@ -5,7 +5,7 @@ from product.models import Product
 
 
 class Order(models.Model):
-  user = models.ForeignKey(AccountProfile, on_delete=models.CASCADE, related_name='past_order')
+  user = models.ForeignKey(AccountProfile, on_delete=models.CASCADE)
   created_at = models.DateTimeField(auto_now_add=True)
   status = models.BooleanField(default=False, choices=[(False, 'Failed'), (True, 'Completed')])
 

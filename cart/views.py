@@ -33,7 +33,7 @@ class CartViewSet(viewsets.ModelViewSet):
           product_id = self.request.data.get('product_id')
           buy_now = self.request.data.get('buy_now')
           product = get_object_or_404(Product, id=product_id)
-          print('cart, prodObj, buyNow?', cart, product, buy_now)
+          # print('cart, prodObj, buyNow?', cart, product, buy_now)
           cart.add_product(product_id)
           if buy_now:
              cart.buy_product_now(product_id)
@@ -77,14 +77,21 @@ class CartViewSet(viewsets.ModelViewSet):
      
       @action(detail=False, url_path='add_product/(?P<pk>[^/.]+)', methods=['post'])
       def add_product(self, request, pk=None):
-          print('aa', request)
           cart = self.get_cart()
           product = get_object_or_404(Product, id=pk)
+          # TODO: Quantity Logic on duplicate
           cart.product_list.add(product)
-          if request.data.buyNow == 'true':
-             cart.make_order()
+          print(request.data)
+          if 'buy_now' in request.data and request.data['buy_now']:
+             cart.make_order(request)
           return Response({'status': 'product addd'}, status=status.HTTP_200_OK)
 
+      @action(detail=False, url_path='checkout', methods=['post'])
+      def checkout(self, request, pk=None):
+          print('CHECKING OUT!!!!!!!!!!!!!!!!!!!')
+          cart = self.get_cart()
+          cart.make_order(request)
+          return Response({'status': 'Checkout started'}, status=status.HTTP_200_OK)
 
 def cart_viewer(request):
   cart, created = Cart.objects.get_or_create(user=request.user)
@@ -103,12 +110,14 @@ def remove_from_cart(request, id):
   #Remove product id from cart
   pass
 
-def checkout(request, id=False):
-  if id:
-    #Add product to cart and checkout
-    print(id, 'assasasasa')
-    return Response(id)
-  else:
-    # checkout cart for payment
-    return Response(id)
+# def checkout(request, id=False):
+#   template = 'cart/cart.html'
+#   if id:
+#     #Add product to cart and checkout
+#     print(id, 'assasasasa')
+#     return render(request, template, {'products':id})
+#   else:
+#     # checkout cart for payment
+#     print('no id', id)
+#     return render(request, template, {'products':id})
 
