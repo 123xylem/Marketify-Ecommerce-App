@@ -1,4 +1,11 @@
 /*SASS COMMAND: python manage.py sass product/static/styles/scss/ product/static/styles/css/ --watch */
+.order-box {
+  /* display: flex; */
+  padding: 3rem;
+  border: 2px solid;
+  margin: 5px;
+}
+
 .grid-box {
   display: flex;
   flex-wrap: wrap;

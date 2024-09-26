@@ -18,6 +18,7 @@ PROJECT_DIR = Path(__file__).resolve().parent.parent
 PRODUCT_DIR = os.path.join(PROJECT_DIR, 'product')
 CART_DIR = os.path.join(PROJECT_DIR, 'cart')
 BASE_DIR = os.path.join(PROJECT_DIR, 'base')
+ORDER_DIR = os.path.join(PROJECT_DIR, 'order')
 DB_NAME = config('DB_NAME')
 DB_PW = config('DB_PW')
 DB_USER = config('DB_USER')
@@ -153,6 +154,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static/'),
     os.path.join(PRODUCT_DIR, 'static/'),
+    os.path.join(ORDER_DIR, 'static/'),
     # os.path.join(CART_DIR, 'static/'),
 ]
 

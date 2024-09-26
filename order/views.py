@@ -21,14 +21,30 @@ class OrderViewSet(viewsets.ModelViewSet):
   def retrieve(self, request, pk=None):
       queryset = Order.objects.all()
       order = get_object_or_404(queryset, pk=pk)
-      print(order, type(order))
       serializer = OrderSerializer(order).data
       products = OrderProduct.objects.filter(order=order)
+      product_list = []
+      for prod in products:
+         product_list.append(prod.product)
 
-      product_data = OrderProductSerializer(products, many=True).data
+      product_data = ProductSerializer(product_list, many=True).data
+      print(serializer, product_data)
       return render(request, 'order/order.html', {'order_data': serializer, 'product_data': product_data, 'user': request.user})
 
-
+  def list(self, request):
+      queryset = Order.objects.all()
+      orders = OrderSerializer(queryset, many=True).data
+      order_list = []
+      for an_order in orders:
+        products = OrderProduct.objects.filter(order=an_order['id'])
+        product_list = []
+        for prod in products:
+          product_list.append(prod.product)
+        an_order['products'] = product_list
+        # product_data = ProductSerializer(product_list, many=True).data
+        order_list.append(an_order)
+      return render(request, 'order/orders.html', {'orders_data': order_list,  'user': request.user})
+ 
   @action(detail=True, url_path='view_order', methods=['get'])
   def view_order(self, request, *args):
       order = Order.objects.get(id=pk)

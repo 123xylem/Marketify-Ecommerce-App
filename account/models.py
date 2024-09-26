@@ -7,12 +7,13 @@ from django.dispatch import receiver
 # Create your models here.
 class AccountProfile(models.Model):
   user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+  username = models.CharField(max_length=50)
   email = models.EmailField(blank=False, default='user@info.com')
   address = models.TextField(blank=True, null=True)
+  password = models.T
   def __str__(self):
     return self.user.username
   
-
 
 # Make recievers to create/updatae model on Registration or update
 @receiver(post_save, sender=User)

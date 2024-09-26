@@ -40,10 +40,14 @@ async function processProduct(productId, buyNow = "", checkout = "") {
     });
     if (response.ok) {
       const data = await response.json();
+      if (data.redirect_url && buyNow) {
+        window.location.href = data.redirect_url;
+        console.log(data.message);
+      }
       console.log("Cart item updated:", data);
       // Update the UI accordingly
     } else {
-      console.error("Failed to update item");
+      console.error("Failed to update item", response);
     }
   } catch (error) {
     console.error("Error updating cart item:", error);
@@ -97,11 +101,11 @@ async function checkoutCart() {
       },
       body: JSON.stringify({}),
     });
+
     if (response.ok) {
+      console.log(response, "!!!!");
       const data = await response.json();
       console.log("Checking Out:", data);
-      // window.location.href = "/api/orders/";
-      // Update the UI accordingly
     } else {
       console.error("Failed to checkout ", response);
     }

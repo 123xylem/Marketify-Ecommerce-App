@@ -1,8 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
   <div class="order-page">
-    <h1>here is your order {{ user }}</h1>
-    {% for data in order_data %}{{ data }}{% endfor %}
-    {% for product in product_data %}{{ product }}{% endfor %}
+    <div class="order-box">
+      <h1>Here is your order {{ order_data.username|capfirst }}</h1>
+      <p>Order ID: {{ order_data.id }} Time: {{ order_data.created_at }}</p>
+      <p>Order Status: {{ order_data.status }}</p>
+      <div class="grid-box">
+        {% for product in product_data %}
+          <div class="product grid-item">
+            {{ product.title }}
+            {{ product.price }}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 {% endblock %}

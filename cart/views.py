@@ -33,7 +33,6 @@ class CartViewSet(viewsets.ModelViewSet):
           product_id = self.request.data.get('product_id')
           buy_now = self.request.data.get('buy_now')
           product = get_object_or_404(Product, id=product_id)
-          # print('cart, prodObj, buyNow?', cart, product, buy_now)
           cart.add_product(product_id)
           if buy_now:
              cart.buy_product_now(product_id)
@@ -80,17 +79,26 @@ class CartViewSet(viewsets.ModelViewSet):
           cart = self.get_cart()
           product = get_object_or_404(Product, id=pk)
           # TODO: Quantity Logic on duplicate
+          #TODO: Render cart page instead of automatic make_order()
           cart.product_list.add(product)
-          print(request.data)
           if 'buy_now' in request.data and request.data['buy_now']:
-             cart.make_order(request)
+            #  cart.make_order(request)
+            print('REDIRECT TO CART')
+            return Response(data={'redirect_url': '/api/cart/frontend/cart', 'message': 'Redirecting to cart'}, status=status.HTTP_200_OK)
+
           return Response({'status': 'product addd'}, status=status.HTTP_200_OK)
 
       @action(detail=False, url_path='checkout', methods=['post'])
       def checkout(self, request, pk=None):
           print('CHECKING OUT!!!!!!!!!!!!!!!!!!!')
           cart = self.get_cart()
-          cart.make_order(request)
+          if not cart.product_list.all():
+            return Response(data={'data': 'No products in cart'}, content_type='application/json', status=status.HTTP_400_BAD_REQUEST)
+          order = cart.make_order(request)
+          cart.clear_product_list()
+          print(order, 'order DATA')
+          return render(request, 'order/order.html', {'order_data': order, 'order_id': order.id, 'user': request.user})
+
           return Response({'status': 'Checkout started'}, status=status.HTTP_200_OK)
 
 def cart_viewer(request):
@@ -109,15 +117,4 @@ def add_to_cart(request, id):
 def remove_from_cart(request, id):
   #Remove product id from cart
   pass
-
-# def checkout(request, id=False):
-#   template = 'cart/cart.html'
-#   if id:
-#     #Add product to cart and checkout
-#     print(id, 'assasasasa')
-#     return render(request, template, {'products':id})
-#   else:
-#     # checkout cart for payment
-#     print('no id', id)
-#     return render(request, template, {'products':id})
 

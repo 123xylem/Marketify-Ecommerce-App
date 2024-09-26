@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="order-page">
+    {% for order in orders_data %}
+      <div class="order-box">
+        <h1>{{ forloop.counter }}</h1>
+        <p>Order ID: {{ order.id }}  Time: {{ order.created_at }}</p>
+        <p>Order Status: {{ order.status }}</p>
+        <div class="grid-box">
+          {% for product in order.products %}
+            <div class="product grid-item">
+              {{ product.title }}
+              {{ product.price }}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
