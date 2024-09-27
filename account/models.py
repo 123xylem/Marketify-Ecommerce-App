@@ -10,7 +10,7 @@ class AccountProfile(models.Model):
   username = models.CharField(max_length=50)
   email = models.EmailField(blank=False, default='user@info.com')
   address = models.TextField(blank=True, null=True)
-  password = models.T
+  # password = models.T
   def __str__(self):
     return self.user.username
   
