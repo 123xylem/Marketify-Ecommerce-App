@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'cart',
     'account',
     'order',
+    'accountprofile',
 
     'django_rename_app',
     'base',
