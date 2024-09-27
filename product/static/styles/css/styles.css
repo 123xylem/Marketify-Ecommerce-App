@@ -1,4 +1,11 @@
 /*SASS COMMAND: python manage.py sass product/static/styles/scss/ product/static/styles/css/ --watch */
+.order-box {
+  /* display: flex; */
+  padding: 3rem;
+  border: 2px solid;
+  margin: 5px;
+}
+
 .grid-box {
   display: flex;
   flex-wrap: wrap;
@@ -10,11 +17,10 @@
 .grid-box .grid-item {
   max-width: calc(25% - 4rem);
   display: flex;
-  border: 1px dashed white;
+  border: 1px solid white;
   border-radius: 2px;
   margin: 0.5rem;
   flex-direction: column;
-  padding: 4px;
 }
 
 .grid-box .grid-item img {

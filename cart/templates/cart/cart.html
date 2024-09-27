@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="cart-section">
+    <h1>Welcome to your cart {{ request.user }}</h1>
+    {% if products %}
+      <div class="grid-box product-list">
+        {% for product in products %}
+          <div class="product grid-item">
+            <h3>{{ product.title }}</h3>
+            <img src="{{ product.image.url }}" alt="">
+            <p>${{ product.price }}</p>
+            <p>
+              {% for cat in product.category.all %}{{ cat }}{% endfor %}
+            </p>
+            <!-- //TODO add quantity logic -->
+            <btn data-productid="{{ product.id }}" class="remove-product">Remove Product</btn>
+          </div>
+        {% endfor %}
+        <div class="checkout-btn">Checkout!</div>
+      </div>
+    {% else %}
+      <a href="/">Go and add some products to it!</a>
+    {% endif %}
+  </div>
+{% endblock %}
