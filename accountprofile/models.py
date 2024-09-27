@@ -3,7 +3,7 @@ from django.db import models
 
 class CustomAccountProfile(AbstractUser):
     address = models.TextField(blank=True, default='100 exampleStreet USA')
-    username = models.CharField(max_length=150, blank=True, null=True)
+    username = models.CharField(max_length=150, blank=True, null=True, unique=True)
 
     email = models.EmailField(unique=True)
     USERNAME_FIELD = 'email'

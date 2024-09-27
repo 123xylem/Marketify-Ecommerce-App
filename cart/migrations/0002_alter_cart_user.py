@@ -2,7 +2,7 @@
 
 import django.db.models.deletion
 from django.db import migrations, models
-
+from django.conf import settings
 
 class Migration(migrations.Migration):
 
@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='cart',
             name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='account.accountprofile'),
+            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
     ]

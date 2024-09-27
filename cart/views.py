@@ -10,14 +10,14 @@ from .models import Cart
 import pprint
 from drf_spectacular.utils import extend_schema
 from django.contrib.auth.decorators import login_required
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
 @extend_schema(responses=CartSerializer)
 class CartViewSet(viewsets.ModelViewSet):
       serializer_class = CartSerializer
       queryset = Cart.objects.all()
       # print(serializer_class, queryset)
-      permission_classes = [IsAuthenticated]
+      permission_classes = [AllowAny]
       def get_queryset(self):
         # print(vars(self.request.user), '=========')
         # # print(self.request.__dict__)
