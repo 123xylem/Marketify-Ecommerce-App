@@ -18,12 +18,13 @@ PROJECT_DIR = Path(__file__).resolve().parent.parent
 PRODUCT_DIR = os.path.join(PROJECT_DIR, 'product')
 CART_DIR = os.path.join(PROJECT_DIR, 'cart')
 BASE_DIR = os.path.join(PROJECT_DIR, 'base')
+ORDER_DIR = os.path.join(PROJECT_DIR, 'order')
 DB_NAME = config('DB_NAME')
 DB_PW = config('DB_PW')
 DB_USER = config('DB_USER')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
+LOGIN_URL = 'marketify_login'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-hzmt=xtcc1)djj&p^dddf1v@7b(e&=#z43(x(xe)+8kpka)ysl'
 
@@ -45,12 +46,17 @@ INSTALLED_APPS = [
 
     'product',
     'cart',
-    'user',
+    'account',
+    'order',
+    'accountprofile',
 
     'django_rename_app',
     'base',
     'versatileimagefield',
     'django_sass',
+    'rest_framework',
+    'drf_spectacular',
+
 ]
 
 MIDDLEWARE = [
@@ -63,12 +69,20 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
 ROOT_URLCONF = 'base.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['product/templates/product', 'templates'],
+        'DIRS': ['product/templates/product', 
+                 'cart/templates/cart', 
+                 'order/templates/order', 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -141,6 +155,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static/'),
     os.path.join(PRODUCT_DIR, 'static/'),
+    os.path.join(ORDER_DIR, 'static/'),
     # os.path.join(CART_DIR, 'static/'),
 ]
 
@@ -155,7 +170,7 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
+AUTH_USER_MODEL = 'accountprofile.customaccountprofile'
 
 # IMAGE PACKAGE:
 
@@ -199,4 +214,16 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ('list', 'crop__200x200'),
         ('detail', 'crop__400x400'),
     ],
+}
+
+
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Marketify - Create a market for anything!',
+    'DESCRIPTION': 'Decoupled Ecommerce Theme',
+    'VERSION': '1.0.0',
 }

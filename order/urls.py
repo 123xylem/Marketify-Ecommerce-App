@@ -4,14 +4,13 @@ from django.urls import path, include
 from .views import *
 from rest_framework import routers
 
-app_name='product'
+app_name='order'
 
 router = routers.DefaultRouter()
-router.register(r'', ProductViewSet)
+router.register(r'', OrderViewSet, OrderProductViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path("frontend/product/<slug:slug>/", ProductDetailView.as_view(), name="product_detail"),
 
 ]
 
