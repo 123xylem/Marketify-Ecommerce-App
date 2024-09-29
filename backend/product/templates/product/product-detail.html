@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="product-detail-container">
+    <div class="product-detail-view">
+      <div class="product-detail">
+        <h1 class="product-title">{{ object }}</h1>
+        <img class="detail-image" src="{{ object.image.url }}" alt="{{ object }}">
+        <p class="description">{{ object.description }}</p>
+      </div>
+      <div class="categories">
+        {% if object.category.all %}
+          {% for cat in object.category.all %}<p class="category">{{ cat.title }}</p>{% endfor %}
+        {% endif %}
+      </div>
+      <div class="row">
+        <p class="price">$ {{ object.price }}</p>
+        <a href="{% url 'cart:add_to_cart' object.id %}" class="add-to-cart">Add to Cart</a>
+        <!-- <a href="{% url 'cart:add_to_cart' object.id %}" class="buy-now-button">Buy Now</a> -->
+      </div>
+    </div>
+    <div class="product-sidebar">
+      {% if related_products %}
+        {% for related in related_products %}
+          <div class="related-item">
+            <a href="/product/{{ related.slug }}" class="related-item-link">
+              <p>{{ related.title }}</p>
+              <img src="{{ related.image.crop.200x200.url }}" alt="{{ related }}">
+            </a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>No related products found.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

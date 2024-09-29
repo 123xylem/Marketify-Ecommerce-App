@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <div class="page-profile">
+    <!-- {% for name, value in object.get_fields %}
+      {{ name }}
+      <p>'\n' {{ value }}</p>
+    {% endfor %} -->
+    <p>{{ object.lastlogin|date:'Y-m-d H' }}</p>
+    <h2 class="profile-name">{{ object.username }}</h2>
+    <p>{{ object.email }}</p>
+    <p>{{ object.address }}</p>
+    <div class="profile-orders grid-box"
+         style="background:grey;
+                border: 2px solid white;
+                display: flex;
+                flex-direction: column">
+      <h3>Past Orders:</h3>
+      {% for order in orders %}
+        <div class="order grid-item ">
+          <p>Order: {{ order.id }} | Date: {{ order.date|date:'Y-m-d' }}</p>
+          {% for prod in order.products %}<div class=" products">- {{ prod.product }}</div>{% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
