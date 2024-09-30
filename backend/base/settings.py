@@ -79,7 +79,8 @@ ROOT_URLCONF = 'base.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(PROJECT_DIR, 'cart', 'templates/cart'),
+        'DIRS': [   
+                    os.path.join(PROJECT_DIR, 'cart', 'templates/cart'),
                     os.path.join(PROJECT_DIR, 'base', 'templates'),  
                     os.path.join(PROJECT_DIR, 'accountprofile', 'templates/accountprofile'),  
                     os.path.join(PROJECT_DIR, 'order', 'templates/order'),  
