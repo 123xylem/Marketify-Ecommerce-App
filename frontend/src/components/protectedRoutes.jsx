@@ -14,9 +14,20 @@ function ProtectedRoute({ children }) {
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
     try {
-      const res = await api.post("/api/accountprofile/token/refresh", {
+      const headersList = {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+      };
+
+      const bodyContent = JSON.stringify({
         refresh: refreshToken,
       });
+
+      const res = await api.post("accountprofile/token/refresh", {
+        headers: headersList,
+        body: bodyContent,
+      });
+
       if (res.status === 200) {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         setisAuthorized(true);
@@ -31,6 +42,7 @@ function ProtectedRoute({ children }) {
 
   const auth = async () => {
     const token = localStorage.getItem(ACCESS_TOKEN);
+
     if (!token) {
       setisAuthorized(false);
       return;

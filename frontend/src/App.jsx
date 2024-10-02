@@ -9,15 +9,12 @@ import ProtectedRoute from "./components/protectedRoutes";
 import CssBaseline from "@mui/material/CssBaseline";
 import NavigationMenu from "./components/NavigationMenu";
 
-function LogOut() {
-  localStorage.clear();
-  return <Navigate to="/login" />;
+function Logout() {
+  localStorage.removeItem("access-token");
+  localStorage.removeItem("refresh-token");
+  return <Navigate to="/login" element={<Login />} />;
 }
 
-function RegisterAndLogout() {
-  localStorage.clear();
-  return <Register />;
-}
 function App() {
   const [count, setCount] = useState(0);
 
@@ -47,7 +44,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* //Fallback for anything else  */}
+          <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

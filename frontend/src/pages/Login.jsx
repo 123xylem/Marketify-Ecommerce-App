@@ -15,7 +15,8 @@ import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 // import ForgotPassword from './ForgotPassword';
 // import ColorModeSelect from '../shared-theme/ColorModeSelect';
-
+import Cookies from "universal-cookie";
+import api from "../api";
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -54,6 +55,8 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
+const cookies = new Cookies();
+
 export default function SignIn(props) {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
@@ -69,14 +72,50 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
+  async function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+    let headersList = {
+      Accept: "*/*",
+      "Content-Type": "application/json",
+    };
+
+    let bodyContent = JSON.stringify({
       email: data.get("email"),
       password: data.get("password"),
     });
-  };
+    try {
+      let response = await api.post("accountprofile/token/", bodyContent, {
+        headers: headersList,
+      });
+
+      if (response.status === 200) {
+        let responseData = response.data;
+        let { refresh: refreshToken, access: accessToken } = responseData;
+
+        // Set cookies with tokens
+        localStorage.setItem("refresh-token", refreshToken);
+        localStorage.setItem("access-token", accessToken);
+        window.location.href = "/";
+      }
+    } catch (err) {
+      console.log(err.response.data.detail);
+
+      if (err.response.data.detail) {
+        setPasswordError(true);
+        setPasswordErrorMessage(err.response.data.detail);
+        setEmailError(true);
+
+        setEmailErrorMessage(err.response.data.detail);
+      }
+      console.error(
+        "Failed to Login: ",
+        err.response.status,
+        err.response.statusText
+      );
+    }
+  }
 
   const validateInputs = () => {
     const email = document.getElementById("email");
@@ -93,9 +132,9 @@ export default function SignIn(props) {
       setEmailErrorMessage("");
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < 3) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage("Password must be at least 3 characters long.");
       isValid = false;
     } else {
       setPasswordError(false);

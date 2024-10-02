@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
+import api from "../api";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -52,6 +53,7 @@ export default function SignUp() {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState("");
+  const [formErrorMessage, setFormErrorMessage] = React.useState("");
   // This code only runs on the client side, to determine the system color preference
   React.useEffect(() => {
     // Check if there is a preferred mode in localStorage
@@ -67,15 +69,10 @@ export default function SignUp() {
     }
   }, []);
 
-  const toggleColorMode = () => {
-    const newMode = mode === "dark" ? "light" : "dark";
-    setMode(newMode);
-    localStorage.setItem("themeMode", newMode); // Save the selected mode to localStorage
-  };
-
   const validateInputs = () => {
     const email = document.getElementById("email");
     const password = document.getElementById("password");
+    const password2 = document.getElementById("password2");
     const name = document.getElementById("name");
 
     let isValid = true;
@@ -89,9 +86,15 @@ export default function SignUp() {
       setEmailErrorMessage("");
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < 3) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage("Password must be at least 3 characters long.");
+      isValid = false;
+    }
+    if (password.value != password2.value) {
+      console.log(password, password2);
+      setPasswordError(true);
+      setPasswordErrorMessage("Passwords must match.");
       isValid = false;
     } else {
       setPasswordError(false);
@@ -110,16 +113,71 @@ export default function SignUp() {
     return isValid;
   };
 
-  const handleSubmit = (event) => {
+  async function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get("name"),
-      lastName: data.get("lastName"),
+
+    let headersList = {
+      Accept: "*/*",
+      "Content-Type": "application/json",
+    };
+
+    let bodyContent = JSON.stringify({
+      username: data.get("name"),
       email: data.get("email"),
       password: data.get("password"),
+      // password2: data.get("password2"),
     });
-  };
+    try {
+      let response = await api.post("accountprofile/register/", bodyContent, {
+        headers: headersList,
+      });
+
+      if (response.status === 201) {
+        let bodyContent = JSON.stringify({
+          email: data.get("email"),
+          password: data.get("password"),
+        });
+        try {
+          let response = await api.post("accountprofile/token/", bodyContent, {
+            headers: headersList,
+          });
+
+          if (response.status === 200) {
+            let { refresh: refreshToken, access: accessToken } = response.data;
+
+            // Set cookies with tokens
+            localStorage.setItem("refresh-token", refreshToken);
+            localStorage.setItem("access-token", accessToken);
+            window.location.href = "/";
+          }
+        } catch (err) {
+          console.error(
+            "Failed to fetch tokens and login: ",
+            err.response.status,
+            err.response.statusText
+          );
+        }
+      }
+    } catch (err) {
+      console.log(err, "2");
+      if (err.response.data.email) {
+        setEmailError(true);
+
+        setEmailErrorMessage([err.response.data.email]);
+      }
+
+      if (err.response.data.username) {
+        setNameErrorMessage([err.response.data.username]);
+        setNameError(true);
+      }
+      console.error(
+        "Failed to Register: ",
+        err.response.status,
+        err.response.statusText
+      );
+    }
+  }
 
   return (
     <SignUpContainer>
@@ -131,7 +189,7 @@ export default function SignUp() {
             variant="h4"
             sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
           >
-            Login
+            Register
           </Typography>
           <Box
             component="form"
@@ -139,14 +197,14 @@ export default function SignUp() {
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <FormControl>
-              <FormLabel htmlFor="name">Full name</FormLabel>
+              <FormLabel htmlFor="name">Username</FormLabel>
               <TextField
                 autoComplete="name"
                 name="name"
                 required
                 fullWidth
                 id="name"
-                placeholder="Jon Snow"
+                placeholder="MarketifyShopper"
                 error={nameError}
                 helperText={nameErrorMessage}
                 color={nameError ? "error" : "primary"}
@@ -183,6 +241,23 @@ export default function SignUp() {
                 color={passwordError ? "error" : "primary"}
               />
             </FormControl>
+            <FormControl>
+              <FormLabel htmlFor="password">Password Confirm</FormLabel>
+              <TextField
+                required
+                fullWidth
+                name="password2"
+                autoComplete="new-password"
+                placeholder="••••••"
+                type="password"
+                id="password2"
+                variant="outlined"
+                error={passwordError}
+                helperText={passwordErrorMessage}
+                color={passwordError ? "error" : "primary"}
+              />
+            </FormControl>
+
             <FormControlLabel
               control={<Checkbox value="allowExtraEmails" color="primary" />}
               label="I want to receive updates via email."
