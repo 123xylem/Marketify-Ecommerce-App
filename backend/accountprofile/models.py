@@ -9,6 +9,7 @@ class CustomAccountProfile(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
+
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='my_custom_user_groups', 
