@@ -1,5 +1,5 @@
 from rest_framework import generics
-from .serializers import CustomAccountProfileSerializer, ProfileSerializer, MyTokenObtainPairSerializer
+from .serializers import CustomAccountProfileSerializer, ProfileSerializer, MyTokenObtainPairSerializer, OrderlessProfileSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from drf_spectacular.utils import extend_schema
@@ -45,21 +45,34 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = CustomAccountProfileSerializer
 
-#api/profile  and api/profile/update
+#view Profile
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getProfile(request):
-    user = request.user
+    user = CustomAccountProfile.objects.get(username=request.user)
+    # order_list = user.get_profile_orders()
     serializer = ProfileSerializer(user, many=False)
+    print(user.email)
+    # serializer.data.orders = order_list
+    # print(serializer.data)
+    # if serializer.is_valid():
+    #     print(serializer.data)
+    # print(serializer.data, 'response to profile')
     return Response(serializer.data)
 
+#Edit Profile
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateProfile(request):
-    user = request.user
-    serializer = ProfileSerializer(user, data=request.data, partial=True)
+    user = CustomAccountProfile.objects.get(username=request.user)
+    print('incoming data',request.data)
+    request.data['id'] = user.id
+    serializer = OrderlessProfileSerializer(data=request.data,  partial=True)
+
     if serializer.is_valid():
-        serializer.save()
+        print(serializer.data, 'valid')
+        # serializer.save()
+
     return Response(serializer.data)
 
 # #api/notes

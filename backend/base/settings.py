@@ -223,7 +223,7 @@ REST_FRAMEWORK = {
 
 }
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1005),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
    }
 
@@ -236,14 +236,16 @@ SPECTACULAR_SETTINGS = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5167",  
+    "http://*",  
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_HEADERS = '*' 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000/"]
+CSRF_TRUSTED_ORIGINS = ["http://*"]
 
-CORS_ALLOW_METHODS = [
+CORS_ALLOW_METHODS = (
     'GET',
     'POST',
+    'PUT',
     'OPTIONS',
-]
+)

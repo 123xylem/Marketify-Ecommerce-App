@@ -18,15 +18,13 @@ function ProtectedRoute({ children }) {
         Accept: "*/*",
         "Content-Type": "application/json",
       };
-
-      const bodyContent = JSON.stringify({
-        refresh: refreshToken,
-      });
-
-      const res = await api.post("accountprofile/token/refresh", {
-        headers: headersList,
-        body: bodyContent,
-      });
+      const res = await api.post(
+        "accountprofile/token/refresh/",
+        { refresh: refreshToken },
+        {
+          headers: headersList,
+        }
+      );
 
       if (res.status === 200) {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);

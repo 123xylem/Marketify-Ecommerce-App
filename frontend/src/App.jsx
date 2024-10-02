@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import Account from "./pages/Account";
+import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/protectedRoutes";
 import CssBaseline from "@mui/material/CssBaseline";
 import NavigationMenu from "./components/NavigationMenu";
@@ -34,10 +34,10 @@ function App() {
             }
           />
           <Route
-            path="/api/accountprofile/account"
+            path="/profile"
             element={
               <ProtectedRoute>
-                <Account />
+                <Profile props />
               </ProtectedRoute>
             }
           />

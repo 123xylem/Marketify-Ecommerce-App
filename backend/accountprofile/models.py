@@ -30,3 +30,18 @@ class CustomAccountProfile(AbstractUser):
     #Helper function for html dumping fields
     def get_fields(self):
         return [(field.name, field.value_to_string(self)) for field in CustomAccountProfile._meta.fields]
+
+    def get_get_user_orders_orders(self):
+        orders = self.order_set.prefetch_related('order_product__product').all()
+        o_list = []
+        for ord in orders:
+            products = list(ord.order_product.all()) 
+            o_list.append({'id':ord.id,
+                            'products': products, 
+                            'date': ord.created_at})
+        return o_list
+    
+    def get_user_orders(self):
+        orders = self.order_set.all()
+        return orders
+
