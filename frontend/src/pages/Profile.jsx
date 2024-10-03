@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-// todo: password reset with email?
+// TODO: password reset with email?
+// TODO: add avatar image
 import api from "../api";
 import OrderList from "../components/OrderList";
 import { ResponseMessage } from "../components/ResponseMessage";

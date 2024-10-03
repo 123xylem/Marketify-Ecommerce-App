@@ -1,19 +1,9 @@
-import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 const OrderList = ({ data }) => {
-  // const [loading, setIsLoading] = useState(true);
-  // Check if data exists and is an array
   if (!data || !Array.isArray(data) || data.length === 0) {
     return <div>You have 0 past Orders</div>;
   }
-  // } else {
-  //   setIsLoading(false);
-  // }
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <div className="order-list flex-box">
