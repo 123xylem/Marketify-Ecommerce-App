@@ -8,7 +8,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['title', 'parent']
 
 class ProductSerializer(serializers.ModelSerializer):
-    categories = CategorySerializer(many=True, read_only=True)
+    category = CategorySerializer( many=True, read_only=True)
     class Meta:
         model = Product
-        fields = ['title', 'image', 'description', 'price', 'categories', 'created_at']
+        fields = ['id', 'title', 'image', 'description', 'price', 'category', 'created_at']
