@@ -34,21 +34,16 @@ class ProfileSerializer(serializers.ModelSerializer):
         orders = obj.get_user_orders()
         return OrderSerializer(orders, many=True).data
 
-class OrderlessProfileSerializer(serializers.ModelSerializer):
-    def __init__(self, *args, **kwargs):
-        super(OrderlessProfileSerializer, self).__init__(*args, **kwargs)
-        # print(kwargs['data'], kwargs['data']['username'])
-        try:
-            # pass
-            print(vars(self), self.context)
-            if self.context['request'].method in ['PUT']:
-                self.fields['username'] = kwargs['data']['username']
-                print(self.fields)
-        except KeyError:
-            print(KeyError)
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    def update(self, instance, validated_data):
+        instance.email = validated_data.get('email', instance.email)
+        instance.username = validated_data.get('username', instance.username)
+        instance.address = validated_data.get('address', instance.address)
+        instance.save()
+        return instance
     class Meta:
         model = User
-        fields = ['username', 'id', 'email', 'address']
+        fields = ['username', 'email', 'address']
     
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod

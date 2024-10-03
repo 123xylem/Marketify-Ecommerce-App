@@ -5,7 +5,7 @@ const OrderList = ({ data }) => {
   // const [loading, setIsLoading] = useState(true);
   // Check if data exists and is an array
   if (!data || !Array.isArray(data) || data.length === 0) {
-    return <div>No data available</div>;
+    return <div>You have 0 past Orders</div>;
   }
   // } else {
   //   setIsLoading(false);

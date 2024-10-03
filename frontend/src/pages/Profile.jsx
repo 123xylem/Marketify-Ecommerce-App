@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
-// import { DataGrid } from "@mui/x-data-grid";
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
+// todo: password reset with email?
 import api from "../api";
 import OrderList from "../components/OrderList";
-
+import { ResponseMessage } from "../components/ResponseMessage";
 const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [sucessMsg, setSuccessMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [recievedData, setReceivedData] = useState(null);
 
   let headersList = {
     Accept: "*/*",
@@ -25,10 +29,13 @@ const ProfilePage = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.data;
-        console.log(data, "from profile");
+        data.password = "****";
+        data.password2 = "****";
+        // console.log(data, "from profile");
         setUserData(data);
+        setReceivedData(data);
       } catch (err) {
-        setError(err.message);
+        setErrorMsg(err.message);
       } finally {
         setLoading(false);
       }
@@ -38,27 +45,30 @@ const ProfilePage = () => {
   }, []);
 
   const handleChange = (e) => {
-    console.log(e);
     const { name, value } = e.target;
-    console.log("n", name, "v:", value);
     setUserData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    console.log("changed: ", userData);
   };
 
-  const editUserData = async () => {
+  const editUserData = async (e) => {
+    e.preventDefault();
+    setErrorMsg(null);
+    setSuccessMsg(null);
+
+    if (JSON.stringify(userData) === JSON.stringify(recievedData)) {
+      setErrorMsg("No changes detected");
+      return;
+    }
     try {
       bodyContent = {
-        // data: {
         username: userData.username,
         email: userData.email,
-        // password: userData.password,
         address: userData.address,
-        // },
+        // password: userData.password,
+        // password2: userData.password2,
       };
-      console.log(bodyContent, "aa");
       const response = await api.put(
         "/accountprofile/profile/update/",
         bodyContent,
@@ -69,35 +79,36 @@ const ProfilePage = () => {
       if (!response.status) {
         throw new Error("Network response was not ok");
       }
-      const data = await response.data;
-      console.log("resData:", data);
+      setSuccessMsg("Profile Updated");
+      setReceivedData((prevData) => ({
+        ...prevData,
+        ...bodyContent,
+      }));
     } catch (err) {
-      setError(err.message);
+      let errMessage = "";
+      let customErr = false;
+      if (err.response.data.error.includes("username")) {
+        errMessage += " Username must be unique";
+        customErr = true;
+      }
+      if (err.response.data.error.includes("email")) {
+        errMessage += " Email must be unique and valid";
+        customErr = true;
+      } else if (!customErr) {
+        errMessage = err.response.data.error;
+      }
+      setErrorMsg(errMessage);
     } finally {
       setLoading(false);
     }
   };
-  const [userData, setUserData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    newPassword: "",
-    address: "",
-    // product_list: [],
-  });
-
-  // const [username, setUsername] = useState(userData.username);
-  // const [email, setEmail] = useState(userData.email);
-  // const [password, setPassword] = useState(userData.password);
-  // const [newPassword, setNewPassword] = useState("");
-  // const [address, setAddress] = useState(userData.address);
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
     <>
-      <form>
+      <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage>
+
+      <form onSubmit={(e) => editUserData(e)}>
         <div>
           <label>Username:</label>
           <input
@@ -116,14 +127,13 @@ const ProfilePage = () => {
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <div>
-          <label>Password:</label>
+        {/* <div>
+          <label>Old Password:</label>
           <input
             type="password"
             name="password"
-            value={"****"}
+            value={userData.password}
             onChange={(e) => handleChange(e)}
-            readOnly
           />
         </div>
         <div>
@@ -131,11 +141,10 @@ const ProfilePage = () => {
           <input
             type="password"
             name="password2"
-            value={"****"}
+            value={userData.password2}
             onChange={(e) => handleChange(e)}
-            readOnly
           />
-        </div>
+        </div> */}
 
         <div>
           <label>Address:</label>
@@ -146,11 +155,8 @@ const ProfilePage = () => {
             onChange={(e) => handleChange(e)}
           />
         </div>
-        <button type="button" onClick={editUserData}>
-          Edit
-        </button>
+        <button type="submit">Edit Profile</button>
       </form>
-
       <OrderList data={userData.orders} />
     </>
   );

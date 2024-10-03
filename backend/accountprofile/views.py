@@ -1,5 +1,5 @@
-from rest_framework import generics
-from .serializers import CustomAccountProfileSerializer, ProfileSerializer, MyTokenObtainPairSerializer, OrderlessProfileSerializer
+from rest_framework import generics, status
+from .serializers import CustomAccountProfileSerializer, ProfileSerializer, MyTokenObtainPairSerializer, UpdateProfileSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from drf_spectacular.utils import extend_schema
@@ -8,7 +8,7 @@ from django.views.generic import DetailView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from rest_framework.serializers import ValidationError
 User = get_user_model()
 
 # @extend_schema(responses=CustomAccountProfileSerializer)
@@ -67,20 +67,16 @@ def updateProfile(request):
     user = CustomAccountProfile.objects.get(username=request.user)
     print('incoming data',request.data)
     request.data['id'] = user.id
-    serializer = OrderlessProfileSerializer(data=request.data,  partial=True)
+    user.username = request.data['username']
+    user.email = request.data['email']
+    user.address = request.data['address']
+    # if user.is_valid():
+    #     user.save()
+    serializer = UpdateProfileSerializer(user, data=request.data,  partial=True)
 
-    if serializer.is_valid():
-        print(serializer.data, 'valid')
-        # serializer.save()
-
-    return Response(serializer.data)
-
-# #api/notes
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def getNotes(request):
-#     public_notes = Note.objects.filter(is_public=True).order_by('-updated')[:10]
-#     user_notes = request.user.notes.all().order_by('-updated')[:10]
-#     notes = public_notes | user_notes
-#     serializer = NoteSerializer(notes, many=True)
-#     return Response(serializer.data)
+    try:
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
