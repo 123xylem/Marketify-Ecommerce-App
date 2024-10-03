@@ -1,5 +1,5 @@
-from rest_framework import generics
-from .serializers import CustomAccountProfileSerializer, ProfileSerializer, MyTokenObtainPairSerializer
+from rest_framework import generics, status
+from .serializers import CustomAccountProfileSerializer, ProfileSerializer, MyTokenObtainPairSerializer, UpdateProfileSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from drf_spectacular.utils import extend_schema
@@ -8,7 +8,7 @@ from django.views.generic import DetailView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from rest_framework.serializers import ValidationError
 User = get_user_model()
 
 # @extend_schema(responses=CustomAccountProfileSerializer)
@@ -45,29 +45,38 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = CustomAccountProfileSerializer
 
-#api/profile  and api/profile/update
+#view Profile
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getProfile(request):
-    user = request.user
+    user = CustomAccountProfile.objects.get(username=request.user)
+    # order_list = user.get_profile_orders()
     serializer = ProfileSerializer(user, many=False)
+    print(user.email)
+    # serializer.data.orders = order_list
+    # print(serializer.data)
+    # if serializer.is_valid():
+    #     print(serializer.data)
+    # print(serializer.data, 'response to profile')
     return Response(serializer.data)
 
+#Edit Profile
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateProfile(request):
-    user = request.user
-    serializer = ProfileSerializer(user, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-    return Response(serializer.data)
+    user = CustomAccountProfile.objects.get(username=request.user)
+    print('incoming data',request.data)
+    request.data['id'] = user.id
+    user.username = request.data['username']
+    user.email = request.data['email']
+    user.address = request.data['address']
+    # if user.is_valid():
+    #     user.save()
+    serializer = UpdateProfileSerializer(user, data=request.data,  partial=True)
 
-# #api/notes
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def getNotes(request):
-#     public_notes = Note.objects.filter(is_public=True).order_by('-updated')[:10]
-#     user_notes = request.user.notes.all().order_by('-updated')[:10]
-#     notes = public_notes | user_notes
-#     serializer = NoteSerializer(notes, many=True)
-#     return Response(serializer.data)
+    try:
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

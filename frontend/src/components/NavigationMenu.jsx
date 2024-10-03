@@ -63,7 +63,7 @@ const NavigationMenu = () => {
               <ArrowDropDownIcon />
             </ListItemIcon>
           </MenuItem>
-          <MenuItem component={Link} to="/api/accountprofile/account">
+          <MenuItem component={Link} to="/profile/">
             Profile
           </MenuItem>
           <MenuItem component={Link} to="/contact">
