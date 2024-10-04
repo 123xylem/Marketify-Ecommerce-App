@@ -52,7 +52,7 @@ const NavigationMenu = () => {
           </MenuItem>
           <MenuItem
             component={Link}
-            to="#"
+            to="/"
             onClick={handleClick}
             endicon={<KeyboardArrowDownIcon />}
           >

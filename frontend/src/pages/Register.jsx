@@ -117,11 +117,6 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    let headersList = {
-      Accept: "*/*",
-      "Content-Type": "application/json",
-    };
-
     let bodyContent = JSON.stringify({
       username: data.get("name"),
       email: data.get("email"),
@@ -129,9 +124,11 @@ export default function SignUp() {
       // password2: data.get("password2"),
     });
     try {
-      let response = await api.post("accountprofile/register/", bodyContent, {
-        headers: headersList,
-      });
+      let response = await api.post(
+        "accountprofile/register/",
+        bodyContent,
+        {}
+      );
 
       if (response.status === 201) {
         let bodyContent = JSON.stringify({
@@ -139,9 +136,11 @@ export default function SignUp() {
           password: data.get("password"),
         });
         try {
-          let response = await api.post("accountprofile/token/", bodyContent, {
-            headers: headersList,
-          });
+          let response = await api.post(
+            "accountprofile/token/",
+            bodyContent,
+            {}
+          );
 
           if (response.status === 200) {
             let { refresh: refreshToken, access: accessToken } = response.data;
