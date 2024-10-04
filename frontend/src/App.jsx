@@ -15,6 +15,7 @@ function Logout() {
   localStorage.removeItem("refresh-token");
   return <Navigate to="/login" element={<Login />} />;
 }
+//TODO: Support query params in urls without it breaking routing
 
 function App() {
   const [count, setCount] = useState(0);
