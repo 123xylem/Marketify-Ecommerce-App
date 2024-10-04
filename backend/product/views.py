@@ -23,6 +23,7 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         serializer = self.get_serializer(self.queryset, many=True)
+        print(serializer.data, 'prods')
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):

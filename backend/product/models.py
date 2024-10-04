@@ -25,7 +25,7 @@ class Category(models.Model):
       return self.title
 
 class Product(models.Model):
-  category = models.ManyToManyField(Category, blank=True)
+  category = models.ManyToManyField(Category, blank=True, related_name="categories")
   title = models.CharField(max_length=40, unique=True)
   slug = models.CharField(max_length=100, blank=True, null=True)
   image = VersatileImageField(
