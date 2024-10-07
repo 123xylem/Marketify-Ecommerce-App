@@ -1,24 +1,25 @@
 /* eslint-disable react/prop-types */
 import api from "../api";
-const handleClick = async (productId, buyNow = false) => {
+import { Link } from "react-router-dom";
+import CartPage from "../pages/CartPage";
+
+const handleClick = async (productId, buyNow = false, setState) => {
   try {
-    const url = `cart/add_product/${productId}/`;
+    const url = `cart/add/${productId}/`;
     const response = await api.post(url, {
       body: JSON.stringify({
         buy_now: `${buyNow}`,
         product_id: productId,
       }),
     });
-    if (response.ok) {
-      const data = await response.json();
-      if (data.redirect_url && buyNow) {
-        window.location.href = data.redirect_url;
-        console.log(data.message);
+    if (response) {
+      const data = await response.data;
+      if (response.status == 200) {
+        if (!buyNow) {
+          setState();
+        }
+        console.info("Cart item updated:", data);
       }
-      console.debug("Cart item updated:", data);
-      console.table("Cart item updated:", data);
-      console.info("Cart item updated:", data);
-      // Update the UI accordingly
     } else {
       console.error("Failed to update item", response);
     }
@@ -30,12 +31,25 @@ const handleClick = async (productId, buyNow = false) => {
 export function ProductBtn({ ...props }) {
   return (
     <>
-      <button
-        className="buy-now-btn"
-        onClick={() => handleClick(props.productId, props.buyNow)}
-      >
-        {props.buyNow ? "Buy Now" : "Add to Cart"}
-      </button>
+      {props.buyNow ? (
+        <Link to={"/cart"} component={<CartPage />}>
+          <button
+            className="buy-now-btn"
+            onClick={() => handleClick(props.productId, props.buyNow)}
+          >
+            Buy Now
+          </button>
+        </Link>
+      ) : (
+        <button
+          className="add-to-cart-btn"
+          onClick={() =>
+            handleClick(props.productId, props.buyNow, props.setState)
+          }
+        >
+          Add to Cart
+        </button>
+      )}
     </>
   );
 }

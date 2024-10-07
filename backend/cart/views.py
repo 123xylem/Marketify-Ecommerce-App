@@ -12,12 +12,13 @@ from drf_spectacular.utils import extend_schema
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
+
 @extend_schema(responses=CartSerializer)
 class CartViewSet(viewsets.ModelViewSet):
       serializer_class = CartSerializer
       queryset = Cart.objects.all()
       # print(serializer_class, queryset)
-      permission_classes = [AllowAny]
+      permission_classes = [IsAuthenticated]
       def get_queryset(self):
         # print(vars(self.request.user), '=========')
         # # print(self.request.__dict__)
@@ -46,6 +47,7 @@ class CartViewSet(viewsets.ModelViewSet):
           product_data = []
           product_data = ProductSerializer(products, many=True).data
           serializer = self.get_serializer(cart).data
+          print('aaaa', serializer)
           return Response({'cart': serializer,
                            'products': product_data})
 
@@ -65,16 +67,20 @@ class CartViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
       
 
-      @action(detail=False, url_path='remove_product/(?P<pk>[^/.]+)', methods=['post'])
+      @action(detail=False, url_path='remove/(?P<pk>[^/.]+)', methods=['post'])
       def remove_product(self, request, pk=None):
           print('aa', request)
           cart = self.get_cart()
-          print(pk, cart, Product.objects.get(id=pk))
           product = get_object_or_404(Product, id=pk)
           cart.product_list.remove(product)
-          return Response({'status': 'product removed'}, status=status.HTTP_200_OK)
+          products = cart.product_list.all()
+          product_data = []
+          product_data = ProductSerializer(products, many=True).data
+          serializer = self.get_serializer(cart).data
+
+          return Response({'status': 'Product Removed', 'cart': serializer, 'products': product_data}, status=status.HTTP_200_OK)
      
-      @action(detail=False, url_path='add_product/(?P<pk>[^/.]+)', methods=['post'])
+      @action(detail=False, url_path='add/(?P<pk>[^/.]+)', methods=['post'])
       def add_product(self, request, pk=None):
           cart = self.get_cart()
           product = get_object_or_404(Product, id=pk)

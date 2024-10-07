@@ -45,16 +45,15 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'email', 'address']
     
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        # The default result (access/refresh tokens)
+        data = super().validate(attrs)
+        
+        # Include user information in the response data
+        data.update({
+            'user': self.user.username,
+            'id': self.user.id,
+        })
 
-        # Add custom claims
-        token['username'] = user.username
-        # token['password'] = user.password
-        token['email'] = user.email
-        # ...
-
-        return token
-
+        return data
