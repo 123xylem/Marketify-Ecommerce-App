@@ -12,20 +12,17 @@ const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
   const [recievedData, setReceivedData] = useState(null);
 
-  let headersList = {
-    Accept: "*/*",
-    "Content-Type": "application/json",
-  };
-
   let bodyContent = JSON.stringify({
     access: localStorage.getItem("access-token"),
   });
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await api.get("/accountprofile/profile", bodyContent, {
-          headers: headersList,
-        });
+        const response = await api.get(
+          "/accountprofile/profile",
+          bodyContent,
+          {}
+        );
         if (!response.status) {
           throw new Error("Network response was not ok");
         }
@@ -72,10 +69,7 @@ const ProfilePage = () => {
       };
       const response = await api.put(
         "/accountprofile/profile/update/",
-        bodyContent,
-        {
-          headers: headersList,
-        }
+        bodyContent
       );
       if (!response.status) {
         throw new Error("Network response was not ok");

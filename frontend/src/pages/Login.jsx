@@ -76,19 +76,12 @@ export default function SignIn(props) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    let headersList = {
-      Accept: "*/*",
-      "Content-Type": "application/json",
-    };
-
     let bodyContent = JSON.stringify({
       email: data.get("email"),
       password: data.get("password"),
     });
     try {
-      let response = await api.post("accountprofile/token/", bodyContent, {
-        headers: headersList,
-      });
+      let response = await api.post("accountprofile/token/", bodyContent, {});
 
       if (response.status === 200) {
         let responseData = response.data;
