@@ -15,7 +15,7 @@ const ProductDetail = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [productData, setProductData] = useState(null);
   const { state } = useLocation();
-  const { slug } = useParams(); // Get product slug from URL
+  const { slug } = useParams();
 
   console.log(productData, "Prod Data from page");
 
@@ -23,7 +23,10 @@ const ProductDetail = () => {
     relatedProducts = [];
     const fetchProductData = async () => {
       try {
-        const response = await api.get(`/products/${state.item.id}/`);
+        let url = state ? `/products/${state.item.id}/` : `/products/${slug}/`;
+
+        const response = await api.get(url);
+
         if (!response.status) {
           throw new Error("Network response was not ok");
         }
@@ -44,19 +47,19 @@ const ProductDetail = () => {
   if (loading) return <div>Loading...</div>;
   return (
     <>
-      {console.log([relatedProducts, "related"], state.item.title)}
-      <h1 className="product-title">{state.item.title}</h1>
+      {console.log([relatedProducts, "related"], productData.title)}
+      <h1 className="product-title">{productData.title}</h1>
       {/* <ResponseMessage message={successMsg} err={errMsg}></ResponseMessage> */}
       {/* {console.log(relatedProducts)} */}
       <div className="product-card">
-        <img src={state.item.image} alt={state.item.image}></img>
-        <p className="product-description">{state.item.description}</p>
-        <p className="product-price">${state.item.price}</p>
+        <img src={productData.image} alt={productData.image}></img>
+        <p className="product-description">{productData.description}</p>
+        <p className="product-price">${productData.price}</p>
         <div className="categories">
-          {state.item.category
+          {productData.category
             ?.filter((x) => x != [])
             .map((cat) => (
-              <p className="category" key={`${cat?.id}-${state.item.id}`}>
+              <p className="category" key={`${cat?.id}-${productData.id}`}>
                 {cat.title}
               </p>
             ))}
@@ -64,15 +67,16 @@ const ProductDetail = () => {
 
         <ProductBtn
           className="add-to-cart-btn"
-          productId={state.item.id}
+          productId={productData.id}
         ></ProductBtn>
         <ProductBtn
           className="buy-now-btn"
-          productId={state.item.id}
+          productId={productData.id}
           buyNow="true"
         ></ProductBtn>
       </div>
       <div className="product-sidebar">
+        <h3>Related Products</h3>
         <ProductList products={relatedProducts} />
       </div>
     </>

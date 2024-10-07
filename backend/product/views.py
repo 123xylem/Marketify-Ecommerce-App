@@ -18,16 +18,24 @@ class HomePageView(ListView):
 
 @extend_schema(responses=ProductSerializer)
 class ProductViewSet(viewsets.ModelViewSet):
+    lookup_fields = ['pk', 'slug']
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
     def list(self, request):
         serializer = self.get_serializer(self.queryset, many=True)
-        print(serializer.data, 'prods')
+        # print(serializer.data, 'prods')
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
-        product = get_object_or_404(self.queryset, pk=pk)
+    def retrieve(self, request, *args, **kwargs):
+
+        lookup_value = self.kwargs.get('pk') 
+
+        if lookup_value.isdigit():  
+            product = get_object_or_404(self.queryset, pk=lookup_value)
+        else:
+            product = get_object_or_404(self.queryset, slug=lookup_value)     
+                                        
         serializer = self.get_serializer(product)
         categories = product.category.all()
 
