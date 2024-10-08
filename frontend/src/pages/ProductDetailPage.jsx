@@ -17,8 +17,6 @@ const ProductDetail = () => {
   const { state } = useLocation();
   const { slug } = useParams();
 
-  console.log(productData, "Prod Data from page");
-
   useEffect(() => {
     relatedProducts = [];
     const fetchProductData = async () => {

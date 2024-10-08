@@ -15,7 +15,6 @@ import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 // import ForgotPassword from './ForgotPassword';
 // import ColorModeSelect from '../shared-theme/ColorModeSelect';
-import Cookies from "universal-cookie";
 import api from "../api";
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -55,8 +54,6 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-const cookies = new Cookies();
-
 export default function SignIn(props) {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
@@ -85,12 +82,16 @@ export default function SignIn(props) {
 
       if (response.status === 200) {
         let responseData = response.data;
-        let { refresh: refreshToken, access: accessToken } = responseData;
+        let {
+          refresh: refreshToken,
+          access: accessToken,
+          user: username,
+        } = responseData;
 
-        // Set cookies with tokens
         localStorage.setItem("refresh-token", refreshToken);
         localStorage.setItem("access-token", accessToken);
-        window.location.href = "/";
+        localStorage.setItem("username", username);
+        // window.location.href = "/";
       }
     } catch (err) {
       console.log(err.response.data.detail);

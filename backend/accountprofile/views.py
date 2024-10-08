@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from .serializers import CustomAccountProfileSerializer, ProfileSerializer, MyTokenObtainPairSerializer, UpdateProfileSerializer
+from .serializers import CustomAccountProfileSerializer, ProfileSerializer,  UpdateProfileSerializer, CustomTokenObtainPairSerializer
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from drf_spectacular.utils import extend_schema
@@ -10,12 +10,6 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.serializers import ValidationError
 User = get_user_model()
-
-# @extend_schema(responses=CustomAccountProfileSerializer)
-# class CreateUserView(generics.CreateAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = CustomAccountProfileSerializer
-#     permission_classes = [AllowAny]
 
 class profilePage(DetailView):
     model = CustomAccountProfile
@@ -36,9 +30,10 @@ class profilePage(DetailView):
         return context
 
 
-@extend_schema(responses=MyTokenObtainPairSerializer)
+@extend_schema(responses=CustomTokenObtainPairSerializer)
 class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
+    serializer_class = CustomTokenObtainPairSerializer
+
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -53,11 +48,6 @@ def getProfile(request):
     # order_list = user.get_profile_orders()
     serializer = ProfileSerializer(user, many=False)
     print(user.email)
-    # serializer.data.orders = order_list
-    # print(serializer.data)
-    # if serializer.is_valid():
-    #     print(serializer.data)
-    # print(serializer.data, 'response to profile')
     return Response(serializer.data)
 
 #Edit Profile

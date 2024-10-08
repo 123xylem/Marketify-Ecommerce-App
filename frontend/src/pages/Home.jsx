@@ -16,10 +16,7 @@ const HomePage = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.data;
-        // console.log(data, "from profile");
-        // console.log(data, "aa");
-        const result = Object.values(data);
-        console.log(data, result);
+
         setProductData(data);
       } catch (err) {
         console.log(err);

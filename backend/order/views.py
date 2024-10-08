@@ -23,11 +23,11 @@ class OrderViewSet(viewsets.ModelViewSet):
       order = get_object_or_404(queryset, pk=pk)
       serializer = OrderSerializer(order).data
       products = OrderProduct.objects.filter(order=order)
-      product_list = []
+      products_list = []
       for prod in products:
-         product_list.append(prod.product)
+         products_list.append(prod.product)
 
-      product_data = ProductSerializer(product_list, many=True).data
+      product_data = ProductSerializer(products_list, many=True).data
       print(serializer, product_data)
       return render(request, 'order/order.html', {'order_data': serializer, 'product_data': product_data, 'user': request.user})
 
@@ -37,18 +37,18 @@ class OrderViewSet(viewsets.ModelViewSet):
       order_list = []
       for an_order in orders:
         products = OrderProduct.objects.filter(order=an_order['id'])
-        product_list = []
+        products_list = []
         for prod in products:
-          product_list.append(prod.product)
-        an_order['products'] = product_list
-        # product_data = ProductSerializer(product_list, many=True).data
+          products_list.append(prod.product)
+        an_order['products'] = products_list
+        # product_data = ProductSerializer(products_list, many=True).data
         order_list.append(an_order)
       return render(request, 'order/orders.html', {'orders_data': order_list,  'user': request.user})
  
   @action(detail=True, url_path='view_order', methods=['get'])
   def view_order(self, request, *args):
       order = Order.objects.get(id=pk)
-      products = order.product_list.all()
+      products = order.products_list.all()
       product_data = []
       product_data = ProductSerializer(products, many=True).data
       serializer = self.get_serializer(order).data
