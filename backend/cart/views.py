@@ -4,9 +4,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from rest_framework.response import Response
 from rest_framework import viewsets, status
-from .serializers import CartSerializer
+from .serializers import CartSerializer, CartItemSerializer
 from product.serializers import ProductSerializer
-from .models import Cart
+from .models import Cart, CartItem
 import pprint
 from drf_spectacular.utils import extend_schema
 from django.contrib.auth.decorators import login_required
@@ -43,13 +43,11 @@ class CartViewSet(viewsets.ModelViewSet):
   
       def list(self, request):
           cart = self.get_cart()
-          products = cart.product_list.all()
-          product_data = []
-          product_data = ProductSerializer(products, many=True).data
-          serializer = self.get_serializer(cart).data
-          print('aaaa', serializer)
-          return Response({'cart': serializer,
-                           'products': product_data})
+          cart_products = cart.cartitem_set.all()
+          # product_data = ProductSerializer(products, many=True).data
+          serializer = CartItemSerializer(cart_products, many=True).data
+
+          return Response({'cart': serializer})
 
 
       def update(self, request, pk=None):
@@ -66,28 +64,36 @@ class CartViewSet(viewsets.ModelViewSet):
         cart.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
       
-
       @action(detail=False, url_path='remove/(?P<pk>[^/.]+)', methods=['post'])
       def remove_product(self, request, pk=None):
-          print('aa', request)
           cart = self.get_cart()
-          product = get_object_or_404(Product, id=pk)
-          cart.product_list.remove(product)
-          products = cart.product_list.all()
-          product_data = []
-          product_data = ProductSerializer(products, many=True).data
-          serializer = self.get_serializer(cart).data
+          cart_item = CartItem.objects.get(id=pk)
+          print(cart_item, cart_item.quantity, 'item and quantuy')
 
-          return Response({'status': 'Product Removed', 'cart': serializer, 'products': product_data}, status=status.HTTP_200_OK)
+          if cart_item.quantity > 1:
+             cart_item.quantity -= 1
+             cart_item.save()
+          else:
+            cart_item.delete()
+
+          cart_products = cart.cartitem_set.all()
+
+          serializer = CartItemSerializer(cart_products, many=True).data
+          return Response({'cart': serializer}, status=status.HTTP_200_OK)
      
       @action(detail=False, url_path='add/(?P<pk>[^/.]+)', methods=['post'])
       def add_product(self, request, pk=None):
           cart = self.get_cart()
           product = get_object_or_404(Product, id=pk)
-          # TODO: Quantity Logic on duplicate
-          cart.product_list.add(product)
+          for prod in cart.cartitem_set.all():
+             print(prod.quantity, prod.product)
+          cart_product, created = CartItem.objects.get_or_create(cart=cart, product=product)
+
+          if not created:
+             cart_product.quantity += 1
+             cart_product.save()
+
           if 'buy_now' in request.data and request.data['buy_now']:
-            #  cart.make_order(request)
             print('REDIRECT TO CART')
             return Response(data={'redirect_url': '/api/cart/frontend/cart', 'message': 'Redirecting to cart'}, status=status.HTTP_200_OK)
 
@@ -97,19 +103,18 @@ class CartViewSet(viewsets.ModelViewSet):
       def checkout(self, request, pk=None):
           print('CHECKING OUT!!!!!!!!!!!!!!!!!!!')
           cart = self.get_cart()
-          if not cart.product_list.all():
+          if not cart.products_list.all():
             return Response(data={'data': 'No products in cart'}, content_type='application/json', status=status.HTTP_400_BAD_REQUEST)
           order = cart.make_order(request)
-          cart.clear_product_list()
+          cart.clear_products_list()
           print(order, 'order DATA')
           return render(request, 'order/order.html', {'order_data': order, 'order_id': order.id, 'user': request.user})
 
           return Response({'status': 'Checkout started'}, status=status.HTTP_200_OK)
 
 def cart_viewer(request):
-  print(request, 'asssadihasoiuhfaouhsfouasoiuhasfoiuhfsaoiufasouhafsoufsah iafsu ')
   cart, created = Cart.objects.get_or_create(user=request.user)
-  products = cart.product_list.all()
+  products = cart.products_list.all()
   return render(request, 'cart/cart.html', {'products': products, 'user': request.user})
 
 
@@ -124,3 +129,5 @@ def remove_from_cart(request, id):
   #Remove product id from cart
   pass
 
+
+# %%

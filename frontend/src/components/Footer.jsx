@@ -1,4 +1,5 @@
 import { Outlet, Link } from "react-router-dom";
+import api from "../api";
 import {
   AppBar,
   ListItemIcon,
@@ -14,15 +15,25 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import StorefrontIcon from "@mui/icons-material/Storefront";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Footer = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-
-  const fetchFooterContent = useEffect() => {
-    const url = 'site-content/footer-disclaimer'
-    api.get(url)
-  }
+  const [footerText, setFooterText] = useState({});
+  useEffect(() => {
+    const fetchFooterContent = async () => {
+      const url = "site-content/footer-disclaimer";
+      try {
+        const data = await api.get(url);
+        if (data) {
+          setFooterText(data.data.content);
+        }
+      } catch (err) {
+        console.log("err geting content", err);
+      }
+    };
+    fetchFooterContent();
+  }, []);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -98,7 +109,9 @@ const Footer = () => {
           Marketify is an ecommerce platform built in Django and React. &copy;
         </p>
         <p className="footer-text">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
+          {footerText.content}
+          <img src={footerText.image} alt="" />
+          {/* Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industries standard dummy text ever
           since the 1500s, when an unknown printer took a galley of type and
           scrambled it to make a type specimen book. It has survived not only
@@ -106,7 +119,7 @@ const Footer = () => {
           remaining essentially unchanged. It was popularised in the 1960s with
           the release of Letraset sheets containing Lorem Ipsum passages, and
           more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum.
+          including versions of Lorem Ipsum. */}
         </p>
       </div>
     </div>

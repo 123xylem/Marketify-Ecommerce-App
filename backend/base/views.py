@@ -16,13 +16,11 @@ class GlobalSiteContentViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         serializer = self.get_serializer(self.queryset, many=True)
-        # print(serializer.data, 'prods')
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
 
         lookup_value = self.kwargs.get('slug') 
-        print(args, kwargs)
         GlobalSiteContent = get_object_or_404(self.queryset, slug=lookup_value)     
                                         
         serializer = self.get_serializer(GlobalSiteContent)

@@ -13,7 +13,7 @@ class OrderProductSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     username = serializers.CharField(source='user.username', read_only=True)
-    product_list = OrderProductSerializer(source='order_product', many=True)
+    products_list = OrderProductSerializer(source='order_product', many=True)
     class Meta:
         model = Order
-        fields = ['id','username', 'product_list', 'created_at', 'status']
+        fields = ['id','username', 'products_list', 'created_at', 'status']

@@ -10,9 +10,9 @@ class OrderService:
       print('2222', current_user)
       order = Order.objects.create(user=current_user)
       print(f'Created order {order.id} for user {current_user.username}')
-      print(f'Products added to order: {[product.title for product in cart.product_list.all()]}')
+      print(f'Products added to order: {[product.title for product in cart.products_list.all()]}')
 
-      for product in cart.product_list.all():
+      for product in cart.products_list.all():
           OrderProduct.objects.get_or_create(order=order, product=product)
 
       return self.process_order(order)

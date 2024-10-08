@@ -73,39 +73,8 @@ const CartPage = () => {
   return (
     <>
       <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage>
-      <div className="cart-section">
+      <div className="order-section">
         <h1>Welcome to your cart . {username}</h1>
-        {cartData.cart.length > 0 ? (
-          <div className="grid-box product-list">
-            {cartData.cart.map((product) => (
-              <div className="product grid-item" key={product.id}>
-                <h3>{product.title}</h3>
-                <img src={product.image} alt={product.image}></img>
-                <p>${product.price}</p>
-                <p>
-                  {product.category
-                    ?.filter((x) => x != [])
-                    .map((cat) => (
-                      <span key={cat.id}>{cat.title}, </span>
-                    ))}
-                </p>
-                <button
-                  className="remove-product"
-                  value={product.id}
-                  onClick={handleChange}
-                >
-                  Remove Product
-                </button>
-                <p>Quantity: {product.quantity}</p>
-              </div>
-            ))}
-            <Link to="/order" component={OrderPage}>
-              Checkout
-            </Link>
-          </div>
-        ) : (
-          "No products in cart"
-        )}
       </div>
     </>
   );

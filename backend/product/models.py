@@ -51,7 +51,7 @@ class Product(models.Model):
 
 
 @receiver(models.signals.post_save, sender=Product)
-def warm_product_list_img(sender, instance, **kwargs):
+def warm_products_list_img(sender, instance, **kwargs):
     """Ensures Product List images are created post-save"""
     product_img_warmer = VersatileImageFieldWarmer(
         instance_or_queryset=instance,
