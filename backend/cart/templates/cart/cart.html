@@ -12,7 +12,6 @@
             <p>
               {% for cat in product.category.all %}{{ cat }}{% endfor %}
             </p>
-            <!-- //TODO add quantity logic -->
             <btn data-productid="{{ product.id }}" class="remove-product">Remove Product</btn>
           </div>
         {% endfor %}

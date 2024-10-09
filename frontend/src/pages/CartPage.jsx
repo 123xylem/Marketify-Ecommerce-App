@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import api from "../api";
-import OrderPage from "./OrderPage";
+import CheckoutPage from "./CheckoutPage";
 import { ResponseMessage } from "../components/ResponseMessage";
 import { Link } from "react-router-dom";
 
@@ -37,7 +37,7 @@ const CartPage = () => {
       const changedData = await editCartData(productId);
       console.log(changedData, "post Edit");
     } catch (e) {
-      console.error(e, "Shit fkd up");
+      console.error(e, "error editing cart");
     }
   };
 
@@ -51,7 +51,7 @@ const CartPage = () => {
         throw new Error("Network response was not ok");
       }
       setSuccessMsg("Cart Updated");
-      console.log(response.data.cart, "UPDATEDDDD");
+
       setCartData({
         ...cartData,
         cart: response.data.cart,
@@ -99,7 +99,7 @@ const CartPage = () => {
                 <p>Quantity: {product.quantity}</p>
               </div>
             ))}
-            <Link to="/order" component={OrderPage}>
+            <Link to="/checkout" state={{ cartData: cartData }}>
               Checkout
             </Link>
           </div>
