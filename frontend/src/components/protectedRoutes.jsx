@@ -26,7 +26,7 @@ function ProtectedRoute({ children }) {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         setisAuthorized(true);
       } else {
-        setisAuthorized(true);
+        setisAuthorized(false);
       }
     } catch (err) {
       console.log(err);

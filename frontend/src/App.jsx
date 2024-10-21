@@ -45,14 +45,7 @@ function App() {
         <CssBaseline />
         <NavigationMenu />
         <Routes>
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/" element={<Home />} />
           <Route path="/products/product/:slug" element={<ProductDetail />} />
           <Route
             path="/profile"
@@ -63,8 +56,24 @@ function App() {
             }
           />
           <Route path="/login" element={<Login />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <CartPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <CheckoutPage />{" "}
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/register" element={<Register />} />
 
           <Route path="/logout" element={<Logout />} />

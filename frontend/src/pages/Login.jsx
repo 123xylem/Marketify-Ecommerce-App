@@ -91,7 +91,7 @@ export default function SignIn(props) {
         localStorage.setItem("refresh-token", refreshToken);
         localStorage.setItem("access-token", accessToken);
         localStorage.setItem("username", username);
-        // window.location.href = "/";
+        window.location.href = "/";
       }
     } catch (err) {
       console.log(err.response.data.detail);

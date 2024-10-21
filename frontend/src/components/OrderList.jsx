@@ -13,17 +13,22 @@ const OrderList = ({ data }) => {
           <h3>
             ID: {item.id} - Date: {item.created_at}
           </h3>
-          <div className="product-list">
-            {item.product_list.map((product) => (
-              <div className="product-item" key={`${item.id}-${product.id}`}>
-                <p>{product.product.title}</p>
-                <p>${product.product.price}</p>
-                <img
-                  src={product.product.image}
-                  alt={product.product.image}
-                ></img>
-              </div>
-            ))}
+          <div className="product-list grid-box">
+            {item.products_list
+              ? item.products_list.map((product) => (
+                  <div
+                    className="product-item grid-item"
+                    key={`${item.id}-${product.id}`}
+                  >
+                    <p>{product.product.title}</p>
+                    <p>${product.product.price}</p>
+                    <img
+                      src={product.product.image}
+                      alt={product.product.image}
+                    ></img>
+                  </div>
+                ))
+              : ""}
           </div>
         </div>
       ))}
