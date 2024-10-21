@@ -11,6 +11,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.serializers import ValidationError
 User = get_user_model()
 
+# //TODO: change these all to class based views or viewSet? 
+#TODO: swagger ui having issues with them
 class profilePage(DetailView):
     model = CustomAccountProfile
     template_name = 'accountprofile/profile_page.html'
@@ -34,6 +36,7 @@ class profilePage(DetailView):
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
+@extend_schema(responses=CustomAccountProfileSerializer)
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -41,21 +44,25 @@ class RegisterView(generics.CreateAPIView):
     serializer_class = CustomAccountProfileSerializer
 
 #view Profile
+
 @api_view(['GET'])
+@extend_schema(responses=ProfileSerializer)
 @permission_classes([IsAuthenticated])
 def getProfile(request):
+
     user = CustomAccountProfile.objects.get(username=request.user)
     # order_list = user.get_profile_orders()
     serializer = ProfileSerializer(user, many=False)
-    print(user.email)
+    # print(user.email)
     return Response(serializer.data)
 
 #Edit Profile
 @api_view(['PUT'])
+@extend_schema(responses=UpdateProfileSerializer)
 @permission_classes([IsAuthenticated])
 def updateProfile(request):
     user = CustomAccountProfile.objects.get(username=request.user)
-    print('incoming data',request.data)
+    print('incoming data',request.data, request.COOKIES)
     request.data['id'] = user.id
     user.username = request.data['username']
     user.email = request.data['email']

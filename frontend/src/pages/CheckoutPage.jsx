@@ -83,10 +83,6 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { useCallback, useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
-  EmbeddedCheckoutProvider,
-  EmbeddedCheckout,
-} from "@stripe/react-stripe-js";
-import {
   BrowserRouter as Router,
   Route,
   Routes,
@@ -104,12 +100,12 @@ import api from "../api";
 // TODO Display success/ error only. create session handled on cart checkout click
 //TODO Backend make order and send that data with success error to this page.
 const CheckoutPage = () => {
-  const location = useLocation();
+  // const location = useLocation();
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
-  const [createdCheckoutSession, setCreatedCheckoutSession] = useState(false);
-  const { slug } = useParams();
-  const { cartData } = location.state || { cartData: { cart: [] } };
-  const cartItems = cartData.cart;
+  // const [createdCheckoutSession, setCreatedCheckoutSession] = useState(false);
+  // const { slug } = useParams();
+  // const { cartData } = location.state || { cartData: { cart: [] } };
+  // const cartItems = cartData.cart;
 
   useEffect(() => {
     if (window.location.search.includes("success")) {
@@ -118,73 +114,27 @@ const CheckoutPage = () => {
     }
   }, [location.search]);
 
-  useEffect(() => {
-    if (!checkoutSuccess && !location.state) {
-      alert("Invalid cart");
-      window.location.href = "/cart"; // Redirect if conditions are met
-    }
-  }, [checkoutSuccess, location.state]);
+  // useEffect(() => {
+  //   if (!checkoutSuccess && !location.state) {
+  //     alert("Invalid cart");
+  //     window.location.href = "/cart"; // Redirect if conditions are met
+  //   }
+  // }, [checkoutSuccess, location.state]);
 
   useEffect(() => {
-    console.log("111111");
-
     // if (!checkoutSuccess && !location.state) {
     //   alert("invalid cart");
     //   window.location.href = "/cart";
     // }
     // console.log("22222");
-
-    console.log("333");
-
-    const createCheckoutSession = async (cartItems) => {
-      console.log("444 inside func");
-
-      const response = await api
-        .post("/orders/stripe/create-checkout-session/", {
-          cartItems: cartItems,
-        })
-        .catch((err) => {
-          console.log(err, "is stripey");
-        });
-      if (response.status == 200) {
-        const sessionId = response.data.id;
-        setCreatedCheckoutSession(true);
-        redirectToStripeCheckoutForm(sessionId);
-      }
-    };
-
-    const redirectToStripeCheckoutForm = async (sessionId) => {
-      console.log("555 inside func");
-
-      const stripe = await loadStripe(
-        "pk_test_51QCJEBJaXhjxvppmUCtv0TzkMQckbyRUB0CLKQIcHQryb0TPMFn2jv6fNI8QKU7e9eROVENS9pNd4mVhHFZ430Oo00wnl03SB8"
-      );
-      const stripeResponse = await stripe.redirectToCheckout({
-        sessionId,
-      });
-      if (stripeResponse.error) {
-        alert(stripeResponse.error.message);
-      }
-    };
-    console.log("666 pre");
-
-    if (!createdCheckoutSession) {
-      console.log("777 shouldnt call");
-
-      console.log("CREATING NEW SESSION", createdCheckoutSession);
-      createCheckoutSession(cartItems);
-    }
+    // console.log("333");
   }),
     [];
 
   return (
     <div id="checkout">
       <h1>Hi</h1>
-      {/* {
-        checkoutSuccess
-          ? "ORDER SUCCESS"
-          : "" 
-      } */}
+      {checkoutSuccess ? "ORDER SUCCESS" : "Failed order"}
     </div>
   );
 };

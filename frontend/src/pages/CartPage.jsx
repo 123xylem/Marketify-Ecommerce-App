@@ -4,6 +4,7 @@ import api from "../api";
 import CheckoutPage from "./CheckoutPage";
 import { ResponseMessage } from "../components/ResponseMessage";
 import { Link } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
 
 const CartPage = () => {
   const [loading, setLoading] = useState(true);
@@ -11,6 +12,8 @@ const CartPage = () => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [cartData, setCartData] = useState({});
   const username = localStorage.getItem("username").toUpperCase();
+  const [createdCheckoutSession, setCreatedCheckoutSession] = useState(false);
+
   useEffect(() => {
     const fetchCartData = async () => {
       try {
@@ -69,13 +72,50 @@ const CartPage = () => {
     }
   };
 
+  const handleCheckout = async () => {
+    if (!cartData) {
+      alert("no cart", cartData);
+    }
+    const createCheckoutSession = async (cartItems) => {
+      const response = await api
+        .post("/orders/stripe/create-checkout-session/", {
+          cartItems: cartItems,
+        })
+        .catch((err) => {
+          console.log(err, "is stripey");
+        });
+      if (response.status == 200) {
+        const sessionId = response.data.id;
+        setCreatedCheckoutSession(true);
+        redirectToStripeCheckoutForm(sessionId);
+      }
+    };
+
+    const redirectToStripeCheckoutForm = async (sessionId) => {
+      const stripe = await loadStripe(
+        "pk_test_51QCJEBJaXhjxvppmUCtv0TzkMQckbyRUB0CLKQIcHQryb0TPMFn2jv6fNI8QKU7e9eROVENS9pNd4mVhHFZ430Oo00wnl03SB8"
+      );
+      const stripeResponse = await stripe.redirectToCheckout({
+        sessionId,
+      });
+      if (stripeResponse.error) {
+        alert(stripeResponse.error.message);
+      }
+    };
+
+    if (cartData.cart && cartData.cart.length > 0) {
+      console.log("CREATING NEW SESSION", createdCheckoutSession);
+      createCheckoutSession(cartData.cart);
+    }
+  };
+
   if (loading) return <div>Loading...</div>;
   return (
     <>
       <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage>
       <div className="cart-section">
         <h1>Welcome to your cart . {username}</h1>
-        {cartData.cart.length > 0 ? (
+        {cartData.cart && cartData.cart.length > 0 ? (
           <div className="grid-box product-list">
             {cartData.cart.map((product) => (
               <div className="product grid-item" key={product.id}>
@@ -99,9 +139,7 @@ const CartPage = () => {
                 <p>Quantity: {product.quantity}</p>
               </div>
             ))}
-            <Link to="/checkout" state={{ cartData: cartData }}>
-              Checkout
-            </Link>
+            <button onClick={handleCheckout}>Checkout</button>
           </div>
         ) : (
           "No products in cart"
