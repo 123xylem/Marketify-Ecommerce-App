@@ -79,7 +79,7 @@
 // };
 
 // export default CheckoutPage;
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useCallback, useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -100,94 +100,93 @@ import api from "../api";
 // You can also find your test secret API key at https://dashboard.stripe.com/test/apikeys.
 // const stripePromise = loadStripe("pk_test_qblFNYngBkEdjEZ16jxxoWSM");
 
-const CheckoutForm = () => {
+//TODO RErender of stripe load?
+// TODO Display success/ error only. create session handled on cart checkout click
+//TODO Backend make order and send that data with success error to this page.
+const CheckoutPage = () => {
   const location = useLocation();
-  const handleCheckout = async () => {
-    // Create a Checkout Session
-    // return api.get("orders/create-checkout-session/");
-    const { cartData } = location.state;
-    console.log(cartData, "aa");
-    const cartItems = cartData.cart;
-    const response = await api
-      .post("/orders/stripe/create-checkout-session/", {
-        cartItems: cartItems,
-      })
-      .catch((err) => {
-        console.log(err, "is stripey");
+  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  const [createdCheckoutSession, setCreatedCheckoutSession] = useState(false);
+  const { slug } = useParams();
+  const { cartData } = location.state || { cartData: { cart: [] } };
+  const cartItems = cartData.cart;
+
+  useEffect(() => {
+    if (window.location.search.includes("success")) {
+      console.log(checkoutSuccess, "pre");
+      setCheckoutSuccess(true);
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    if (!checkoutSuccess && !location.state) {
+      alert("Invalid cart");
+      window.location.href = "/cart"; // Redirect if conditions are met
+    }
+  }, [checkoutSuccess, location.state]);
+
+  useEffect(() => {
+    console.log("111111");
+
+    // if (!checkoutSuccess && !location.state) {
+    //   alert("invalid cart");
+    //   window.location.href = "/cart";
+    // }
+    // console.log("22222");
+
+    console.log("333");
+
+    const createCheckoutSession = async (cartItems) => {
+      console.log("444 inside func");
+
+      const response = await api
+        .post("/orders/stripe/create-checkout-session/", {
+          cartItems: cartItems,
+        })
+        .catch((err) => {
+          console.log(err, "is stripey");
+        });
+      if (response.status == 200) {
+        const sessionId = response.data.id;
+        setCreatedCheckoutSession(true);
+        redirectToStripeCheckoutForm(sessionId);
+      }
+    };
+
+    const redirectToStripeCheckoutForm = async (sessionId) => {
+      console.log("555 inside func");
+
+      const stripe = await loadStripe(
+        "pk_test_51QCJEBJaXhjxvppmUCtv0TzkMQckbyRUB0CLKQIcHQryb0TPMFn2jv6fNI8QKU7e9eROVENS9pNd4mVhHFZ430Oo00wnl03SB8"
+      );
+      const stripeResponse = await stripe.redirectToCheckout({
+        sessionId,
       });
-    const sessionId = response.data.id;
-    const stripe = await loadStripe(
-      "pk_test_51QCJEBJaXhjxvppmUCtv0TzkMQckbyRUB0CLKQIcHQryb0TPMFn2jv6fNI8QKU7e9eROVENS9pNd4mVhHFZ430Oo00wnl03SB8"
-    );
-    await stripe.redirectToCheckout({ sessionId });
+      if (stripeResponse.error) {
+        alert(stripeResponse.error.message);
+      }
+    };
+    console.log("666 pre");
 
-    // const stripeDetails = api
-    //   .post(
-    //     "/orders/stripe/create-checkout-session/",
-    //     JSON.stringify({
-    //       cartItems,
-    //     })
-    //   )
-    //   .then((data) => {
-    //     console.log("AAAA", data), data.id;
-    //   })
-    //   .catch((err) => {
-    //     console.log(err, "is stripey");
-    //   });
-    // return stripeDetails;
-  };
+    if (!createdCheckoutSession) {
+      console.log("777 shouldnt call");
 
-  // const options = { fetchClientSecret };
+      console.log("CREATING NEW SESSION", createdCheckoutSession);
+      createCheckoutSession(cartItems);
+    }
+  }),
+    [];
 
   return (
     <div id="checkout">
-      {/* <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
-        <EmbeddedCheckout />
-      </EmbeddedCheckoutProvider> */}
-      <button onClick={handleCheckout}>Checkout</button>
+      <h1>Hi</h1>
+      {/* {
+        checkoutSuccess
+          ? "ORDER SUCCESS"
+          : "" 
+      } */}
     </div>
   );
 };
 
-// const Return = () => {
-//   const [status, setStatus] = useState(null);
-//   const [customerEmail, setCustomerEmail] = useState("");
-
-//   useEffect(() => {
-//     const queryString = window.location.search;
-//     const urlParams = new URLSearchParams(queryString);
-//     const sessionId = urlParams.get("session_id");
-
-//     api
-//       .get(`/session-status?session_id=${sessionId}`)
-//       .then((res) => res.json())
-//       .then((data) => {
-//         setStatus(data.status);
-//         setCustomerEmail(data.customer_email);
-//       });
-//   }, []);
-
-//   if (status === "open") {
-//     return <Navigate to="/checkout" />;
-//   }
-
-//   if (status === "complete") {
-//     return (
-//       <section id="success">
-//         <p>
-//           We appreciate your business! A confirmation email will be sent to{" "}
-//           {customerEmail}. If you have any questions, please email{" "}
-//           <a href="mailto:orders@example.com">orders@example.com</a>.
-//         </p>
-//       </section>
-//     );
-//   }
-
-//   return null;
-// };
-
-const CheckoutPage = () => {
-  return <div className="checkoutPage"></div>;
-};
-
-export default CheckoutForm;
+export default CheckoutPage;
