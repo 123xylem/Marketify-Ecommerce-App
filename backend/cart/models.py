@@ -4,7 +4,6 @@ from django.conf import settings
 from product.models import Product
 from order.models import *
 from order.services import OrderService
-
 class Cart(models.Model):
   user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   products_list = models.ManyToManyField(Product, through='CartItem')
@@ -38,3 +37,4 @@ class CartItem(models.Model):
   cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
   quantity = models.IntegerField(default=1)
   product = models.ForeignKey(Product, on_delete=models.CASCADE)
+# ALTER TABLE cart_cart ADD CONSTRAINT cart_cart_user_id_fk FOREIGN KEY (user_id) REFERENCES accountprofile_customaccountprofile(id);
