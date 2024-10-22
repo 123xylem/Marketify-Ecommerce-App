@@ -17,9 +17,23 @@
   max-width: 200px;
 }
 
+.order-list {
+  max-width: 300px;
+}
+
 /* FOOTER */
 
 .footer {
   margin-top: 5rem;
   padding: 0 1rem;
+}
+
+.success {
+  background: green;
+  color: white;
+}
+
+.error {
+  background: red;
+  color: black;
 }

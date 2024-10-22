@@ -68,27 +68,30 @@ class CartViewSet(viewsets.ModelViewSet):
       def remove_product(self, request, pk=None):
           cart = self.get_cart()
           cart_item = CartItem.objects.get(id=pk)
-          print(cart_item, cart_item.quantity, 'item and quantuy')
-
           if cart_item.quantity > 1:
              cart_item.quantity -= 1
              cart_item.save()
           else:
             cart_item.delete()
-
-          cart_products = cart.cartitem_set.all()
-
+          cart_products = cart.cartitem_set.all().order_by('id')
           serializer = CartItemSerializer(cart_products, many=True).data
           return Response({'cart': serializer}, status=status.HTTP_200_OK)
      
       @action(detail=False, url_path='add/(?P<pk>[^/.]+)', methods=['post'])
       def add_product(self, request, pk=None):
           cart = self.get_cart()
-          product = get_object_or_404(Product, id=pk)
-          for prod in cart.cartitem_set.all():
-             print(prod.quantity, prod.product)
-          cart_product, created = CartItem.objects.get_or_create(cart=cart, product=product)
+          product = Product.objects.filter(id=pk).first()
+          if product == None:
+            cart_item = CartItem.objects.filter(id=pk).first()
+            if cart_item:
+              cart_item.quantity += 1
+              cart_item.save()
+              cart_products = cart.cartitem_set.all().order_by('id')
+              serializer = CartItemSerializer(cart_products, many=True).data
+              return Response({'cart': serializer}, status=status.HTTP_200_OK)
 
+          cart_product, created = CartItem.objects.get_or_create(cart=cart, product=product)
+          print(cart_product, created)
           if not created:
              cart_product.quantity += 1
              cart_product.save()
@@ -120,6 +123,7 @@ def cart_viewer(request):
 
 def add_to_cart(request, id):
   #create and/or add product id to cart
+  print('here?')
   product = get_object_or_404(Product, id=id)
 
   print(id, product)

@@ -11,6 +11,9 @@ router.register(r'', OrderViewSet, OrderProductViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('stripe/create-checkout-session/', CreateCheckoutSession, name='create-checkout-session'),
+    path('stripe/payment-handler/', payment_handler, name='payment_handler'),
+    path('stripe/session-status/', SessionStatus.as_view(), name='session-status'),
 
 ]
 

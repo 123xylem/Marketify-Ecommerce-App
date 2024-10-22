@@ -1,4 +1,3 @@
-#TODO - do we need page or generate page title from context?
 from django.db import models
 from versatileimagefield.fields import VersatileImageField, PPOIField
 from versatileimagefield.placeholder import OnStoragePlaceholderImage

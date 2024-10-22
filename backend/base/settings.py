@@ -216,6 +216,8 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 
 REST_FRAMEWORK = {
 
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
         'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -234,14 +236,14 @@ SPECTACULAR_SETTINGS = {
 }
 
 
-CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
-    "http://*",  
+ 'http://localhost:5173'
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_HEADERS = '*' 
-CSRF_TRUSTED_ORIGINS = ["http://*"]
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_METHODS = (
     'GET',
@@ -249,3 +251,6 @@ CORS_ALLOW_METHODS = (
     'PUT',
     'OPTIONS',
 )
+
+CSRF_COOKIE_SAMESITE=None
+CSRF_COOKIE_SECURE=False

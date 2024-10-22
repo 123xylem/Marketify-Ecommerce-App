@@ -10,26 +10,25 @@ const ProfilePage = () => {
   const [sucessMsg, setSuccessMsg] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [orderData, setOrderData] = useState(null);
   const [recievedData, setReceivedData] = useState(null);
 
-  let bodyContent = JSON.stringify({
-    access: localStorage.getItem("access-token"),
-  });
+  // let bodyContent = JSON.stringify({
+  //   access: localStorage.getItem("access-token"),
+  // });
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await api.get(
-          "/accountprofile/profile",
-          bodyContent,
-          {}
+          "/accountprofile/profile?page=1"
+          // bodyContent,
         );
         if (!response.status) {
           throw new Error("Network response was not ok");
         }
         const data = await response.data;
-        data.password = "****";
-        data.password2 = "****";
-        // console.log(data, "from profile");
+        // data.password = "****";
+        // data.password2 = "****";
         setUserData(data);
         setReceivedData(data);
       } catch (err) {
@@ -60,7 +59,7 @@ const ProfilePage = () => {
       return;
     }
     try {
-      bodyContent = {
+      let bodyContent = {
         username: userData.username,
         email: userData.email,
         address: userData.address,
@@ -82,15 +81,16 @@ const ProfilePage = () => {
     } catch (err) {
       let errMessage = "";
       let customErr = false;
-      if (err.response.data.error.includes("username")) {
+      if (err.response && err.response.data.error.includes("username")) {
         errMessage += " Username must be unique";
         customErr = true;
       }
-      if (err.response.data.error.includes("email")) {
+      if (err.response && err.response.data.error.includes("email")) {
         errMessage += " Email must be unique and valid";
         customErr = true;
       } else if (!customErr) {
-        errMessage = err.response.data.error;
+        // errMessage = err.response.data.error;
+        errMessage = err.response;
       }
       setErrorMsg(errMessage);
     } finally {
@@ -152,7 +152,7 @@ const ProfilePage = () => {
         </div>
         <button type="submit">Edit Profile</button>
       </form>
-      <OrderList data={userData.orders} />
+      <OrderList data={orderData?.results} />
     </>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Outlet, Link } from "react-router-dom";
 import api from "../api";
 import {
@@ -17,23 +18,8 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 
 import { useState, useEffect } from "react";
 
-const Footer = () => {
+const Footer = ({ content }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [footerText, setFooterText] = useState({});
-  useEffect(() => {
-    const fetchFooterContent = async () => {
-      const url = "site-content/footer-disclaimer";
-      try {
-        const data = await api.get(url);
-        if (data) {
-          setFooterText(data.data.content);
-        }
-      } catch (err) {
-        console.log("err geting content", err);
-      }
-    };
-    fetchFooterContent();
-  }, []);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -83,6 +69,9 @@ const Footer = () => {
             <MenuItem component={Link} to="/profile/">
               Profile
             </MenuItem>
+            <MenuItem component={Link} to="/cart/">
+              Cart
+            </MenuItem>
             <MenuItem component={Link} to="/contact">
               Contact
             </MenuItem>
@@ -109,17 +98,8 @@ const Footer = () => {
           Marketify is an ecommerce platform built in Django and React. &copy;
         </p>
         <p className="footer-text">
-          {footerText.content}
-          <img src={footerText.image} alt="" />
-          {/* Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industries standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum. */}
+          {content.content}
+          <img src={content.image} alt="" />
         </p>
       </div>
     </div>

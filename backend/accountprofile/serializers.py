@@ -4,7 +4,7 @@ from order.serializers import OrderSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
-
+print(User)
 class CustomAccountProfileSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     orders = OrderSerializer(many=True, read_only=True)
@@ -30,10 +30,10 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['username', 'id', 'email', 'address', 'orders']
     
     def get_orders(self, obj):
-        # Assuming get_profile_orders returns a queryset of Order objects
-        orders = obj.get_user_orders()
-        return OrderSerializer(orders, many=True).data
+        orders = obj.get_user_orders().order_by('-created_at')
+        orders = OrderSerializer(orders, many=True).data
 
+        return orders
 class UpdateProfileSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.email = validated_data.get('email', instance.email)

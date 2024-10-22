@@ -8,12 +8,12 @@ const api = axios.create({
     Accept: "*/*",
     "Content-Type": "application/json",
   },
+  credentials: "include",
 });
 
 api.interceptors.request.use(
   (config) => {
     const csrfToken = getCookie("csrftoken");
-
     if (["post", "put", "delete"].includes(config.method) && csrfToken) {
       config.headers["X-CSRFToken"] = csrfToken;
     }

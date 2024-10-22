@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import api from "../api";
@@ -8,7 +9,10 @@ function ProtectedRoute({ children }) {
   const [isAuthorized, setisAuthorized] = useState(null);
 
   useEffect(() => {
-    auth().catch(() => setisAuthorized(false));
+    auth().catch((err) => {
+      console.log(err, "caught in auth");
+      setisAuthorized(false);
+    });
   }, []);
 
   const refreshToken = async () => {
@@ -22,7 +26,7 @@ function ProtectedRoute({ children }) {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         setisAuthorized(true);
       } else {
-        setisAuthorized(true);
+        setisAuthorized(false);
       }
     } catch (err) {
       console.log(err);
@@ -32,7 +36,6 @@ function ProtectedRoute({ children }) {
 
   const auth = async () => {
     const token = localStorage.getItem(ACCESS_TOKEN);
-
     if (!token) {
       setisAuthorized(false);
       return;
@@ -42,6 +45,7 @@ function ProtectedRoute({ children }) {
     const now = Date.now() / 1000;
 
     if (tokenExpiration && tokenExpiration < now) {
+      console.log("REFRESHING TOKEN");
       await refreshToken();
     } else {
       setisAuthorized(true);
