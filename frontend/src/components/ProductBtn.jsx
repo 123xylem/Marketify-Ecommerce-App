@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 import api from "../api";
-import { Link } from "react-router-dom";
-import CartPage from "../pages/CartPage";
+import { useNavigate } from "react-router-dom";
 
-const handleClick = async (productId, buyNow = false, setState) => {
+const handleClick = async (productId, buyNow = false, setState, navigate) => {
   try {
     const url = `cart/add/${productId}/`;
     const response = await api.post(url, {
@@ -14,11 +13,14 @@ const handleClick = async (productId, buyNow = false, setState) => {
     });
     if (response) {
       const data = await response.data;
-      if (response.status == 200) {
+      if (response.status === 200) {
         if (!buyNow) {
           setState();
         }
         console.info("Cart item updated:", data);
+        if (buyNow) {
+          navigate("/cart");
+        }
       }
     } else {
       console.error("Failed to update item", response);
@@ -28,24 +30,22 @@ const handleClick = async (productId, buyNow = false, setState) => {
   }
 };
 
-export function ProductBtn({ ...props }) {
+export function ProductBtn({ productId, buyNow, setState }) {
+  const navigate = useNavigate();
+
   return (
     <>
-      {props.buyNow ? (
-        <Link to={"/cart"} component={<CartPage />}>
-          <button
-            className="buy-now-btn"
-            onClick={() => handleClick(props.productId, props.buyNow)}
-          >
-            Buy Now
-          </button>
-        </Link>
+      {buyNow ? (
+        <button
+          className="buy-now-btn"
+          onClick={() => handleClick(productId, buyNow, null, navigate)}
+        >
+          Buy Now
+        </button>
       ) : (
         <button
           className="add-to-cart-btn"
-          onClick={() =>
-            handleClick(props.productId, props.buyNow, props.setState)
-          }
+          onClick={() => handleClick(productId, false, setState)}
         >
           Add to Cart
         </button>

@@ -10,6 +10,7 @@ const ProfilePage = () => {
   const [sucessMsg, setSuccessMsg] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [orderData, setOrderData] = useState(null);
   const [recievedData, setReceivedData] = useState(null);
 
   // let bodyContent = JSON.stringify({
@@ -19,16 +20,15 @@ const ProfilePage = () => {
     const fetchUserData = async () => {
       try {
         const response = await api.get(
-          "/accountprofile/profile"
+          "/accountprofile/profile?page=1"
           // bodyContent,
         );
         if (!response.status) {
           throw new Error("Network response was not ok");
         }
         const data = await response.data;
-        data.password = "****";
-        data.password2 = "****";
-        // console.log(data, "from profile");
+        // data.password = "****";
+        // data.password2 = "****";
         setUserData(data);
         setReceivedData(data);
       } catch (err) {
@@ -152,7 +152,7 @@ const ProfilePage = () => {
         </div>
         <button type="submit">Edit Profile</button>
       </form>
-      <OrderList data={userData.orders} />
+      <OrderList data={orderData?.results} />
     </>
   );
 };

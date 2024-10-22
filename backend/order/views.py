@@ -17,14 +17,15 @@ import stripe
 import json
 from accountprofile.models import CustomAccountProfile
 from cart.models import Cart
+from django.core.paginator import Paginator
 from decouple import config
+from rest_framework.pagination import PageNumberPagination
+
 STRIPE_SK = config('STRIPE_SK')
 BACKEND_DOMAIN = config('BACKEND_DOMAIN')
 FRONTEND_DOMAIN = config('FRONTEND_DOMAIN')
 stripe.api_key = STRIPE_SK
 YOUR_DOMAIN = BACKEND_DOMAIN
-
-#TODO Cart Product Order ID mappings not relating to eachother?
 
 @extend_schema(responses=OrderSerializer)
 class OrderViewSet(viewsets.ModelViewSet):
@@ -57,24 +58,15 @@ class OrderViewSet(viewsets.ModelViewSet):
       return Response({'order_data': serializer, 'product_data': product_data, 'user': request.user})
 
   def list(self, request):
-      print('LIST')
-
+      print('LIST ORDERS s')
       user = request.user
-      queryset = Order.objects.get_or_create(user=user)
-      print(queryset)
-      orders = OrderSerializer(queryset, many=True).data
-      order_list = []
-      for an_order in orders:
-        products = OrderProduct.objects.filter(order=an_order['id'])
-        products_list = []
-        
-        # for prod in products:
-        #   products_list.append(prod.product)
-        # an_order['products'] = products_list
-        # product_data = ProductSerializer(products_list, many=True).data
-        # order_list.append(an_order)
-        print(an_order, '3')
-      return Response({'orders_data': order_list,  'user': request.user})
+      queryset = Order.objects.filter(user=user).order_by('-created_at')
+
+      page = self.paginate_queryset(queryset)
+      if page is not None:
+          serializer = self.get_serializer(page, many=True)
+          return self.get_paginated_response(serializer.data)
+      return Response(serializer.data)
  
   @action(detail=True, url_path='view_order', methods=['get'])
   def view_order(self, request, *args):
@@ -161,10 +153,6 @@ class SessionStatus(View):
         })
 
 
-# //TODO Arrange order List in Desc order.
-# TODO: Add recent order to confirmation page#
-
-# Using Django
 @csrf_exempt
 def payment_handler(request):
   payload = request.body

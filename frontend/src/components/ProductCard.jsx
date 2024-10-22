@@ -30,7 +30,6 @@ export function ProductCard({ item }) {
       <ProductBtn
         className="add-to-cart-btn"
         productId={item.id}
-        // onclick={handleCartStatus}
         setState={handleCartStatus}
       ></ProductBtn>
       <ProductBtn

@@ -9,27 +9,29 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.serializers import ValidationError
+
 User = get_user_model()
 
-# //TODO: change these all to class based views or viewSet? 
+# //TODO: Refactor(low prio) change these all to class based views or viewSet? 
 #TODO: swagger ui having issues with them
 class profilePage(DetailView):
     model = CustomAccountProfile
     template_name = 'accountprofile/profile_page.html'
 
-    def get_context_data(self, **kwargs):
-        profile = self.get_object()  
-        orders = profile.order_set.prefetch_related('order_product__product').all()
-        o_list = []
-        for ord in orders:
-            products = list(ord.order_product.all()) 
-            o_list.append({'id':ord.id,
-                           'products': products, 
-                           'date': ord.created_at})
-        context = super().get_context_data(**kwargs)
-        context['orders'] = o_list
+    # def get_context_data(self, **kwargs):
+    #     profile = self.get_object()  
+    #     orders = []
+    #     profile.order_set.prefetch_related('order_product__product').all().order_by('created_at')
+    #     o_list = []
+    #     for ord in orders:
+    #         products = list(ord.order_product.all()) 
+    #         o_list.append({'id':ord.id,
+    #                        'products': products, 
+    #                        'date': ord.created_at})
+    #     context = super().get_context_data(**kwargs)
+    #     context['orders'] = o_list
 
-        return context
+    #     return context
 
 
 @extend_schema(responses=CustomTokenObtainPairSerializer)
@@ -54,6 +56,7 @@ def getProfile(request):
     # order_list = user.get_profile_orders()
     serializer = ProfileSerializer(user, many=False)
     # print(user.email)
+    # print(serializer.data['orders'][0])
     return Response(serializer.data)
 
 #Edit Profile

@@ -16,4 +16,16 @@ class OrderSerializer(serializers.ModelSerializer):
     products_list = OrderProductSerializer(source='order_product', many=True)
     class Meta:
         model = Order
-        fields = ['id','username', 'products_list', 'created_at', 'status']
+        fields = ['id','username', 'products_list',  'created_at', 'status']
+    
+    # Add total price to order 
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        
+        total_price = 0
+        for product in data['products_list']:
+            total_price += product['quantity'] * float(product['product']['price'])
+        
+        data['total_price'] = round(total_price, 4)
+        
+        return data

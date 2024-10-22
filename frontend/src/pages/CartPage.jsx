@@ -17,7 +17,7 @@ const CartPage = () => {
   useEffect(() => {
     const fetchCartData = async () => {
       try {
-        const response = await api.get(`/cart/`, {});
+        const response = await api.get(`/cart/`);
         if (!response.status) {
           throw new Error("Network response was not ok");
         }
@@ -35,20 +35,22 @@ const CartPage = () => {
   }, []);
 
   const handleChange = async (e) => {
-    const productId = e.target.value;
+    const productId = e.target.value.split(",")[0];
+    const action = e.target.value.split(",")[1];
+    console.log(productId, action, e.target.value);
     try {
-      const changedData = await editCartData(productId);
+      const changedData = await editCartData(productId, action);
       console.log(changedData, "post Edit");
     } catch (e) {
       console.error(e, "error editing cart");
     }
   };
 
-  const editCartData = async (productId) => {
+  const editCartData = async (productId, action) => {
     setErrorMsg(null);
     setSuccessMsg(null);
     try {
-      const url = `cart/remove/${productId}/`;
+      const url = `cart/${action}/${productId}/`;
       const response = await api.post(url);
       if (!response.status) {
         throw new Error("Network response was not ok");
@@ -131,11 +133,19 @@ const CartPage = () => {
                 </p>
                 <button
                   className="remove-product"
-                  value={product.id}
+                  value={[product.id, "remove"]}
                   onClick={handleChange}
                 >
                   Remove Product
                 </button>
+                <button
+                  className="add-product"
+                  value={[product.id, "add"]}
+                  onClick={handleChange}
+                >
+                  Add Product
+                </button>
+
                 <p>Quantity: {product.quantity}</p>
               </div>
             ))}

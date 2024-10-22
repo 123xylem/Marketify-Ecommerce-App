@@ -69,6 +69,9 @@ const Footer = ({ content }) => {
             <MenuItem component={Link} to="/profile/">
               Profile
             </MenuItem>
+            <MenuItem component={Link} to="/cart/">
+              Cart
+            </MenuItem>
             <MenuItem component={Link} to="/contact">
               Contact
             </MenuItem>
