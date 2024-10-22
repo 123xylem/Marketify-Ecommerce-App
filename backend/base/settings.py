@@ -167,7 +167,7 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-AUTH_USER_MODEL = 'accountprofile.customaccountprofile'
+AUTH_USER_MODEL = 'accountprofile.CustomAccountProfile'
 
 # IMAGE PACKAGE:
 

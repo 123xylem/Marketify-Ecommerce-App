@@ -4,7 +4,6 @@ from order.serializers import OrderSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
-print(User)
 class CustomAccountProfileSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     orders = OrderSerializer(many=True, read_only=True)
