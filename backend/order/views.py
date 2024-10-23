@@ -61,8 +61,9 @@ class OrderViewSet(viewsets.ModelViewSet):
       print('LIST ORDERS s')
       user = request.user
       queryset = Order.objects.filter(user=user).order_by('-created_at')
-
       page = self.paginate_queryset(queryset)
+      print(queryset, page, user)
+
       if page is not None:
           serializer = self.get_serializer(page, many=True)
           return self.get_paginated_response(serializer.data)
@@ -169,10 +170,11 @@ def payment_handler(request):
   # Handle the event
   if event.type == 'payment_intent.succeeded':
     payment_intent = event.data.object 
-    print( payment_intent.metadata)
+    # print( payment_intent.metadata)
     curr_user = CustomAccountProfile.objects.get(email=payment_intent.metadata['user_email'])
     cart = Cart.objects.get(user=payment_intent.metadata['user_id'])
     order = Order.objects.create(user=curr_user)
+    print('CREATED ORDER:', order)
     # //Create an order 
     for product in cart.products_list.all():
       # print(product, vars(product))

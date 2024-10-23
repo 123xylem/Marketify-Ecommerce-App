@@ -23,6 +23,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
     def list(self, request):
+        if request.data['category']:
+            self.queryset = Product.objects.filter(category=request.data.category)
         serializer = self.get_serializer(self.queryset, many=True)
         # print(serializer.data, 'prods')
         return Response(serializer.data)

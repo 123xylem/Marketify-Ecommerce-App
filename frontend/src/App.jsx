@@ -14,6 +14,7 @@ import ProductDetail from "./pages/ProductDetailPage";
 import "./assets/styles/index.css";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import CategoryPage from "./pages/CategoryPage";
 function Logout() {
   localStorage.removeItem("access-token");
   localStorage.removeItem("refresh-token");
@@ -47,6 +48,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/product/:slug" element={<ProductDetail />} />
+          <Route path="/products/category/:slug" element={<CategoryPage />} />
           <Route
             path="/profile"
             element={
@@ -69,7 +71,7 @@ function App() {
             path="/checkout"
             element={
               <ProtectedRoute>
-                <CheckoutPage />{" "}
+                <CheckoutPage />
               </ProtectedRoute>
             }
           />
