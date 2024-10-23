@@ -21,10 +21,14 @@ class ProductViewSet(viewsets.ModelViewSet):
     lookup_fields = ['pk', 'slug']
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-
-    def list(self, request):
-        if request.data['category']:
-            self.queryset = Product.objects.filter(category=request.data.category)
+    def list(self, request, *args, **kwargs):
+        print(args, kwargs, '?????????????? ?')
+        category = request.GET.get('cat', None)
+        print(request.GET, category)
+        if category:
+            #link title of category to a product that has one of these via the ID's
+            cat = Category.objects.filter(title=category.capitalize()).first()
+            self.queryset = Product.objects.filter(category=cat)
         serializer = self.get_serializer(self.queryset, many=True)
         # print(serializer.data, 'prods')
         return Response(serializer.data)
