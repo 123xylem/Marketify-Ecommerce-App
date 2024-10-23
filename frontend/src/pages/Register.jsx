@@ -69,7 +69,8 @@ export default function SignUp() {
     }
   }, []);
 
-  const validateInputs = () => {
+  const validateInputs = (e) => {
+    e.preventDefault();
     const email = document.getElementById("email");
     const password = document.getElementById("password");
     const password2 = document.getElementById("password2");
@@ -110,18 +111,26 @@ export default function SignUp() {
       setNameErrorMessage("");
     }
 
-    return isValid;
+    if (isValid) {
+      handleSubmit(e);
+    }
+    return false;
   };
 
   async function handleSubmit(event) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    console.log(event);
+
+    // const data = new FormData(event.currentTarget);
+    const username = event.target.form[0].value;
+    const email = event.target.form[2].value;
+    const password = event.target.form[4].value;
 
     let bodyContent = JSON.stringify({
-      username: data.get("name"),
-      email: data.get("email"),
-      password: data.get("password"),
-      // password2: data.get("password2"),
+      username,
+      email,
+      password,
+      // password2: data.get("password2"),data.get("name")
     });
     try {
       let response = await api.post(
@@ -132,8 +141,8 @@ export default function SignUp() {
 
       if (response.status === 201) {
         let bodyContent = JSON.stringify({
-          email: data.get("email"),
-          password: data.get("password"),
+          email,
+          password,
         });
         try {
           let response = await api.post(
@@ -192,7 +201,7 @@ export default function SignUp() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={(e) => validateInputs(e)}
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <FormControl>
@@ -265,7 +274,7 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              onClick={validateInputs}
+              onClick={(e) => validateInputs(e)}
             >
               Register
             </Button>

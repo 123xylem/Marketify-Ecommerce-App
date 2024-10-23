@@ -111,7 +111,8 @@ export default function SignIn(props) {
     }
   }
 
-  const validateInputs = () => {
+  const validateInputs = (e) => {
+    e.preventDefault();
     const email = document.getElementById("email");
     const password = document.getElementById("password");
 
@@ -135,7 +136,10 @@ export default function SignIn(props) {
       setPasswordErrorMessage("");
     }
 
-    return isValid;
+    if (isValid) {
+      handleSubmit();
+    }
+    return false;
   };
 
   return (
@@ -152,8 +156,7 @@ export default function SignIn(props) {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
-            noValidate
+            onSubmit={(e) => validateInputs(e)}
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -215,7 +218,7 @@ export default function SignIn(props) {
               type="submit"
               fullWidth
               variant="contained"
-              onClick={validateInputs}
+              onClick={(e) => validateInputs(e)}
             >
               Login
             </Button>

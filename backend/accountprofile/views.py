@@ -44,9 +44,15 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = CustomAccountProfileSerializer
+    def create(self, request):
+        print(request.data, vars(request))
+
+        user = CustomAccountProfile.objects.create_user(email=request.data['email'], username=request.data['username'], password=request.data['password'])
+        serializer = self.serializer_class(user).data
+
+        return Response({'status': serializer}, status=201)
 
 #view Profile
-
 @api_view(['GET'])
 @extend_schema(responses=ProfileSerializer)
 @permission_classes([IsAuthenticated])
