@@ -8,12 +8,13 @@ import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoutes";
 import CssBaseline from "@mui/material/CssBaseline";
-import NavigationMenu from "./components/NavigationMenu";
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ProductDetail from "./pages/ProductDetailPage";
 import "./assets/styles/index.css";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import SearchPage from "./pages/SearchPage";
 import CategoryPage from "./pages/CategoryPage";
 function Logout() {
   localStorage.removeItem("access-token");
@@ -58,11 +59,12 @@ function App() {
     <>
       <BrowserRouter>
         <CssBaseline />
-        <NavigationMenu categories={categories} />
+        <Header random={false} categories={categories} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/product/:slug" element={<ProductDetail />} />
           <Route path="/products/category/:slug" element={<CategoryPage />} />
+          <Route path="/search-results/" element={<SearchPage />} />
           <Route
             path="/profile"
             element={

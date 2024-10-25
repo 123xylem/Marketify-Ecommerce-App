@@ -1,9 +1,16 @@
-.app-bar {
+.nav-container {
+  width: 100%;
+  background: navy;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+.nav-inner {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
-  background: navy;
+  padding: 0;
 }
 
 a.nav-link-parent {
@@ -30,4 +37,16 @@ a.header-nav-link span {
 
 a.sub-menu-link {
   color: white;
+}
+
+.footer {
+  width: 100%;
+  background: navy;
+}
+
+.footer-container {
+  /* display: flex; */
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
 }
