@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import api from "../api";
-import { ResponseMessage } from "../components/ResponseMessage";
+import api from "../../api";
+import { ResponseMessage } from "../ResponseMessage";
 
 const OrderList = ({ data }) => {
   const [orderData, setOrderData] = useState(null);

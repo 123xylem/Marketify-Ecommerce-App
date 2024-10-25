@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ResponseMessage } from "../components/ResponseMessage";
-import ProductList from "../components/ProductList";
+import ProductList from "../components/product/ProductList";
 import { useLocation } from "react-router-dom";
 import api from "../api";
 const CategoryPage = () => {
@@ -30,7 +30,7 @@ const CategoryPage = () => {
       }
     };
     fetchUserData();
-  }, []);
+  }, [category]);
 
   return (
     <div>

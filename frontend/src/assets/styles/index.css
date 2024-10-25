@@ -1,5 +1,6 @@
 @import "product.css";
 @import "cart.css";
+@import "nav-footer.css";
 
 .flex-list {
   display: flex;

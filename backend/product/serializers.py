@@ -4,9 +4,20 @@ from django.conf import settings
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    child_cats = serializers.SerializerMethodField()
+    
     class Meta:
         model = Category
-        fields = ['id','title', 'parent']
+        fields = ['id','title', 'parent', 'child_cats']
+    
+    def get_child_cats(self, instance):
+            child_cats = []
+            if instance.subcategories.all().first(): 
+                for child in instance.subcategories.all():
+                    child_cats.append({'id':child.id, 'title': child.title})
+
+                return child_cats
+            
 
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer( many=True, read_only=True)

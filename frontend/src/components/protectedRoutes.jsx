@@ -12,6 +12,7 @@ function ProtectedRoute({ children }) {
     auth().catch((err) => {
       console.log(err, "caught in auth");
       setisAuthorized(false);
+      window.location.href = "/products";
     });
   }, []);
 

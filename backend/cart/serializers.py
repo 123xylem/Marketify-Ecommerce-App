@@ -29,8 +29,8 @@ class CartItemSerializer(serializers.ModelSerializer):
           'image': product['image'],
           'description': product['description'],
           'price': product['price'],
-          'category': product['category'],  # Adjust based on your needs
-          'created_at': product['created_at'],  # Adjust based on your needs
+          'category': product['category'],  
+          'created_at': product['created_at'],  
           'quantity': representation['quantity']
       }
 

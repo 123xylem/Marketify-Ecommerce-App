@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import api from "../api";
+import api from "../../api";
 import { useNavigate } from "react-router-dom";
 
 const handleClick = async (productId, buyNow = false, setState, navigate) => {

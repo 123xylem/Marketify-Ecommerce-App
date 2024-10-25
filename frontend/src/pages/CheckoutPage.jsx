@@ -82,7 +82,7 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useCallback, useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import OrderList from "../components/OrderList";
+import OrderList from "../components/order/OrderList";
 
 import {
   BrowserRouter as Router,

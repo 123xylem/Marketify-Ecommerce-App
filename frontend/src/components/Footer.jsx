@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Outlet, Link } from "react-router-dom";
 import api from "../api";
+import NavigationMenu from "./NavigationMenu";
 import {
   AppBar,
   ListItemIcon,
@@ -18,19 +19,19 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 
 import { useState, useEffect } from "react";
 
-const Footer = ({ content }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const open = Boolean(anchorEl);
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+const Footer = (props) => {
+  // const [anchorEl, setAnchorEl] = useState(null);
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const open = Boolean(anchorEl);
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
+  console.log(props, "here");
   return (
     <div className="footer">
-      <AppBar position="static">
+      {/* <AppBar position="static">
         <Toolbar>
           <IconButton
             size="large"
@@ -92,14 +93,15 @@ const Footer = ({ content }) => {
           </Stack>
         </Toolbar>
         <Outlet />
-      </AppBar>
+      </AppBar> */}
+      <NavigationMenu categories={props.categories} />
       <div className="footer-text-block">
         <p className="footer-text">
           Marketify is an ecommerce platform built in Django and React. &copy;
         </p>
         <p className="footer-text">
-          {content.content}
-          <img src={content.image} alt="" />
+          {props.content.content}
+          <img src={props.content.image} alt="" />
         </p>
       </div>
     </div>
