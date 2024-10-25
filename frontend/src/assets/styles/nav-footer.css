@@ -1,0 +1,33 @@
+.app-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  background: navy;
+}
+
+a.nav-link-parent {
+  display: flex;
+  padding: 0.5rem;
+  margin: 0 0.5rem;
+  color: white;
+}
+
+a.nav-link-parent.branding {
+  margin: 0 1rem;
+  font-size: 2rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.branding svg {
+  margin-right: 0.5rem;
+}
+
+a.header-nav-link span {
+  color: white;
+}
+
+a.sub-menu-link {
+  color: white;
+}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ResponseMessage } from "../components/ResponseMessage";
-import ProductList from "../components/ProductList";
+import ProductList from "../components/product/ProductList";
 import { useLocation } from "react-router-dom";
 import api from "../api";
 const CategoryPage = () => {
@@ -10,11 +10,12 @@ const CategoryPage = () => {
   const [productData, setProductData] = useState([]);
   const location = useLocation();
   const { pathname, search } = location;
-  const category = pathname.split("/")[2];
+  const category = pathname.split("/")[3];
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await api.get("/products/", { category: category });
+        const response = await api.get(`/products/?cat=${category}`);
         if (!response.status) {
           throw new Error("Network response was not ok");
         }
@@ -29,7 +30,7 @@ const CategoryPage = () => {
       }
     };
     fetchUserData();
-  }, []);
+  }, [category]);
 
   return (
     <div>

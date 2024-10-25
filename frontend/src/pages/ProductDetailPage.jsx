@@ -2,10 +2,10 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 import { useLocation, useParams } from "react-router-dom";
-import { ProductBtn } from "../components/ProductBtn";
+import { ProductBtn } from "../components/product/ProductBtn";
 import { ResponseMessage } from "../components/ResponseMessage";
-import ProductRelatedSidebar from "../components/ProductRelatedSidebar";
-import ProductList from "../components/ProductList";
+import ProductRelatedSidebar from "../components/product/ProductRelatedSidebar";
+import ProductList from "../components/product/ProductList";
 
 let relatedProducts = [];
 

@@ -24,6 +24,8 @@ function Logout() {
 function App() {
   const [count, setCount] = useState(0);
   const [footerText, setFooterText] = useState({});
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     const fetchFooterContent = async () => {
       const url = "site-content/footer-disclaimer";
@@ -37,14 +39,26 @@ function App() {
       }
     };
     fetchFooterContent();
+    const getCategories = async () => {
+      const url = "/category/";
+      try {
+        const res = await api.get(url);
+        if (res.status == 200) {
+          setCategories(res.data);
+          console.log(res.data);
+        }
+      } catch (err) {
+        console.log(err, " getting categories");
+      }
+    };
+    getCategories();
   }, []);
 
   return (
     <>
-      {" "}
       <BrowserRouter>
         <CssBaseline />
-        <NavigationMenu />
+        <NavigationMenu categories={categories} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products/product/:slug" element={<ProductDetail />} />
@@ -81,7 +95,7 @@ function App() {
           <Route path="/logout" element={<Logout />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <Footer content={footerText} />
+        <Footer content={footerText} categories={categories} />
       </BrowserRouter>
     </>
   );

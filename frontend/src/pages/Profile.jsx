@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // TODO: password reset with email?
 // TODO: add avatar image
 import api from "../api";
-import OrderList from "../components/OrderList";
+import OrderList from "../components/order/OrderList";
 import { ResponseMessage } from "../components/ResponseMessage";
 const ProfilePage = () => {
   const [loading, setLoading] = useState(true);

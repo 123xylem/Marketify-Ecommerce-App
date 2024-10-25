@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ResponseMessage } from "../components/ResponseMessage";
-import ProductList from "../components/ProductList";
+import ProductList from "../components/product/ProductList";
 
 import api from "../api";
 const HomePage = () => {
