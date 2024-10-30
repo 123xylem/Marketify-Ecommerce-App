@@ -60,7 +60,7 @@ export default function SignIn(props) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
-
+  const googleLoginUrl = "https://google.com";
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -69,13 +69,14 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  async function handleSubmit(event) {
+  async function handleSubmit() {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    console.log(email, password);
     let bodyContent = JSON.stringify({
-      email: data.get("email"),
-      password: data.get("password"),
+      email,
+      password,
     });
     try {
       let response = await api.post("accountprofile/token/", bodyContent, {});
@@ -144,6 +145,9 @@ export default function SignIn(props) {
 
   return (
     <div>
+      <a href={`${googleLoginUrl}`} className="google-login">
+        LOGIN WITH GOOGLE
+      </a>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">

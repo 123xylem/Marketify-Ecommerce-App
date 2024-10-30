@@ -3,6 +3,7 @@ import { ResponseMessage } from "../components/ResponseMessage";
 import ProductList from "../components/product/ProductList";
 import { useLocation } from "react-router-dom";
 import api from "../api";
+
 const CategoryPage = () => {
   const [loading, setLoading] = useState(true);
   const [sucessMsg, setSuccessMsg] = useState(null);

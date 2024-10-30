@@ -28,9 +28,20 @@ const Footer = (props) => {
   // const handleClose = () => {
   //   setAnchorEl(null);
   // };
-  console.log(props, "here");
   return (
     <div className="footer">
+      <div className="footer-container">
+        <NavigationMenu categories={props.categories} />
+        <div className="footer-text-block">
+          <p className="footer-text">
+            Marketify is an ecommerce platform built in Django and React. &copy;
+          </p>
+          <p className="footer-text">
+            {props.content.content}
+            <img src={props.content.image} alt="" />
+          </p>
+        </div>
+      </div>
       {/* <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -94,16 +105,6 @@ const Footer = (props) => {
         </Toolbar>
         <Outlet />
       </AppBar> */}
-      <NavigationMenu categories={props.categories} />
-      <div className="footer-text-block">
-        <p className="footer-text">
-          Marketify is an ecommerce platform built in Django and React. &copy;
-        </p>
-        <p className="footer-text">
-          {props.content.content}
-          <img src={props.content.image} alt="" />
-        </p>
-      </div>
     </div>
   );
 };
