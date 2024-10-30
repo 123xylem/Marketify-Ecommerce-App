@@ -9,7 +9,7 @@ from product.views import CategoryView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.HomePageView.as_view(), name='home'),
+    # path('', views.HomePageView.as_view(), name='home'),
     path('api/products/', include('product.urls', namespace='product')),  
     path('api/site-content/<str:slug>', GlobalSiteContentViewSet.as_view({'get': 'retrieve'})),  
     path('api/cart/', include('cart.urls', namespace='cart')),
@@ -18,7 +18,7 @@ urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path("api/category/", CategoryView.as_view(), name="category_list"),
-
+    path("accounts/", include("allauth.urls")),
 ]
 
 if settings.DEBUG:

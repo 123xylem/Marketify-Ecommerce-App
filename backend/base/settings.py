@@ -25,7 +25,7 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
-
+SITE_ID=2
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -33,6 +33,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+
 
     'product',
     'cart',
@@ -40,6 +43,10 @@ INSTALLED_APPS = [
     'order',
     'accountprofile',
 
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'django_rename_app',
     'base',
     'versatileimagefield',
@@ -60,6 +67,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
+
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -169,6 +178,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accountprofile.CustomAccountProfile'
 
+
+
+
+SOCIALACCOUNT_PROVIDERS ={
+  "google": {
+    "SCOPE": [
+      "profile",
+      "email"
+    ],
+    "AUTH_PARAMS": {"access_type": "online"}
+  }
+}
 # IMAGE PACKAGE:
 
 VERSATILEIMAGEFIELD_SETTINGS = {
@@ -219,13 +240,16 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-        'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
 
 }
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1005),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=2600),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
    }
 
@@ -254,3 +278,10 @@ CORS_ALLOW_METHODS = (
 
 CSRF_COOKIE_SAMESITE=None
 CSRF_COOKIE_SECURE=False
+
+
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend", "allauth.account.auth_backends.AuthenticationBackend")
+
+LOGIN_REDIRECT_URL="/"
+LOGOUT_REDIRECT_URL="/"
+

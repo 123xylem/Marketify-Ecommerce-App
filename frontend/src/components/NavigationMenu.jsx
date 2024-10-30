@@ -1,150 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Outlet, Link } from "react-router-dom";
-// import {
-//   AppBar,
-//   ListItemIcon,
-//   IconButton,
-//   Stack,
-//   Toolbar,
-//   Typography,
-//   Menu,
-//   MenuItem,
-//   Popover,
-// } from "@mui/material";
-// import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-// import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-// import StorefrontIcon from "@mui/icons-material/Storefront";
-
 import { useState, useEffect } from "react";
-// import api from "../api";
-
-// const NavigationMenu = ({ categories }) => {
-//   const [anchorEl, setAnchorEl] = useState(null);
-//   const [childAnchorEl, setChildAnchorEl] = useState(null);
-
-//   const handleClick = (event) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-//   const open = Boolean(anchorEl);
-//   const handleClose = () => {
-//     setAnchorEl(null);
-//   };
-//   const handleChildOpen = (event) => setChildAnchorEl(event.currentTarget);
-//   const handleChildClose = () => setChildAnchorEl(null);
-
-//   return (
-//     <AppBar position="static">
-//       <Toolbar>
-//         <IconButton
-//           size="large"
-//           component={Link}
-//           to="/"
-//           edge="start"
-//           aria-label="logo"
-//           style={{ color: "white", marginRight: "auto" }}
-//         >
-//           <StorefrontIcon />
-//           <Typography
-//             variant="h6"
-//             component="div"
-//             style={{ paddingLeft: ".5rem" }}
-//           >
-//             Marketify
-//           </Typography>
-//         </IconButton>
-//         <Stack direction="row" spacing={2}>
-//           <MenuItem component={Link} to="/">
-//             Home
-//           </MenuItem>
-//           <MenuItem
-//             component={Link}
-//             to="/"
-//             onClick={handleClick}
-//             // endicon={<KeyboardArrowDownIcon />}
-//           >
-//             Products
-//             <Link to={`/category/${ele.title}`}stItemIcon
-//               style={{ minWidth: 0, marginLeft: "auto", color: "white" }}
-//             >
-//               <ArrowDropDownIcon />
-//             </Link>
-//           </MenuItem>
-//           <MenuItem component={Link} to="/profile/">
-//             Profile
-//           </MenuItem>
-//           <MenuItem component={Link} to="/cart/">
-//             Cart
-//           </MenuItem>
-//           <MenuItem component={Link} to="/contact">
-//             Contact
-//           </MenuItem>
-//           <Menu
-//             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-//             transformOrigin={{ vertical: "top", horizontal: "center" }}
-//             anchorEl={anchorEl}
-//             open={open}
-//             onClose={handleClose}
-//           >
-//             {categories
-//               .filter((cat) => cat.parent === null)
-//               .map((cat, idx) => {
-//                 return (
-//                   <MenuItem
-//                     key={idx}
-//                     to={"/products/category/" + cat.title + "/"}
-//                     component={Link}
-//                     onClick={cat.child_cats ? handleChildOpen : handleClose}
-//                     // endicon={<KeyboardArrowDownIcon />}
-//                   >
-//                     {cat.title}
-//                     {cat.child_cats && <ArrowDropDownIcon />}
-//                     {cat.child_cats && (
-//                       <Popover
-//                         id={`child-menu-${cat.id}`}
-//                         className="child-MENU"
-//                         anchorOrigin={{
-//                           vertical: "bottom",
-//                           horizontal: "right",
-//                         }}
-//                         transformOrigin={{
-//                           vertical: "top",
-//                           horizontal: "center",
-//                         }}
-//                         anchorEl={childAnchorEl}
-//                         open={Boolean(childAnchorEl)}
-//                         onClose={handleChildClose}
-//                       >
-//                         {console.log(
-//                           childAnchorEl,
-//                           "child",
-//                           anchorEl,
-//                           "parent"
-//                         )}
-//                         {cat.child_cats?.map((child, index) => {
-//                           return (
-//                             <MenuItem
-//                               key={index}
-//                               to={"/products/category/" + child.title + "/"}
-//                               component={Link}
-//                             >
-//                               {child.title}
-//                             </MenuItem>
-//                           );
-//                         })}
-//                       </Popover>
-//                     )}
-//                   </MenuItem>
-//                 );
-//               })}
-//           </Menu>
-//         </Stack>
-//       </Toolbar>
-//       <Outlet />
-//     </AppBar>
-//   );
-// };
-
-// export default NavigationMenu;
 
 import { motion } from "framer-motion";
 
@@ -200,7 +56,7 @@ const NavigationMenu = ({ categories }) => {
             Home
           </Link>
         </div>
-
+        {/* //TODO li descendant of li? */}
         <div className="product-nav">
           <li
             onMouseEnter={() => subMenuOnMouseEnterHandler(999)}
@@ -216,57 +72,59 @@ const NavigationMenu = ({ categories }) => {
               animate={showSubMenu[999] ? "open" : "closed"}
               className="header-nav-ul"
             >
-              {categories.map((el, i) => {
-                if (!el.child_cats) {
+              {categories
+                .filter((cat) => cat.parent == null)
+                .map((el, i) => {
+                  if (!el.child_cats) {
+                    return (
+                      <li key={el.id}>
+                        <Link
+                          to={`/products/category/${el.title}`}
+                          className="header-nav-link"
+                        >
+                          <span>{el.title}</span>
+                        </Link>
+                      </li>
+                    );
+                  }
+
                   return (
-                    <li key={el.id}>
-                      <Link
-                        to={`/products/category/${el.title}`}
-                        className="header-nav-link"
+                    <li
+                      onMouseEnter={() => subMenuOnMouseEnterHandler(el.id)}
+                      onMouseLeave={() => subMenuOnMouseLeaveHandler(el.id)}
+                      key={el.id}
+                      className="header-nav-options options-hover"
+                    >
+                      <li key={el.id} className="sub-menu-li">
+                        <Link
+                          to={`/products/category/${el.title}`}
+                          className="sub-menu-link"
+                        >
+                          <span>{el.title}</span>
+                        </Link>
+                      </li>
+                      <motion.ul
+                        variants={variants}
+                        animate={showSubMenu[el.id] ? "open" : "closed"}
+                        className="header-nav-ul"
                       >
-                        <span>{el.title}</span>
-                      </Link>
+                        {showSubMenu[el.id] &&
+                          el.child_cats.map((ele) => {
+                            return (
+                              <li key={ele.id} className="sub-menu-li">
+                                <Link
+                                  to={`/products/category/${ele.title}`}
+                                  className="sub-menu-link"
+                                >
+                                  <span>{ele.title}</span>
+                                </Link>
+                              </li>
+                            );
+                          })}
+                      </motion.ul>
                     </li>
                   );
-                }
-
-                return (
-                  <li
-                    onMouseEnter={() => subMenuOnMouseEnterHandler(el.id)}
-                    onMouseLeave={() => subMenuOnMouseLeaveHandler(el.id)}
-                    key={el.id}
-                    className="header-nav-options options-hover"
-                  >
-                    <li key={el.id} className="sub-menu-li">
-                      <Link
-                        to={`/products/category/${el.title}`}
-                        className="sub-menu-link"
-                      >
-                        <span>{el.title}</span>
-                      </Link>
-                    </li>
-                    <motion.ul
-                      variants={variants}
-                      animate={showSubMenu[el.id] ? "open" : "closed"}
-                      className="header-nav-ul"
-                    >
-                      {showSubMenu[el.id] &&
-                        el.child_cats.map((ele) => {
-                          return (
-                            <li key={ele.id} className="sub-menu-li">
-                              <Link
-                                to={`/products/category/${ele.title}`}
-                                className="sub-menu-link"
-                              >
-                                <span>{ele.title}</span>
-                              </Link>
-                            </li>
-                          );
-                        })}
-                    </motion.ul>
-                  </li>
-                );
-              })}
+                })}
             </motion.ul>
           </li>
         </div>
