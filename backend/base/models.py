@@ -8,7 +8,6 @@ from django.utils.html import escape
 from django.db.models.signals import pre_save
 from django.utils.text import slugify
 
-
 class GlobalSiteContent(models.Model):
   title = models.TextField(null=False, max_length=100)
   slug = models.TextField(null=False, blank=True, unique=True, max_length=120)

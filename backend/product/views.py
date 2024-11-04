@@ -30,7 +30,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         """
         queryset = self.queryset
         category = self.request.query_params.get('cat', None)
-        print(self.request.query_params, 'list')
+        # print(self.request.query_params, 'list')
         if category:
             #link title of category to a product that has one of these via the ID's
             cat = Category.objects.filter(title=category.capitalize()).first()
@@ -48,7 +48,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         print(self.get_queryset(), 'query?')
         serializer = self.get_serializer(self.get_queryset(), many=True)
-        print(serializer.data)
+        # print(serializer.data)
         return Response(serializer.data)
     
     @action(detail=False, methods=['post'])

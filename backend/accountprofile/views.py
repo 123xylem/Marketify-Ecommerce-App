@@ -8,7 +8,17 @@ from django.views.generic import DetailView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.serializers import ValidationError
+from django.http import JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from base.utils import *
+from django.utils import timezone
+from datetime import timedelta
+
+
 
 User = get_user_model()
 
@@ -39,19 +49,17 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
 @extend_schema(responses=CustomAccountProfileSerializer)
-
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = CustomAccountProfileSerializer
     def create(self, request):
-        print(request.data, vars(request))
-
-        user = CustomAccountProfile.objects.create_user(email=request.data['email'], username=request.data['username'], password=request.data['password'])
-        serializer = self.serializer_class(user).data
-
-        return Response({'status': serializer}, status=201)
-
+        if 'password' in request.data:
+            user = CustomAccountProfile.objects.create_user(email=request.data['email'], username=request.data['username'], password=request.data['password'])
+            serializer = self.serializer_class(user).data
+            return Response({'status': serializer}, status=201)
+        return Response({'status': 'No password in request'}, status=400)
+    
 #view Profile
 @api_view(['GET'])
 @extend_schema(responses=ProfileSerializer)
@@ -86,3 +94,40 @@ def updateProfile(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+def get_tokens_for_user(user) -> dict[str, str]:
+    refresh = RefreshToken.for_user(user)
+
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
+@csrf_exempt
+@permission_classes([AllowAny])
+def get_jwt_token(request, *args, **kwargs):
+    print('TOKEN REQUETED', request.body, request.POST.get("emid_code"))
+    data = json.loads(request.body)
+    code = decrypt_email(data.get("em_id"))
+    ip = code.split(' --- ')[2]
+    client_ip = get_client_ip(request)
+    if client_ip != ip and client_ip != request.META.get('REMOTE_ADDR'):
+        return JsonResponse({"error": "Invalid login location"}, status=404)
+
+    email = code.split(' --- ')[0]
+    user = CustomAccountProfile.objects.get(email=email)
+
+    if user:
+        if user.last_login:
+            time_since_last_login = timezone.now() - user.last_login
+
+            # Check if last login was within the last minute
+            if time_since_last_login < timedelta(minutes=1):
+                print("User logged in within the last minute.")
+                token_data = get_tokens_for_user(user)
+                return JsonResponse({'success': token_data, 'username': user.username}, status=200)
+            else:
+                return JsonResponse({"error": "User took too long to verify"}, status=404)
+
+    else:
+        return JsonResponse({"error": "No user with that email "}, status=404)
+
