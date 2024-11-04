@@ -12,6 +12,9 @@ ORDER_DIR = os.path.join(PROJECT_DIR, 'order')
 DB_NAME = config('DB_NAME')
 DB_PW = config('DB_PW')
 DB_USER = config('DB_USER')
+VITE_OAUTH_CLIENT_ID = config('VITE_OAUTH_CLIENT_ID')
+VITE_OAUTH_CLIENT_SECRET = config('VITE_OAUTH_CLIENT_SECRET')
+VITE_OAUTH_CALLBACK_URL = config('VITE_OAUTH_CALLBACK_URL')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 LOGIN_URL = 'marketify_login'
@@ -20,6 +23,8 @@ SECRET_KEY = 'django-insecure-hzmt=xtcc1)djj&p^dddf1v@7b(e&=#z43(x(xe)+8kpka)ysl
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
+AUTH_USER_MODEL = 'accountprofile.CustomAccountProfile'
+# ACCOUNT_EMAIL_MODEL = 'base.CustomEmailAddress'
 
 ALLOWED_HOSTS = ['*']
 
@@ -52,10 +57,12 @@ INSTALLED_APPS = [
     'versatileimagefield',
     'django_sass',
     'rest_framework',
+    'rest_framework.authtoken',
     'drf_spectacular',
     'corsheaders',
     'rest_framework_simplejwt',
-
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
 ]
 
 MIDDLEWARE = [
@@ -68,14 +75,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-
 ]
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
+ACCOUNT_ADAPTER = 'accountprofile.adapter.AccountAdapter'
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend", "allauth.account.auth_backends.AuthenticationBackend")
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_AGE = 1000600 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 ROOT_URLCONF = 'base.urls'
 TEMPLATES = [
@@ -175,21 +181,105 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+        'client_id': VITE_OAUTH_CLIENT_ID,
+        'secret': VITE_OAUTH_CLIENT_SECRET,
+            'key': ''  
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'FETCH_USERINFO' : True
 
-AUTH_USER_MODEL = 'accountprofile.CustomAccountProfile'
-
-
-
-
-SOCIALACCOUNT_PROVIDERS ={
-  "google": {
-    "SCOPE": [
-      "profile",
-      "email"
-    ],
-    "AUTH_PARAMS": {"access_type": "online"}
-  }
+    }
 }
+
+
+
+
+# HEADLESS_ONLY = True
+# HEADLESS_FRONTEND_URLS = {
+#     "account_confirm_email": "/account/verify-email/{key}",
+#     "account_reset_password": "/account/password/reset",
+#     "account_reset_password_from_key": "/account/password/reset/key/{key}",
+#     "account_signup": "/account/signup",
+#     "socialaccount_login_error": "/account/provider/callback",
+# }
+
+
+LOGIN_REDIRECT_URL="http://localhost:5173/login?jwtNeeded=true"
+LOGOUT_REDIRECT_URL="/"
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_USERNAME_REQUIRED = False
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'my-app-auth',
+    'JWT_AUTH_REFRESH_COOKIE': 'my-refresh-token',
+
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=2600),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+   }
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Marketify - Create a market for anything!',
+    'DESCRIPTION': 'Decoupled Ecommerce Theme',
+    'VERSION': '1.0.0',
+}
+
+
+CORS_ALLOWED_ORIGINS = [
+ 'http://localhost:5173'
+]
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_HEADERS = '*' 
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = (
+    'GET',
+    'POST',
+    'PUT',
+    'OPTIONS',
+)
+
+CSRF_COOKIE_SAMESITE=None
+CSRF_COOKIE_SECURE=False
+
+
+
+
+
 # IMAGE PACKAGE:
 
 VERSATILEIMAGEFIELD_SETTINGS = {
@@ -233,55 +323,3 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ('detail', 'crop__400x400'),
     ],
 }
-
-
-REST_FRAMEWORK = {
-
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.AllowAny',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-
-}
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=2600),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-   }
-
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'Marketify - Create a market for anything!',
-    'DESCRIPTION': 'Decoupled Ecommerce Theme',
-    'VERSION': '1.0.0',
-}
-
-
-CORS_ALLOWED_ORIGINS = [
- 'http://localhost:5173'
-]
-CORS_ALLOW_ALL_ORIGINS = True
-
-CORS_ALLOW_HEADERS = '*' 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_METHODS = (
-    'GET',
-    'POST',
-    'PUT',
-    'OPTIONS',
-)
-
-CSRF_COOKIE_SAMESITE=None
-CSRF_COOKIE_SECURE=False
-
-
-AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend", "allauth.account.auth_backends.AuthenticationBackend")
-
-LOGIN_REDIRECT_URL="/"
-LOGOUT_REDIRECT_URL="/"
-

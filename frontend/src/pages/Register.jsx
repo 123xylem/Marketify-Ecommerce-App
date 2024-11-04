@@ -13,6 +13,7 @@ import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import api from "../api";
+import SocialLoginBtn from "../components/SocialLoginBtn";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -171,7 +172,6 @@ export default function SignUp() {
       console.log(err, "2");
       if (err.response.data.email) {
         setEmailError(true);
-
         setEmailErrorMessage([err.response.data.email]);
       }
 
@@ -293,6 +293,7 @@ export default function SignUp() {
           </Box>
         </Card>
       </div>
+      <SocialLoginBtn />
     </SignUpContainer>
   );
 }

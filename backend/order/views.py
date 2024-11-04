@@ -34,7 +34,7 @@ class OrderViewSet(viewsets.ModelViewSet):
   permission_classes = [IsAuthenticated]
   def create(self, request, *args, **kwargs):
       order = Order.objects.create(user=request.user)
-      print(request.data['prodIds'])
+      print(request.data['prodIds'], request.user)
       for product in request.data['prodIds']:
         a_product = Product.objects.get(id=product['id'])
         orderProduct = OrderProduct.objects.create(product=a_product, order=order,quantity=product['quantity'] )
@@ -54,7 +54,7 @@ class OrderViewSet(viewsets.ModelViewSet):
          products_list.append(prod.product)
 
       product_data = ProductSerializer(products_list, many=True).data
-      print(serializer, product_data)
+      # print(serializer, product_data)
       return Response({'order_data': serializer, 'product_data': product_data, 'user': request.user})
 
   def list(self, request):
@@ -77,6 +77,9 @@ class OrderViewSet(viewsets.ModelViewSet):
       product_data = ProductSerializer(products, many=True).data
       serializer = self.get_serializer(order).data
       return render(request, 'order/order.html', {'order_data': serializer, 'products': product_data, 'user': request.user})
+#STRIPE PAYMENT WATCH MUST BE ON TO CREATE ORDER
+#stripe listen --events payment_intent.created,customer.created,payment_intent.succeeded,charge.succeeded,checkout.session.completed,charge.failed \
+  # --forward-to localhost:8000/api/order
 
 @extend_schema(responses=OrderSerializer)
 class OrderProductViewSet(viewsets.ModelViewSet):
@@ -152,7 +155,6 @@ class SessionStatus(View):
             'status': session.status,
             'customer_email': session.customer_email
         })
-
 
 @csrf_exempt
 def payment_handler(request):

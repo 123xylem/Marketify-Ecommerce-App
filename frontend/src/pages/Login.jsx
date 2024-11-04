@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -13,9 +13,9 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
-// import ForgotPassword from './ForgotPassword';
-// import ColorModeSelect from '../shared-theme/ColorModeSelect';
+import SocialLoginBtn from "../components/SocialLoginBtn";
 import api from "../api";
+import { useSearchParams } from "react-router-dom";
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -55,12 +55,35 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn(props) {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
-  const [open, setOpen] = React.useState(false);
-  const googleLoginUrl = "https://google.com";
+  const [emailError, setEmailError] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [open, setOpen] = useState(false);
+  const searchParams = new URLSearchParams(location.search);
+  const searchTerm = searchParams.get("emid_code");
+
+  useEffect(() => {
+    if (searchTerm) {
+      api
+        .post(`http://127.0.0.1:8000/api/accountprofile/auth/token/retrieve/`, {
+          em_id: searchTerm,
+        })
+        .then((response) => {
+          console.log(response);
+          const data = response.data;
+          alert(JSON.stringify(data));
+          localStorage.setItem("access-token", data.success.access);
+          localStorage.setItem("refresh-token", data.success.refresh);
+          localStorage.setItem("username", data.username);
+        })
+        .finally(() => {
+          // window.location.replace("/");
+        })
+        .catch((error) => console.error("Failed to retrieve JWT:", error));
+    }
+  }, [searchTerm]);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -145,9 +168,6 @@ export default function SignIn(props) {
 
   return (
     <div>
-      <a href={`${googleLoginUrl}`} className="google-login">
-        LOGIN WITH GOOGLE
-      </a>
       <CssBaseline enableColorScheme />
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
@@ -241,6 +261,7 @@ export default function SignIn(props) {
           </Box>
         </Card>
       </SignInContainer>
+      <SocialLoginBtn />
     </div>
   );
 }

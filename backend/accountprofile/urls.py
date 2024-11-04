@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import  profilePage, RegisterView, getProfile, updateProfile, MyTokenObtainPairView
+from .views import  profilePage, RegisterView, getProfile, updateProfile, MyTokenObtainPairView, get_jwt_token
 from rest_framework_simplejwt.views import  TokenRefreshView
 
 app_name = 'accountprofile'
@@ -8,10 +8,10 @@ urlpatterns = [
   path('token/', MyTokenObtainPairView.as_view(), name='token'),
   path('token/refresh/', TokenRefreshView.as_view(), name='refresh'),
   path('register/', RegisterView.as_view(), name='auth_register'),
-
+  path('auth/token/retrieve/', get_jwt_token),
   #Profile
   path('profile/', getProfile, name='profile'),
-  path('profile/update/', updateProfile, name='update-profile'),
+  path('profile/update/', updateProfile, name='update-profile'), 
 
   path('frontend/profile/<int:pk>/', profilePage.as_view(), name='profile_page'),
 ]
