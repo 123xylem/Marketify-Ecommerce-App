@@ -97,7 +97,7 @@ class OrderProductViewSet(viewsets.ModelViewSet):
       return Response({'data': f'{prods} Order products Created'})
 
 
-@extend_schema(summary='stripe endpoint',  description='stripe stuff')
+@extend_schema(summary='Stripe initiate checkout',  description='Stripe endpoint hit by frontend initiate checkout')
 @csrf_exempt
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])
@@ -156,6 +156,7 @@ class SessionStatus(View):
             'customer_email': session.customer_email
         })
 
+#Hit by webhook on payment event - Creates the order/Cart and assigns to user on succeful payment
 @csrf_exempt
 def payment_handler(request):
   payload = request.body
