@@ -153,11 +153,16 @@ export default function SignUp() {
           );
 
           if (response.status === 200) {
-            let { refresh: refreshToken, access: accessToken } = response.data;
-
+            let {
+              refresh: refreshToken,
+              access: accessToken,
+              user: username,
+            } = response.data;
+            console.log(response);
             // Set cookies with tokens
             localStorage.setItem("refresh-token", refreshToken);
             localStorage.setItem("access-token", accessToken);
+            localStorage.setItem("username", username);
             window.location.href = "/";
           }
         } catch (err) {

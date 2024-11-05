@@ -28,7 +28,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'id', 'email', 'address', 'orders']
     
-    def get_orders(self, obj):
+    def get_orders(self, obj) -> dict:
         orders = obj.get_user_orders().order_by('-created_at')
         orders = OrderSerializer(orders, many=True).data
 
@@ -48,7 +48,6 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         # The default result (access/refresh tokens)
         data = super().validate(attrs)
-        
         # Include user information in the response data
         data.update({
             'user': self.user.username,

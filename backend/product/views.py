@@ -76,6 +76,8 @@ class ProductViewSet(viewsets.ModelViewSet):
             'related_products': related_serializer.data
         })
 
+@permission_classes([AllowAny])
+@extend_schema(responses=ProductSerializer)
 class ProductDetailView(DetailView):
     model= Product
     template_name='product-detail.html'

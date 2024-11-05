@@ -194,6 +194,7 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
         'AUTH_PARAMS': {
             'access_type': 'online',
+            'prompt': 'select_account',
         },
         'FETCH_USERINFO' : True
 
@@ -214,7 +215,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 LOGIN_REDIRECT_URL="http://localhost:5173/login?jwtNeeded=true"
-LOGOUT_REDIRECT_URL="/"
+LOGOUT_REDIRECT_URL="http://localhost:5173/logout?loggedout=true"
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True

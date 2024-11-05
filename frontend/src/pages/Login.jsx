@@ -16,6 +16,7 @@ import { styled } from "@mui/material/styles";
 import SocialLoginBtn from "../components/SocialLoginBtn";
 import api from "../api";
 import { useSearchParams } from "react-router-dom";
+import { ResponseMessage } from "../components/ResponseMessage";
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -59,6 +60,8 @@ export default function SignIn(props) {
   const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [authError, setAuthError] = useState(false);
   const [open, setOpen] = useState(false);
   const searchParams = new URLSearchParams(location.search);
   const searchTerm = searchParams.get("emid_code");
@@ -66,19 +69,19 @@ export default function SignIn(props) {
   useEffect(() => {
     if (searchTerm) {
       api
-        .post(`http://127.0.0.1:8000/api/accountprofile/auth/token/retrieve/`, {
+        .post(`http://localhost:8000/api/accountprofile/auth/token/retrieve/`, {
           em_id: searchTerm,
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           const data = response.data;
-          alert(JSON.stringify(data));
+          // alert(JSON.stringify(data));
           localStorage.setItem("access-token", data.success.access);
           localStorage.setItem("refresh-token", data.success.refresh);
           localStorage.setItem("username", data.username);
         })
         .finally(() => {
-          // window.location.replace("/");
+          window.location.replace("/");
         })
         .catch((error) => console.error("Failed to retrieve JWT:", error));
     }
@@ -96,15 +99,18 @@ export default function SignIn(props) {
     event.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    console.log(email, password);
+    // console.log(email, password);
     let bodyContent = JSON.stringify({
       email,
       password,
     });
     try {
-      let response = await api.post("accountprofile/token/", bodyContent, {});
+      let response = await api.post(
+        "http://localhost:8000/api/accountprofile/token/",
+        bodyContent
+      );
 
-      if (response.status === 200) {
+      if (response && response.status === 200) {
         let responseData = response.data;
         let {
           refresh: refreshToken,
@@ -118,20 +124,18 @@ export default function SignIn(props) {
         window.location.href = "/";
       }
     } catch (err) {
-      console.log(err.response.data.detail);
+      console.log(err, "err");
 
-      if (err.response.data.detail) {
+      if (err.response?.data?.detail) {
         setPasswordError(true);
         setPasswordErrorMessage(err.response.data.detail);
         setEmailError(true);
-
         setEmailErrorMessage(err.response.data.detail);
+        setErrorMessage(err.response.data.detail);
+        setAuthError(true);
+        console.log("Setting email error:", err.response.data.detail);
       }
-      console.error(
-        "Failed to Login: ",
-        err.response.status,
-        err.response.statusText
-      );
+      console.error("Failed to Login: ", err);
     }
   }
 
@@ -169,6 +173,7 @@ export default function SignIn(props) {
   return (
     <div>
       <CssBaseline enableColorScheme />
+      <ResponseMessage message={""} err={errorMessage}></ResponseMessage>
       <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
           <Typography

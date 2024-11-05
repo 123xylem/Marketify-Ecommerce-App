@@ -19,6 +19,7 @@ import CategoryPage from "./pages/CategoryPage";
 function Logout() {
   localStorage.removeItem("access-token");
   localStorage.removeItem("refresh-token");
+  localStorage.removeItem("username");
   return <Navigate to="/login" element={<Login />} />;
 }
 

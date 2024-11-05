@@ -19,10 +19,6 @@ urlpatterns = [
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path("api/category/", CategoryView.as_view(), name="category_list"),
     path('accounts/', include('allauth.urls')),  # Google login
-    path('dj-rest-auth/', include('dj_rest_auth.urls')),
-    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
-    # path('dj-rest-auth/google/', GoogleLogin.as_view(), name='google_login')
-
 ]
 
 if settings.DEBUG:

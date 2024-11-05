@@ -32,7 +32,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   async (response) => response,
   async (error) => {
-    console.log("EXPIRED TOKEN, REFRESHING");
+    if (!localStorage.getItem("refresh-token")) {
+      console.log(error, "probably in login/registration");
+      return Promise.reject(error);
+    }
+    console.log(error, "EXPIRED TOKEN?, REFRESHING");
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;

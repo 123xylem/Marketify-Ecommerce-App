@@ -7,7 +7,7 @@ class GlobalSiteContentSerializer(serializers.ModelSerializer):
     model = GlobalSiteContent
     fields = ['title', 'content', 'image', 'slug']
 
-  def get_image(self, obj):
+  def get_image(self, obj) -> str:
     request = self.context.get('request')
     if obj.image:
         if request:

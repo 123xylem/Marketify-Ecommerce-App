@@ -97,7 +97,7 @@ class OrderProductViewSet(viewsets.ModelViewSet):
       return Response({'data': f'{prods} Order products Created'})
 
 
-# @extend_schema(summary='stripe endpoing',  description='stripe stuff')
+@extend_schema(summary='stripe endpoint',  description='stripe stuff')
 @csrf_exempt
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])

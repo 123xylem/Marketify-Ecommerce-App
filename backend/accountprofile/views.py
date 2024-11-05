@@ -61,22 +61,21 @@ class RegisterView(generics.CreateAPIView):
         return Response({'status': 'No password in request'}, status=400)
     
 #view Profile
+@extend_schema(
+    responses=ProfileSerializer, 
+    description="Retrieve the authenticated user's profile data."
+)
 @api_view(['GET'])
-@extend_schema(responses=ProfileSerializer)
 @permission_classes([IsAuthenticated])
 def getProfile(request):
-
     user = CustomAccountProfile.objects.get(username=request.user)
-    # order_list = user.get_profile_orders()
     serializer = ProfileSerializer(user, many=False)
-    # print(user.email)
-    # print(serializer.data['orders'][0])
     return Response(serializer.data)
 
 #Edit Profile
-@api_view(['PUT'])
-@extend_schema(responses=UpdateProfileSerializer)
 @permission_classes([IsAuthenticated])
+@extend_schema(responses=UpdateProfileSerializer)
+@api_view(['PUT'])
 def updateProfile(request):
     user = CustomAccountProfile.objects.get(username=request.user)
     print('incoming data',request.data, request.COOKIES)
@@ -102,18 +101,21 @@ def get_tokens_for_user(user) -> dict[str, str]:
         'refresh': str(refresh),
         'access': str(refresh.access_token),
     }
-@csrf_exempt
-@permission_classes([AllowAny])
-def get_jwt_token(request, *args, **kwargs):
-    print('TOKEN REQUETED', request.body, request.POST.get("emid_code"))
+
+
+def validate_user_login(request):
     data = json.loads(request.body)
     code = decrypt_email(data.get("em_id"))
-    ip = code.split(' --- ')[2]
+    code_parts = code.split(' --- ')
+    
+    if len(code_parts) < 3:
+        return {"error": "Invalid email code format"}
+
+    email, _, ip = code_parts
     client_ip = get_client_ip(request)
     if client_ip != ip and client_ip != request.META.get('REMOTE_ADDR'):
-        return JsonResponse({"error": "Invalid login location"}, status=404)
+        return {"error": "Invalid login ip location"}
 
-    email = code.split(' --- ')[0]
     user = CustomAccountProfile.objects.get(email=email)
 
     if user:
@@ -122,12 +124,23 @@ def get_jwt_token(request, *args, **kwargs):
 
             # Check if last login was within the last minute
             if time_since_last_login < timedelta(minutes=1):
-                print("User logged in within the last minute.")
-                token_data = get_tokens_for_user(user)
-                return JsonResponse({'success': token_data, 'username': user.username}, status=200)
-            else:
-                return JsonResponse({"error": "User took too long to verify"}, status=404)
+                  return user
+        else:
+            return {"error": "User took too long to verify"}
 
     else:
-        return JsonResponse({"error": "No user with that email "}, status=404)
+        return {"error": "No user with that email "}
 
+
+@csrf_exempt
+@permission_classes([AllowAny])
+def get_jwt_token(request, *args, **kwargs):
+    print('TOKEN REQUETED', request.body, request.POST.get("emid_code"))
+    user = validate_user_login(request)
+    print('user is :', user)
+    if not isinstance(user, CustomAccountProfile):
+        return JsonResponse(user, status=400)
+
+    token_data = get_tokens_for_user(user)
+    return JsonResponse({'success': token_data, 'username': user.username}, status=200)
+           

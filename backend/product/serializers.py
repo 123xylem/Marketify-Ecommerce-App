@@ -10,7 +10,7 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['id','title', 'parent', 'child_cats']
     
-    def get_child_cats(self, instance):
+    def get_child_cats(self, instance) -> list:
             child_cats = []
             if instance.subcategories.all().first(): 
                 for child in instance.subcategories.all():
@@ -27,7 +27,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'title', 'slug', 'image', 'description', 'price', 'category', 'created_at']
 
-    def get_image(self, obj):
+    def get_image(self, obj) -> str:
         request = self.context.get('request')
         if obj.image:
             if request:
