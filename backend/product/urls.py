@@ -13,7 +13,7 @@ router.register(r'', views.ProductViewSet, basename="product")
 
 urlpatterns = [
     path('', include(router.urls)),
-    path("frontend/product/<slug:slug>/", ProductDetailView.as_view(), name="product_detail"),
+    # path("frontend/product/<slug:slug>/", ProductDetailView.as_view(), name="product_detail"),
     # path("category/category/", CategoryView.as_view(), name="category_list"),
 
 ]
