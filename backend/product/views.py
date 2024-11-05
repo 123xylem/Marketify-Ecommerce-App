@@ -23,7 +23,7 @@ class HomePageView(ListView):
 class ProductViewSet(viewsets.ModelViewSet):
     lookup_fields = ['pk', 'slug']
     serializer_class = ProductSerializer
-
+    queryset = Product.objects.all()
     def get_queryset(self):
         """
         Use URL Get to determine queryset
@@ -57,9 +57,8 @@ class ProductViewSet(viewsets.ModelViewSet):
         return Response(request)
 
     def retrieve(self, request, *args, **kwargs):
-
+        print('retrieve')
         lookup_value = self.kwargs.get('pk') 
-
         if lookup_value.isdigit():  
             product = get_object_or_404(self.queryset, pk=lookup_value)
         else:
@@ -76,22 +75,23 @@ class ProductViewSet(viewsets.ModelViewSet):
             'related_products': related_serializer.data
         })
 
-@permission_classes([AllowAny])
-@extend_schema(responses=ProductSerializer)
-class ProductDetailView(DetailView):
-    model= Product
-    template_name='product-detail.html'
+# @permission_classes([AllowAny])
+# @extend_schema(responses=ProductSerializer)
+# class ProductDetailView(DetailView):
+#     model= Product
+#     template_name='product-detail.html'
+#     print('hit ')
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         print(context, 'c')
+#         product = self.object
+#         categories = product.category.all()
+#         context['categories'] = categories
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        product = self.object
-        categories = product.category.all()
-        context['categories'] = categories
-
-        if categories:
-            related_products = Product.objects.filter(category=categories.first()).exclude(pk=product.pk)
-            context['related_products'] = related_products
-        return context
+#         if categories:
+#             related_products = Product.objects.filter(category=categories.first()).exclude(pk=product.pk)
+#             context['related_products'] = related_products
+#         return context
 
 
 @permission_classes([AllowAny])

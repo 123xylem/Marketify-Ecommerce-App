@@ -23,7 +23,6 @@ from datetime import timedelta
 User = get_user_model()
 
 # //TODO: Refactor(low prio) change these all to class based views or viewSet? 
-#TODO: swagger ui having issues with them
 class profilePage(DetailView):
     model = CustomAccountProfile
     template_name = 'accountprofile/profile_page.html'
