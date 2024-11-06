@@ -56,9 +56,8 @@ const NavigationMenu = ({ categories }) => {
             Home
           </Link>
         </div>
-        {/* //TODO li descendant of li? */}
         <div className="product-nav">
-          <li
+          <ul
             onMouseEnter={() => subMenuOnMouseEnterHandler(999)}
             onMouseLeave={() => subMenuOnMouseLeaveHandler(999)}
             key={999}
@@ -89,7 +88,7 @@ const NavigationMenu = ({ categories }) => {
                   }
 
                   return (
-                    <li
+                    <ul
                       onMouseEnter={() => subMenuOnMouseEnterHandler(el.id)}
                       onMouseLeave={() => subMenuOnMouseLeaveHandler(el.id)}
                       key={el.id}
@@ -122,11 +121,11 @@ const NavigationMenu = ({ categories }) => {
                             );
                           })}
                       </motion.ul>
-                    </li>
+                    </ul>
                   );
                 })}
             </motion.ul>
-          </li>
+          </ul>
         </div>
         <Link to="/profile/" className="nav-link-parent">
           Profile

@@ -21,8 +21,6 @@ from datetime import timedelta
 
 
 User = get_user_model()
-
-# //TODO: Refactor(low prio) change these all to class based views or viewSet? 
 class profilePage(DetailView):
     model = CustomAccountProfile
     template_name = 'accountprofile/profile_page.html'
