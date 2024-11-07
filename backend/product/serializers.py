@@ -22,7 +22,6 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer( many=True, read_only=True)
     image = serializers.SerializerMethodField()
-
     class Meta:
         model = Product
         fields = ['id', 'title', 'slug', 'image', 'description', 'price', 'category', 'created_at']

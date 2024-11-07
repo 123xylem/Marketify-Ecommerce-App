@@ -27,6 +27,11 @@ class Cart(models.Model):
   def buy_product_now(self, product_id):
     print('Buying Products!: ', Product.objects.get(id=product_id).title)
 
+  def get_cart_items(self):
+    """Fetch all items (CartItems) in this cart along with product and quantity."""
+    return CartItem.objects.filter(cart=self)
+
+
   def make_order(self, request):
     order_service = OrderService()
     order = order_service.create_order_from_cart(self, request)

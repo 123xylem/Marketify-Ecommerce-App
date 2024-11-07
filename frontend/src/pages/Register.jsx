@@ -157,12 +157,14 @@ export default function SignUp() {
               refresh: refreshToken,
               access: accessToken,
               user: username,
+              id: userID,
             } = response.data;
-            console.log(response);
+
             // Set cookies with tokens
             localStorage.setItem("refresh-token", refreshToken);
             localStorage.setItem("access-token", accessToken);
             localStorage.setItem("username", username);
+            localStorage.setItem("userID", userID);
             window.location.href = "/";
           }
         } catch (err) {

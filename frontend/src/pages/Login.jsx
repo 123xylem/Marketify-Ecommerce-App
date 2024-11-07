@@ -65,7 +65,7 @@ export default function SignIn(props) {
   const [open, setOpen] = useState(false);
   const searchParams = new URLSearchParams(location.search);
   const searchTerm = searchParams.get("emid_code");
-
+  //Fetch Token if redirected to login page with emidCode
   useEffect(() => {
     if (searchTerm) {
       api
@@ -116,11 +116,13 @@ export default function SignIn(props) {
           refresh: refreshToken,
           access: accessToken,
           user: username,
+          id: userID,
         } = responseData;
 
         localStorage.setItem("refresh-token", refreshToken);
         localStorage.setItem("access-token", accessToken);
         localStorage.setItem("username", username);
+        localStorage.setItem("userID", userID);
         window.location.href = "/";
       }
     } catch (err) {

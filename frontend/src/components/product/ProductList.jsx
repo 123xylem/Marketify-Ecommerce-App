@@ -2,12 +2,9 @@ import PropTypes from "prop-types";
 import { ProductCard } from "./ProductCard";
 
 const ProductList = ({ products }) => {
-  // console.log(products, typeof products, "prods");
-
   if (!products || products.length === 0) {
     return <div>0 Products found</div>;
   }
-
   return (
     <>
       <div className="product-list-container">

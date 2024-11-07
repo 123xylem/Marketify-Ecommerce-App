@@ -61,11 +61,15 @@ class OrderViewSet(viewsets.ModelViewSet):
       print('LIST ORDERS s')
       user = request.user
       queryset = Order.objects.filter(user=user).order_by('-created_at')
+
+      if request.GET.get('limit'):
+        limit = int(request.GET.get('limit'))
+        queryset = Order.objects.filter(user=user).order_by('-created_at')[:limit]
       page = self.paginate_queryset(queryset)
-      print(queryset, page, user)
 
       if page is not None:
           serializer = self.get_serializer(page, many=True)
+          print(serializer.data)
           return self.get_paginated_response(serializer.data)
       return Response(serializer.data)
  
@@ -177,17 +181,17 @@ def payment_handler(request):
     curr_user = CustomAccountProfile.objects.get(email=payment_intent.metadata['user_email'])
     cart = Cart.objects.get(user=payment_intent.metadata['user_id'])
     order = Order.objects.create(user=curr_user)
-    print('CREATED ORDER:', order)
-    # //Create an order 
-    for product in cart.products_list.all():
+    cart_items = cart.get_cart_items()
+    print(cart_items, 'items')
+    # //Create OrderProducts in the order
+    for product in cart_items:
       # print(product, vars(product))
-      a_product = Product.objects.filter(id=product.id).first()
-      print('FOUND PROD:', a_product, vars(a_product))
-      created, orderProduct = OrderProduct.objects.update_or_create(product=a_product, order=order, defaults={'quantity': 1}  )
-      if not created:
-        orderProduct.quantity += 1
-        orderProduct.save()
+      a_product = Product.objects.filter(id=product.product.id).first()
+      quantity = product.quantity
+      print('FOUND PROD:', a_product, 'quan=', quantity)
+      orderProduct = OrderProduct.objects.create(product=a_product, order=order, quantity=quantity  )
     order.save()
+    print(order, 'SAVED order:::::::', order.order_product.all())
     cart.clear_products_list()
   else:
     print('Unhandled event type {}'.format(event.type))

@@ -152,7 +152,7 @@ const ProfilePage = () => {
         </div>
         <button type="submit">Edit Profile</button>
       </form>
-      <OrderList data={orderData?.results} />
+      <OrderList />
     </>
   );
 };

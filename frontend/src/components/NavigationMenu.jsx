@@ -72,7 +72,7 @@ const NavigationMenu = ({ categories }) => {
               className="header-nav-ul"
             >
               {categories
-                .filter((cat) => cat.parent == null)
+                ?.filter((cat) => cat.parent == null)
                 .map((el, i) => {
                   if (!el.child_cats) {
                     return (

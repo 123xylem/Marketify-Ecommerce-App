@@ -5,6 +5,7 @@ import CheckoutPage from "./CheckoutPage";
 import { ResponseMessage } from "../components/ResponseMessage";
 import { Link } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
+import { useQuery } from "@tanstack/react-query";
 
 const CartPage = () => {
   const [loading, setLoading] = useState(true);
@@ -13,6 +14,25 @@ const CartPage = () => {
   const [cartData, setCartData] = useState({});
   const username = localStorage.getItem("username").toUpperCase();
   const [createdCheckoutSession, setCreatedCheckoutSession] = useState(false);
+
+  // const useCartData = () => {
+  //   return useQuery(
+  //     ["cartData"],
+  //     async () => {
+  //       const response = await api.get("/cart/");
+  //       if (response.status < 200 || response.status >= 300) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return response.data;
+  //     },
+  //     {
+  //       staleTime: 0, // Data is always considered stale
+  //       cacheTime: 0, // Disables caching completely
+  //       refetchOnWindowFocus: true, // Optional: Fetch new data on window focus
+  //       refetchInterval: false, // Prevent polling unless desired
+  //     }
+  //   );
+  // };
 
   useEffect(() => {
     const fetchCartData = async () => {
@@ -33,6 +53,7 @@ const CartPage = () => {
 
     fetchCartData();
   }, []);
+  // const { data: cartData, isLoading, isError, error } = useCartData();
 
   const handleChange = async (e) => {
     const productId = e.target.value.split(",")[0];

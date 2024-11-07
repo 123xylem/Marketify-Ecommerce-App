@@ -1,40 +1,48 @@
 /* eslint-disable react/prop-types */
 import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import api from "../../api";
 import { ResponseMessage } from "../ResponseMessage";
+import { useQuery } from "@tanstack/react-query";
 
-const OrderList = ({ data }) => {
+const OrderList = () => {
+  const username = localStorage.getItem("username");
   const [orderData, setOrderData] = useState(null);
   const [pageNum, setPageNum] = useState(1);
   const [totalOrders, setTotalOrders] = useState(null);
   const [loading, setLoading] = useState(false);
   const [sucessMsg, setSuccessMsg] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-
-  const getOrderData = async () => {
-    try {
-      setLoading(true);
+  const { isPending, isError, data, error, refetch } = useQuery({
+    queryKey: ["order-data", username],
+    queryFn: async () => {
       const response = await api.get("/orders/?page=1");
       if (!response.status) {
         throw new Error("Network response was not ok");
       }
-      const data = await response.data;
-      setTotalOrders(data.count);
-      setOrderData(data);
-      if (
-        !data.results ||
-        !Array.isArray(data.results) ||
-        data.results.length === 0
-      ) {
-        setErrorMsg("You have 0 past Orders");
-      }
-    } catch (err) {
-      console.log(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+      return await response.data;
+    },
+    staleTime: 60 * 1000 * 0.5,
+    enabled: false,
+  });
+
+  // const getOrderData = async (data) => {
+  //   try {
+  //     setTotalOrders(data.count);
+  //     setOrderData(data);
+  //     if (
+  //       !data.results ||
+  //       !Array.isArray(data.results) ||
+  //       data.results.length === 0
+  //     ) {
+  //       setErrorMsg("You have 0 past Orders");
+  //     }
+  //   } catch (err) {
+  //     console.log(err.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const previousOrders = async () => {
     try {
@@ -79,28 +87,30 @@ const OrderList = ({ data }) => {
 
       {totalOrders == null ? (
         <>
-          <button onClick={getOrderData}>Show Past orders</button>
+          {/* <button onClick={getOrderData}>Show Past orders</button> */}
+          <button onClick={() => refetch(pageNum)}>Show Past orders</button>
         </>
       ) : (
         ""
       )}
-      {loading ? <div>Loading...</div> : ""}
 
-      {orderData?.results.length > 0 ? (
+      {isError && <span>Error: {error.message}</span>}
+
+      {data?.results.length > 0 ? (
         <>
           <div>Page Num: {pageNum}</div>
 
           <button disabled={pageNum == 1} onClick={previousOrders}>
             Previous
           </button>
-          <button disabled={pageNum >= totalOrders / 10} onClick={nextOrders}>
+          <button disabled={pageNum >= totalOrders / 1} onClick={nextOrders}>
             Next
           </button>
         </>
       ) : (
         ""
       )}
-      {orderData?.results.map((item) => (
+      {data?.results.map((item) => (
         <div className="order-item flex-item" key={item.id}>
           <h3>
             ID: {item.id} - Date: {item.created_at}
