@@ -10,7 +10,7 @@ const ProfilePage = () => {
   const [sucessMsg, setSuccessMsg] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [userData, setUserData] = useState(null);
-  const [orderData, setOrderData] = useState(null);
+  // const [orderData, setOrderData] = useState(null);
   const [recievedData, setReceivedData] = useState(null);
 
   // let bodyContent = JSON.stringify({

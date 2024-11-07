@@ -20,6 +20,9 @@ const Header = () => {
       return await response.data;
     },
     staleTime: 60 * 1000 * 60,
+    meta: {
+      persist: true,
+    },
   });
   return (
     <div className="nav-container">

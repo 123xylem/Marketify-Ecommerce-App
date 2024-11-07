@@ -54,7 +54,7 @@ const CategoryPage = () => {
   const { pathname } = location;
   const category = pathname.split("/")[3];
   const { isPending, isError, data, error } = useQuery({
-    queryKey: [`${category}-page-products`, category],
+    queryKey: [`products-${category}`, category],
     queryFn: async () => {
       const response = await api.get(`/products/?cat=${category}`);
       if (!response.status) {

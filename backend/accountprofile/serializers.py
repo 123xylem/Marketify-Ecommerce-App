@@ -23,10 +23,11 @@ class CustomAccountProfileSerializer(serializers.ModelSerializer):
         return user
 
 class ProfileSerializer(serializers.ModelSerializer):
-    orders = serializers.SerializerMethodField()
+    # orders = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ['username', 'id', 'email', 'address', 'orders']
+        # fields = ['username', 'id', 'email', 'address', 'orders']
+        fields = ['username', 'id', 'email', 'address']
     
     def get_orders(self, obj) -> dict:
         orders = obj.get_user_orders().order_by('-created_at')

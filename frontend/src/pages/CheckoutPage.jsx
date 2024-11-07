@@ -6,6 +6,7 @@ import api from "../api";
 const CheckoutPage = () => {
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
   const username = localStorage.getItem("username");
+  const userID = localStorage.getItem("userID");
   let lastOrder;
   const {
     isPending,
@@ -14,7 +15,7 @@ const CheckoutPage = () => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ["checkout", username],
+    queryKey: ["checkout", username + userID],
     queryFn: async () => {
       const response = await api.get("/orders/?limit=1");
       setCheckoutSuccess(true);

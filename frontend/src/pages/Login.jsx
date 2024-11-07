@@ -79,6 +79,7 @@ export default function SignIn(props) {
           localStorage.setItem("access-token", data.success.access);
           localStorage.setItem("refresh-token", data.success.refresh);
           localStorage.setItem("username", data.username);
+          localStorage.setItem("userID", data.userID);
         })
         .finally(() => {
           window.location.replace("/");
