@@ -6,6 +6,7 @@ import api from "../api";
 import { useQuery } from "@tanstack/react-query";
 
 const Header = () => {
+  const username = localStorage.getItem("username") || "Guest";
   const {
     isLoading: isCategoryLoading,
     isError: isCategoryError,
@@ -31,6 +32,7 @@ const Header = () => {
       )}
 
       <SearchBar />
+      <div className="user-welcome">Hello {username}</div>
     </div>
   );
 };
