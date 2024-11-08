@@ -6,6 +6,7 @@ from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from django.utils.timezone import timezone, datetime
 from django.utils.safestring import mark_safe
 from django.utils.html import escape
+from django.utils.text import slugify
 
 # Create your models here.
 class Category(models.Model):
@@ -48,6 +49,20 @@ class Product(models.Model):
     return mark_safe(f'<img src="{escape(self.image.url)}" width="50" height="50" />')
   image_tag.short_description = 'Image'
   image_tag.allow_tags = True
+
+  #Auto save slug as product title with number if duplicate
+  def save(self, *args, **kwargs):
+    if not self.slug:
+        self.slug = slugify(self.title)
+        # Ensure uniqueness
+        original_slug = self.slug
+        queryset = Product.objects.filter(slug=self.slug).exclude(id=self.id)
+        count = 1
+        while queryset.exists():
+            self.slug = f'{original_slug}-{count}'
+            count += 1
+    super(Product, self).save(*args, **kwargs)
+
 
 
 @receiver(models.signals.post_save, sender=Product)
