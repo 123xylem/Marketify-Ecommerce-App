@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, NoReturn
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.views.generic import ListView, DetailView
@@ -45,8 +45,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         return  Product.objects.all()
 
 
-    def list(self, request, *args, **kwargs):
-        print(self.get_queryset(), 'query?')
+    def list(self, request, *args, **kwargs) -> NoReturn:
         serializer = self.get_serializer(self.get_queryset(), many=True)
         # print(serializer.data)
         return Response(serializer.data)
@@ -102,6 +101,5 @@ class CategoryView(APIView):
     def get(self, request):
         queryset = Category.objects.all()
         serializer = CategorySerializer(queryset, many=True).data
-        
         return Response(serializer)
 # return Response({"categories": "Category data"})

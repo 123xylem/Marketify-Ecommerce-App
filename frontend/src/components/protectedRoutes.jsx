@@ -96,7 +96,7 @@ const ProtectedRoute = ({ children }) => {
     auth().catch((err) => {
       console.log(err, "caught in auth");
       setisAuthorized(false);
-      window.location.href = "/products"; // Redirect if auth fails
+      window.location.href = "/products?loggedin=YouNeedToBe"; // Redirect if auth fails
     });
   }, []);
 

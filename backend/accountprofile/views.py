@@ -139,5 +139,5 @@ def get_jwt_token(request, *args, **kwargs):
         return JsonResponse(user, status=400)
 
     token_data = get_tokens_for_user(user)
-    return JsonResponse({'success': token_data, 'username': user.username}, status=200)
+    return JsonResponse({'success': token_data, 'username': user.username, 'userID': user.id}, status=200)
            

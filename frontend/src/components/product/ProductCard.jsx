@@ -14,7 +14,9 @@ export function ProductCard({ item }) {
       <Link to={"/products/product/" + item.slug + "/"} state={{ item }}>
         <img src={item.image} alt={item.image}></img>
         <h3 className="product-title">{item.title}</h3>
-        <p className="product-description">{item.description}</p>
+        <p className="product-description">
+          {item.description.slice(0, 60) + "..."}
+        </p>
         <p className="product-price">${item.price}</p>
         <div className="categories flex-list">
           {item.category

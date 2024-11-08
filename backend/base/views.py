@@ -27,14 +27,16 @@ class GlobalSiteContentViewSet(viewsets.ModelViewSet):
     serializer_class = GlobalSiteContentSerializer
     permission_classes = [AllowAny]
     def list(self, request):
+        print('??')
         serializer = self.get_serializer(self.queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
-
+        print('retrived footer', self.kwargs)
         lookup_value = self.kwargs.get('slug') 
         GlobalSiteContent = get_object_or_404(self.queryset, slug=lookup_value)     
-                                        
+        print('retrived footer', lookup_value, GlobalSiteContent)
+                  
         serializer = self.get_serializer(GlobalSiteContent)
 
         return Response({
