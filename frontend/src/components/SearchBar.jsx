@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api from "../../api";
+import api from "../api";
 import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
@@ -8,9 +8,7 @@ const SearchBar = () => {
 
   const handleSubmit = async () => {
     event.preventDefault();
-    // const query = event.target.value;
     try {
-      // alert(searchTerm);
       const response = await api.get(`/products/?search=${searchTerm}`);
       if (response.status == 200 && response.data) {
         console.log(response);
@@ -40,22 +38,6 @@ const SearchBar = () => {
     const query = event.target.value;
     setSearchTerm(query);
   };
-
-  // useEffect(() => {
-  // const getQueryData = async (searchTerm) => {
-  //   try {
-  //     alert(searchTerm);
-  //     const response = await api.post(`/products/?search=${searchTerm}`);
-  //     if (response.status == 200) {
-  //       console.log(response);
-  //     }
-  //   } catch (err) {
-  //     console.log("search error: ", err);
-  //   }
-  // };
-  // getQueryData(searchTerm);
-  // })
-
   return (
     <>
       <div className="search-bar-container">

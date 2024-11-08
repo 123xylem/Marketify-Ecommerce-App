@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 const SearchPage = () => {
   const { state } = useLocation();
-  console.log(state, "state");
+  // console.log(state, "state");
   return (
     <div>
       <h1> Search PAGE</h1>

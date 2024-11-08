@@ -1,14 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
 import api from "../api";
 import { useLocation, useParams } from "react-router-dom";
 import { ProductBtn } from "../components/product/ProductBtn";
-import { ResponseMessage } from "../components/ResponseMessage";
-import ProductRelatedSidebar from "../components/product/ProductRelatedSidebar";
+// import { ResponseMessage } from "../components/ResponseMessage";
+// import ProductRelatedSidebar from "../components/product/ProductRelatedSidebar";
 import ProductList from "../components/product/ProductList";
 import { useQuery } from "@tanstack/react-query";
-
-let relatedProducts = [];
 
 const ProductDetail = () => {
   // const [loading, setLoading] = useState(true);
@@ -23,9 +20,7 @@ const ProductDetail = () => {
   const { isError, data, error } = useQuery({
     queryKey: ["product-detail", slug],
     queryFn: async () => {
-      // alert(url);
       const response = await api.get(url);
-      console.debug(response, "!!!");
       if (!response.status) {
         throw new Error("Network response was not ok");
       }
