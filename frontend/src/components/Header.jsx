@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // import { useEffect, useState } from "react";
 import NavigationMenu from "./NavigationMenu";
-import SearchBar from "./product/SearchBar";
+import SearchBar from "./SearchBar";
 import api from "../api";
 import { useQuery } from "@tanstack/react-query";
 
