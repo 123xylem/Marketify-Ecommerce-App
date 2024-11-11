@@ -51,11 +51,11 @@ const NavigationMenu = ({ categories }) => {
             <h6 style={{ paddingLeft: 0.5 }}>Marketify</h6>
           </Link>
         </div>
-        <div>
+        {/* <div>
           <Link to="/" className="nav-link-parent">
             Home
           </Link>
-        </div>
+        </div> */}
         <div className="product-nav">
           <ul
             onMouseEnter={() => subMenuOnMouseEnterHandler(999)}

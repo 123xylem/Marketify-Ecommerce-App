@@ -32,7 +32,7 @@ const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const NotFound = lazy(() => import("./pages/NotFoundPage"));
 const ProtectedRoute = lazy(() => import("./components/ProtectedRoutes"));
-
+const ContactPage = lazy(() => import("./pages/ContactPage"));
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -166,6 +166,15 @@ function App() {
               <Suspense>
                 {" "}
                 <Logout />{" "}
+              </Suspense>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <Suspense>
+                {" "}
+                <ContactPage />{" "}
               </Suspense>
             }
           />
