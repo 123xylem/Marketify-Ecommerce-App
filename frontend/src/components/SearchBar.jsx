@@ -40,10 +40,10 @@ const SearchBar = () => {
   };
   return (
     <>
-      <div className="search-bar-container">
+      <div className="ml-auto gap-1 ">
         <form onSubmit={handleSubmit} className="search-bar-form">
-          <input type="text" onChange={handleChange} value={searchTerm} />
-          <button type="submit">Search</button>
+          <input type="text" placeholder="Search products" onChange={handleChange} value={searchTerm} />
+          <button className="pl-1"type="submit">🔍</button>
         </form>
       </div>
     </>

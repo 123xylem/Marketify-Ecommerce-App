@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.related-sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid black;
+  padding: 1rem;
+  align-items: center;
+  justify-content: center;
+  min-width: fit-content;
+  max-width: 300px;
+}
+
+.related-sidebar .product-card {
+  font-size: small;
+  text-align: left;
+  margin-right: auto;
+  padding: 1rem 0;
+  max-width: 250px;
+}
+
+.related-sidebar .product-card img {
+  max-width: 100px;
+}

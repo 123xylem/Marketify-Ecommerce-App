@@ -1,20 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-// import api from "./api";
-// import Login from "./pages/LoginPage";
-// import Register from "./pages/RegisterPage";
-// import Home from "./pages/HomePage";
-// import NotFound from "./pages/NotFoundPage";
-// import Profile from "./pages/ProfilePage";
-// import ProductDetail from "./pages/ProductDetailPage";
-// import CartPage from "./pages/CartPage";
-// import CheckoutPage from "./pages/CheckoutPage";
-// import SearchPage from "./pages/SearchPage";
-// import CategoryPage from "./pages/CategoryPage";
-// import ProtectedRoute from "./components/ProtectedRoutes";
 import CssBaseline from "@mui/material/CssBaseline";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import "./assets/styles/index.css";
+import Layout from "./components/global/Layout";
+// import "./assets/styles/index.css";
+import "./assets/styles/output.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
@@ -25,13 +13,13 @@ const Login = lazy(() => import("./pages/LoginPage"));
 const Register = lazy(() => import("./pages/RegisterPage"));
 const Home = lazy(() => import("./pages/HomePage"));
 const Profile = lazy(() => import("./pages/ProfilePage"));
-const ProductDetail = lazy(() => import("./pages/ProductDetailPage"));
+const DetailPage = lazy(() => import("./pages/DetailPage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const NotFound = lazy(() => import("./pages/NotFoundPage"));
-const ProtectedRoute = lazy(() => import("./components/ProtectedRoutes"));
+const ProtectedRoute = lazy(() => import("./components/global/ProtectedRoutes"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,11 +54,12 @@ function App() {
       persistOptions={persistOptions}
       client={queryClient}
     >
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
 
       <BrowserRouter>
         <CssBaseline />
-        <Header />
+        <Layout>
+
         <Routes>
           <Route
             path="/"
@@ -84,7 +73,7 @@ function App() {
             path="/products/product/:slug"
             element={
               <Suspense fallback={<div>Loading...</div>}>
-                <ProductDetail />
+                <DetailPage />
               </Suspense>
             }
           />
@@ -190,7 +179,7 @@ function App() {
           {/* </Suspense> */}
         </Routes>
 
-        <Footer />
+        </Layout>
       </BrowserRouter>
     </PersistQueryClientProvider>
   );
