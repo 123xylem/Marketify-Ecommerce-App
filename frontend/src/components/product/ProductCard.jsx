@@ -3,7 +3,7 @@ import { ProductBtn } from "./ProductBtn";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 // import ProductDetailPage from "../pages/ProductDetailPage";
-export function ProductCard({ item }) {
+const ProductCard = ({ item }) => {
   const [isAdded, setIsAdded] = useState(false);
   const handleCartStatus = () => {
     setIsAdded(true);
@@ -42,4 +42,6 @@ export function ProductCard({ item }) {
       {isAdded ? <p className="status-msg status-ok">Added!</p> : ""}
     </div>
   );
-}
+};
+
+export default ProductCard;

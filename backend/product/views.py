@@ -30,10 +30,10 @@ class ProductViewSet(viewsets.ModelViewSet):
         """
         queryset = self.queryset
         category = self.request.query_params.get('cat', None)
-        # print(self.request.query_params, 'list')
+        print(self.request.query_params, 'list')
         if category:
             #link title of category to a product that has one of these via the ID's
-            cat = Category.objects.filter(title=category.capitalize()).first()
+            cat = Category.objects.filter(title__iexact=category).first()
             queryset = Product.objects.filter(category=cat)
             return queryset
         

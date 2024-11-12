@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ACCESS_TOKEN } from "./constants";
 import { getCookie } from "./utlils";
-import { refreshToken } from "./components/protectedRoutes";
+import { refreshToken } from "./components/global/ProtectedRoutes";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
