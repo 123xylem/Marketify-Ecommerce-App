@@ -58,7 +58,7 @@ class OrderViewSet(viewsets.ModelViewSet):
       return Response({'order_data': serializer, 'product_data': product_data, 'user': request.user})
 
   def list(self, request):
-      print('LIST ORDERS s')
+      print('LIST ORDERS ')
       user = request.user
       queryset = Order.objects.filter(user=user).order_by('-created_at')
 
@@ -69,7 +69,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
       if page is not None:
           serializer = self.get_serializer(page, many=True)
-          print(serializer.data)
+          # print(serializer.data)
           return self.get_paginated_response(serializer.data)
       return Response(serializer.data)
  

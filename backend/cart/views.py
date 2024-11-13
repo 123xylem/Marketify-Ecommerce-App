@@ -67,7 +67,7 @@ class CartViewSet(viewsets.ModelViewSet):
       @action(detail=False, url_path='remove/(?P<pk>[^/.]+)', methods=['post'])
       def remove_product(self, request, pk=None):
           cart = self.get_cart()
-          cart_item = CartItem.objects.get(id=pk)
+          cart_item = CartItem.objects.get(product=pk)
           if cart_item.quantity > 1:
              cart_item.quantity -= 1
              cart_item.save()
@@ -81,8 +81,11 @@ class CartViewSet(viewsets.ModelViewSet):
       def add_product(self, request, pk=None):
           cart = self.get_cart()
           product = Product.objects.filter(id=pk).first()
-          if product == None:
-            cart_item = CartItem.objects.filter(id=pk).first()
+          quantity_update = request.GET.get('quantity')
+          print(pk, product, 'product match?')
+          cart_item = CartItem.objects.filter(product=pk).first()
+          print(quantity_update, request.GET, 'here')
+          if quantity_update:
             if cart_item:
               cart_item.quantity += 1
               cart_item.save()
@@ -91,7 +94,6 @@ class CartViewSet(viewsets.ModelViewSet):
               return Response({'cart': serializer}, status=status.HTTP_200_OK)
 
           cart_product, created = CartItem.objects.get_or_create(cart=cart, product=product)
-          print(cart_product, created)
           if not created:
              cart_product.quantity += 1
              cart_product.save()
@@ -100,7 +102,7 @@ class CartViewSet(viewsets.ModelViewSet):
             print('REDIRECT TO CART')
             return Response(data={'redirect_url': '/api/cart/frontend/cart', 'message': 'Redirecting to cart'}, status=status.HTTP_200_OK)
 
-          return Response({'status': 'product addd'}, status=status.HTTP_200_OK)
+          return Response({'status': 'product added to cart'}, status=status.HTTP_200_OK)
 
       @action(detail=False, url_path='checkout', methods=['post'])
       def checkout(self, request, pk=None):

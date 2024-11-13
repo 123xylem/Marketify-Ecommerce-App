@@ -9,7 +9,7 @@ const ProductList = ({ products, related }) => {
   return (
     <>
       <div
-        className={`product-list-container ${related ? "related-sidebar" : ""}`}
+        className={`product-list-container justify-center flex flex-wrap gap-4 ${related ? "related-sidebar" : ""}`}
       >
         {related
           ? products.map((item) => (
@@ -22,7 +22,7 @@ const ProductList = ({ products, related }) => {
 };
 ProductList.propTypes = {
   products: PropTypes.array,
-  related: PropTypes.boolean,
+  related: PropTypes.bool,
 };
 
 export default ProductList;

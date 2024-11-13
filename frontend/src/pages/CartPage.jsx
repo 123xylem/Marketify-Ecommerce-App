@@ -58,7 +58,7 @@ const CartPage = () => {
   const handleChange = async (e) => {
     const productId = e.target.value.split(",")[0];
     const action = e.target.value.split(",")[1];
-    console.log(productId, action, e.target.value);
+    console.log(productId, action, e.target.value, "a");
     try {
       const changedData = await editCartData(productId, action);
       console.log(changedData, "post Edit");
@@ -71,7 +71,7 @@ const CartPage = () => {
     setErrorMsg(null);
     setSuccessMsg(null);
     try {
-      const url = `cart/${action}/${productId}/`;
+      const url = `cart/${action}/${productId}/?quantity=true`;
       const response = await api.post(url);
       if (!response.status) {
         throw new Error("Network response was not ok");
@@ -105,7 +105,7 @@ const CartPage = () => {
           cartItems: cartItems,
         })
         .catch((err) => {
-          console.log(err, "is stripey");
+          console.log(err, "is stripey err");
         });
       if (response.status == 200) {
         const sessionId = response.data.id;
@@ -154,14 +154,14 @@ const CartPage = () => {
                 </p>
                 <button
                   className="remove-product"
-                  value={[product.id, "remove"]}
+                  value={[product.product_id, "remove"]}
                   onClick={handleChange}
                 >
                   Remove Product
                 </button>
                 <button
                   className="add-product"
-                  value={[product.id, "add"]}
+                  value={[product.product_id, "add"]}
                   onClick={handleChange}
                 >
                   Add Product
