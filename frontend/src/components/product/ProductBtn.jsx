@@ -37,7 +37,7 @@ export function ProductBtn({ productId, buyNow, setState }) {
     <>
       {buyNow ? (
         <button
-          className="buy-now-btn p-4 bg-pink-600 border rounded-md text-white font-bold"
+          className="buy-now-btn min-w-min p-4 bg-pink-600 border rounded-md text-white font-bold"
           onClick={() => handleClick(productId, buyNow, null, navigate)}
         >
           Buy Now

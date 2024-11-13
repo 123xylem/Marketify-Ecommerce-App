@@ -6,9 +6,9 @@ const ProductSidebar = ({ relatedProducts }) => {
   }
   return (
     <>
-      <div className="product-sidebar">
+      <div className="product-sidebar items-center mx-auto sm:mx-0 sm:items-start">
         {relatedProducts.map((item) => (
-          <div className="related-item" key={item.id}>
+          <div className="related-item truncate" key={item.id}>
             <Link
               to={"/product/" + item.slug + "/"}
               className="related-item-link"

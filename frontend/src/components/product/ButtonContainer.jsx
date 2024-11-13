@@ -2,15 +2,17 @@
 import { ProductBtn } from "./ProductBtn";
 import { useState } from "react";
 
-const ButtonContainer = ({ item }) => {
+const ButtonContainer = ({ item, classOveride = false }) => {
   const [isAdded, setIsAdded] = useState(false);
 
   const handleCartStatus = () => {
     setIsAdded(true);
   };
-
+  console.log(classOveride);
   return (
-    <div className="flex gap-2  mt-auto justify-between items-center">
+    <div
+      className={` ${classOveride ? classOveride : "flex gap-2  mt-auto justify-between items-center"}`}
+    >
       <ProductBtn productId={item.id} setState={handleCartStatus}></ProductBtn>
       {isAdded ? (
         <p className="status-msg status-ok text-xs font-bold text-green-600">

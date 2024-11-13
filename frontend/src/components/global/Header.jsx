@@ -26,13 +26,15 @@ const Header = () => {
     },
   });
   return (
-    <div className="nav-container p-4 sm:p-8 flex gap-4 sm:gap-8 bg-blue-800 justify-between flex-wrap">
-      {!isCategoryLoading && !isCategoryError && (
-        <>{<NavigationMenu categories={CategoryData} />}</>
-      )}
+    <div className="nav-container bg-blue-800 ">
+      <div className="inner container mx-auto px-4 py-8 flex gap-4 sm:gap-8  justify-between flex-wrap">
+        {!isCategoryLoading && !isCategoryError && (
+          <>{<NavigationMenu categories={CategoryData} />}</>
+        )}
 
-      <SearchBar />
-      <div className="user-welcome">Hello {username}</div>
+        <SearchBar />
+        <div className="user-welcome">Hello {username}</div>
+      </div>
     </div>
   );
 };
