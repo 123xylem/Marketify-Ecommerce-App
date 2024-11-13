@@ -71,7 +71,7 @@ const CartPage = () => {
     setErrorMsg(null);
     setSuccessMsg(null);
     try {
-      const url = `cart/${action}/${productId}/?quantity=true`;
+      const url = `cart/${action}/${productId}/?cart-update=true`;
       const response = await api.post(url);
       if (!response.status) {
         throw new Error("Network response was not ok");

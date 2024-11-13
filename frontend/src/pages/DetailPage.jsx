@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import api from "../api";
 import { useLocation, useParams } from "react-router-dom";
-import { ProductBtn } from "../components/product/ProductBtn";
+import ButtonContainer from "../components/product/ButtonContainer";
 // import { ResponseMessage } from "../components/ResponseMessage";
 // import ProductRelatedSidebar from "../components/product/ProductRelatedSidebar";
 import ProductList from "../components/product/ProductList";
@@ -56,7 +56,8 @@ const DetailPage = () => {
                   ))}
               </div>
             </div>
-            <ProductBtn
+            <ButtonContainer item={data.product} />
+            {/* <ProductBtn
               className="add-to-cart-btn"
               productId={data.product.id}
             ></ProductBtn>
@@ -64,7 +65,7 @@ const DetailPage = () => {
               className="buy-now-btn"
               productId={data.product.id}
               buyNow="true"
-            ></ProductBtn>
+            ></ProductBtn> */}
           </div>
 
           <div className="product-sidebar flex flex-col">

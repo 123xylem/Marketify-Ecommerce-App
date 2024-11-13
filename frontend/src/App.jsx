@@ -19,7 +19,9 @@ const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const NotFound = lazy(() => import("./pages/NotFoundPage"));
-const ProtectedRoute = lazy(() => import("./components/global/ProtectedRoutes"));
+const ProtectedRoute = lazy(
+  () => import("./components/global/ProtectedRoutes")
+);
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -54,131 +56,129 @@ function App() {
       persistOptions={persistOptions}
       client={queryClient}
     >
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
 
       <BrowserRouter>
         <CssBaseline />
         <Layout>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <Home />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/products/product/:slug"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <DetailPage />
+                </Suspense>
+              }
+            />
 
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Suspense fallback={<div>Loading...</div>}>
-                <Home />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/products/product/:slug"
-            element={
-              <Suspense fallback={<div>Loading...</div>}>
-                <DetailPage />
-              </Suspense>
-            }
-          />
+            <Route
+              path="/products/category/:slug"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <CategoryPage />{" "}
+                </Suspense>
+              }
+            />
 
-          <Route
-            path="/products/category/:slug"
-            element={
-              <Suspense fallback={<div>Loading...</div>}>
-                <CategoryPage />{" "}
-              </Suspense>
-            }
-          />
+            <Route
+              path="/search-results/"
+              element={
+                <Suspense fallback={<div>Loading...</div>}>
+                  <SearchPage />{" "}
+                </Suspense>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <Suspense>
+                  {" "}
+                  <ProtectedRoute>
+                    <Profile props />
+                  </ProtectedRoute>
+                </Suspense>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <Suspense>
+                  {" "}
+                  <Login />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <Suspense>
+                  {" "}
+                  <ProtectedRoute>
+                    <CartPage />
+                  </ProtectedRoute>
+                </Suspense>
+              }
+            />
 
-          <Route
-            path="/search-results/"
-            element={
-              <Suspense fallback={<div>Loading...</div>}>
-                <SearchPage />{" "}
-              </Suspense>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <Suspense>
-                {" "}
-                <ProtectedRoute>
-                  <Profile props />
-                </ProtectedRoute>
-              </Suspense>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <Suspense>
-                {" "}
-                <Login />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/cart"
-            element={
-              <Suspense>
-                {" "}
-                <ProtectedRoute>
-                  <CartPage />
-                </ProtectedRoute>
-              </Suspense>
-            }
-          />
+            <Route
+              path="/checkout"
+              element={
+                <Suspense>
+                  {" "}
+                  <ProtectedRoute>
+                    <CheckoutPage />
+                  </ProtectedRoute>
+                </Suspense>
+              }
+            />
 
-          <Route
-            path="/checkout"
-            element={
-              <Suspense>
-                {" "}
-                <ProtectedRoute>
-                  <CheckoutPage />
-                </ProtectedRoute>
-              </Suspense>
-            }
-          />
+            <Route
+              path="/register"
+              element={
+                <Suspense>
+                  {" "}
+                  <Register />
+                </Suspense>
+              }
+            />
 
-          <Route
-            path="/register"
-            element={
-              <Suspense>
-                {" "}
-                <Register />
-              </Suspense>
-            }
-          />
-
-          <Route
-            path="/logout"
-            element={
-              <Suspense>
-                {" "}
-                <Logout />{" "}
-              </Suspense>
-            }
-          />
-          <Route
-            path="/contact"
-            element={
-              <Suspense>
-                {" "}
-                <ContactPage />{" "}
-              </Suspense>
-            }
-          />
-          <Route
-            path="*"
-            element={
-              <Suspense>
-                {" "}
-                <NotFound />
-              </Suspense>
-            }
-          />
-          {/* </Suspense> */}
-        </Routes>
-
+            <Route
+              path="/logout"
+              element={
+                <Suspense>
+                  {" "}
+                  <Logout />{" "}
+                </Suspense>
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <Suspense>
+                  {" "}
+                  <ContactPage />{" "}
+                </Suspense>
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <Suspense>
+                  {" "}
+                  <NotFound />
+                </Suspense>
+              }
+            />
+            {/* </Suspense> */}
+          </Routes>
         </Layout>
       </BrowserRouter>
     </PersistQueryClientProvider>

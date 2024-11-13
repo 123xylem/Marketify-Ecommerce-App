@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ACCESS_TOKEN } from "./constants";
-import { getCookie } from "./utlils";
+import { getCookie } from "./utils";
 import { refreshToken } from "./components/global/ProtectedRoutes";
 
 const api = axios.create({
