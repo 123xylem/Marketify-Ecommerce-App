@@ -1,11 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import api from "../api";
-import CheckoutPage from "./CheckoutPage";
 import { ResponseMessage } from "../components/ResponseMessage";
-import { Link } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
-import { useQuery } from "@tanstack/react-query";
+import ProductCard from "../components/product/ProductCard";
 
 const CartPage = () => {
   const [loading, setLoading] = useState(true);
@@ -14,25 +12,6 @@ const CartPage = () => {
   const [cartData, setCartData] = useState({});
   const username = localStorage.getItem("username").toUpperCase();
   const [createdCheckoutSession, setCreatedCheckoutSession] = useState(false);
-
-  // const useCartData = () => {
-  //   return useQuery(
-  //     ["cartData"],
-  //     async () => {
-  //       const response = await api.get("/cart/");
-  //       if (response.status < 200 || response.status >= 300) {
-  //         throw new Error("Network response was not ok");
-  //       }
-  //       return response.data;
-  //     },
-  //     {
-  //       staleTime: 0, // Data is always considered stale
-  //       cacheTime: 0, // Disables caching completely
-  //       refetchOnWindowFocus: true, // Optional: Fetch new data on window focus
-  //       refetchInterval: false, // Prevent polling unless desired
-  //     }
-  //   );
-  // };
 
   useEffect(() => {
     const fetchCartData = async () => {
@@ -53,7 +32,6 @@ const CartPage = () => {
 
     fetchCartData();
   }, []);
-  // const { data: cartData, isLoading, isError, error } = useCartData();
 
   const handleChange = async (e) => {
     const productId = e.target.value.split(",")[0];
@@ -137,40 +115,32 @@ const CartPage = () => {
     <>
       <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage>
       <div className="cart-section">
-        <h1>Welcome to your cart . {username}</h1>
+        <h1 className="font-bold text-xl pb-4">
+          Here is your cart {username.toLowerCase()}
+        </h1>
         {cartData.cart && cartData.cart.length > 0 ? (
-          <div className="grid-box product-list">
+          <div className="justify-center sm:justify-start flex flex-wrap gap-4 product-list">
             {cartData.cart.map((product) => (
-              <div className="product grid-item" key={product.id}>
-                <h3>{product.title}</h3>
-                <img src={product.image} alt={product.image}></img>
-                <p>${product.price}</p>
-                <p>
-                  {product.category
-                    ?.filter((x) => x != [])
-                    .map((cat) => (
-                      <span key={cat.id}>{cat.title}, </span>
-                    ))}
-                </p>
-                <button
-                  className="remove-product"
-                  value={[product.product_id, "remove"]}
-                  onClick={handleChange}
-                >
-                  Remove Product
-                </button>
-                <button
-                  className="add-product"
-                  value={[product.product_id, "add"]}
-                  onClick={handleChange}
-                >
-                  Add Product
-                </button>
-
-                <p>Quantity: {product.quantity}</p>
+              <div className="cart-item" key={product.id}>
+                <ProductCard
+                  key={product.id}
+                  item={product}
+                  cartItem={{
+                    btnHandler: handleChange,
+                    id: product.id,
+                    quantity: product.quantity,
+                  }}
+                />
               </div>
             ))}
-            <button onClick={handleCheckout}>Checkout</button>
+            <div className="checkout-div min-w-full">
+              <button
+                className="bg-green-900 font-bold text-white p-4 mb-auto hover:underline"
+                onClick={handleCheckout}
+              >
+                Checkout
+              </button>
+            </div>
           </div>
         ) : (
           "No products in cart"

@@ -98,7 +98,7 @@ const ProfilePage = () => {
 
   if (loading) return <div>Loading...</div>;
   return (
-    <>
+    <div className="flex flex-wrap flex-col gap-4">
       <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage>
 
       <form onSubmit={(e) => editUserData(e)}>
@@ -151,7 +151,7 @@ const ProfilePage = () => {
         <button type="submit">Edit Profile</button>
       </form>
       <OrderList />
-    </>
+    </div>
   );
 };
 

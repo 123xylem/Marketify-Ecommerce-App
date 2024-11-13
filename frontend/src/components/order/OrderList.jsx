@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import api from "../../api";
 import { ResponseMessage } from "../ResponseMessage";
 import { useQuery } from "@tanstack/react-query";
-
+import OrderProductCard from "../product/OrderProductCard";
 const OrderList = () => {
   const username = localStorage.getItem("username");
   const userID = localStorage.getItem("userID");
@@ -52,58 +52,76 @@ const OrderList = () => {
   };
 
   return (
-    <div className="order-list flex-box">
-      {/* <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage> */}
-      {data?.count && <div>Total Orders: {data?.count}</div>}
+    <div className="order-list">
+      <div className="order-list-controller bg-gray-200 p-4 flex flex-col gap-2 flex-wrap max-w-min min-w-[180px]">
+        {data?.count && (
+          <div className="font-semibold ">Total Orders: {data?.count}</div>
+        )}
 
-      {data?.count == null || pageNum == 0 ? (
-        <>
-          {/* <button onClick={getOrderData}>Show Past orders</button> */}
-          <button onClick={nextOrders}>Show Past orders</button>
-        </>
-      ) : (
-        ""
-      )}
+        {data?.count == null || pageNum == 0 ? (
+          <>
+            <button
+              className="mx-0 bg-gray-700 p-2 text-white rounded max-w-[150px]"
+              onClick={nextOrders}
+            >
+              Show Past orders
+            </button>
+          </>
+        ) : (
+          ""
+        )}
 
-      {isError && <span>Error: {error.message}</span>}
+        {isError && <span>Error: {error.message}</span>}
 
+        {data?.count > 1 && pageNum > 0 ? (
+          <>
+            <div>Page Num: {pageNum}</div>
+            <div className="btn-row flex gap-4">
+              <button
+                className={`bg-green-400 rounded p-2 ${pageNum == 1 ? "bg-[#cccccc]  text-[#666666]" : ""}`}
+                disabled={pageNum == 1}
+                onClick={previousOrders}
+              >
+                Previous
+              </button>
+              <button
+                className={`bg-green-400 rounded p-2 ${pageNum >= data.count / 3 ? "bg-[#cccccc]  text-[#666666]" : ""}`}
+                disabled={pageNum >= data.count / 3}
+                onClick={nextOrders}
+              >
+                Next
+              </button>
+            </div>
+          </>
+        ) : (
+          ""
+        )}
+      </div>
       {data?.count > 1 && pageNum > 0 ? (
-        <>
-          <div>Page Num: {pageNum}</div>
-
-          <button disabled={pageNum == 1} onClick={previousOrders}>
-            Previous
-          </button>
-          <button disabled={pageNum >= data.count / 3} onClick={nextOrders}>
-            Next
-          </button>
+        <div className="order-list-orders flex gap-4 flex-wrap">
           {data?.results.map((item) => (
-            <div className="order-item flex-item" key={item.id}>
-              <h3>
-                ID: {item.id} - Date: {item.created_at}
-              </h3>
-              <div className="product-list grid-box">
+            <div className="order-item p-4 flex border flex-col" key={item.id}>
+              <h2 className="font-semi-bold  py-4">
+                <span className="font-bold text-lg"> ID: {item.id}</span>
+                <br></br>
+                Total: ${item.total_price} <br></br>Date:{" "}
+                {item.created_at.slice(0, 10)}
+              </h2>
+              <div className="product-list flex flex-wrap gap-4 ">
                 {item.products_list
                   ? item.products_list.map((product) => (
                       <div
                         className="product-item grid-item"
                         key={`${item.id}-${product.id}`}
                       >
-                        <p>{product.product.title}</p>
-                        <p>${product.product.price}</p>
-                        <img
-                          src={product.product.image}
-                          alt={product.product.image}
-                        ></img>
-                        <p>Quantity: {product.quantity}</p>
+                        <OrderProductCard cartItem={true} item={product} />
                       </div>
                     ))
                   : ""}
               </div>
-              <p>Total: ${item.total_price}</p>
             </div>
           ))}
-        </>
+        </div>
       ) : (
         ""
       )}

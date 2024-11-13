@@ -8,9 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 const DetailPage = () => {
   const { state } = useLocation();
   const { slug } = useParams();
-
-  let url = state ? `/products/${state.item.id}/` : `/products/${slug}/`;
-
+  let url = `/products/${state.item.product_id ? state.item.product_id : state.item.id}/`;
+  // alert(JSON.stringify(state.item.id, state.item.product_id));
   const { isError, data, error } = useQuery({
     queryKey: ["product-detail", slug],
     queryFn: async () => {

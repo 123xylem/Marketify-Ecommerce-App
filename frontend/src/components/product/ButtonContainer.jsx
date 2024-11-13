@@ -8,7 +8,7 @@ const ButtonContainer = ({ item, classOveride = false }) => {
   const handleCartStatus = () => {
     setIsAdded(true);
   };
-  console.log(classOveride);
+
   return (
     <div
       className={` ${classOveride ? classOveride : "flex gap-2  mt-auto justify-between items-center"}`}

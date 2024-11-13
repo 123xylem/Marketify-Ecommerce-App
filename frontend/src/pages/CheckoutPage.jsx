@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-
+import OrderProductCard from "../components/product/OrderProductCard";
 import api from "../api";
 
 const CheckoutPage = () => {
@@ -36,36 +36,32 @@ const CheckoutPage = () => {
 
   return (
     <div id="checkout">
-      <h1>
+      <h1 className="text-black text-xl font-bold pb-4">
         {isError && ("Error:", error)}
         {checkoutSuccess ? "ORDER SUCCESS" : "The order was not processed"}
       </h1>
-      <div className="order-list flex-box">
+      <div className="order-list flex">
         {isPending && "Loading...."}
         {lastOrder && checkoutSuccess ? (
-          <div className="order-item flex-item" key={lastOrder.id}>
-            <h3>
-              ID: {lastOrder.id} - Date: {lastOrder.created_at}
-            </h3>
-            <div className="product-list grid-box">
+          <div className="order-item flex flex-col" key={lastOrder.id}>
+            <h2 className="font-semi-bold  py-4">
+              <span className="font-bold text-lg"> ID: {lastOrder.id}</span>
+              <br></br>
+              Total: ${lastOrder.total_price} <br></br>Date:{" "}
+              {lastOrder.created_at.slice(0, 10)}
+            </h2>
+            <div className="product-list flex flex-wrap gap-4 ">
               {lastOrder.products_list
                 ? lastOrder.products_list.map((product) => (
                     <div
                       className="product-item grid-item"
                       key={`${lastOrder.id}-${product.id}`}
                     >
-                      <p>{product.product.title}</p>
-                      <p>${product.product.price}</p>
-                      <img
-                        src={product.product.image}
-                        alt={product.product.image}
-                      ></img>
-                      <p>Quantity: {product.quantity}</p>
+                      <OrderProductCard cartItem={true} item={product} />
                     </div>
                   ))
                 : ""}
             </div>
-            <p>Total: ${lastOrder.total_price}</p>
           </div>
         ) : (
           ""
