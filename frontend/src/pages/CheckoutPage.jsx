@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import OrderProductCard from "../components/product/OrderProductCard";
+import OrderProductCard from "../components/order/OrderProductCard";
 import api from "../api";
 
 const CheckoutPage = () => {

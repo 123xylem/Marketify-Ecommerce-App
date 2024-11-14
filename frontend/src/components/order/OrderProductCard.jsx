@@ -3,20 +3,20 @@ import { Link } from "react-router-dom";
 
 const OrderProductCard = ({ item, cartItem = false }) => {
   return (
-    <div className="product-card border flex flex-col border-gray-700 p-4 gap-4  min-w-min ">
+    <div className="product-card border flex flex-col border-gray-700 p-4 gap-2  min-w-min ">
       <Link
-        className="product-card gap-2 flex flex-col max-w-[220px]"
+        className="product-card  flex flex-col max-w-[220px]"
         to={"/products/product/" + item.slug + "/"}
         state={{ item }}
       >
         <img
           loading="lazy"
-          className={`object-cotain ${cartItem ? "max-w-[150px] sm:max-w-[100px]" : "max-w-[8rem] sm:w-[250px] sm:h-auto"}`}
+          className={`object-cotain ${cartItem ? "max-w-[80px] sm:max-w-[100px]" : "max-w-[8rem] sm:w-[250px] sm:h-auto"}`}
           src={item.product.image}
           alt={item.product.image}
         ></img>
         <h3
-          className={`product-title font-bold max-w-[220px] sm:max-w-[240px]  ${cartItem ? "line-clamp-2 max-w-[150px] sm:max-w-[180px]" : ""}`}
+          className={`product-title font-bold max-w-[220px] sm:max-w-[240px]  ${cartItem ? "truncate max-w-[150px] sm:max-w-[180px]" : ""}`}
         >
           {item.product.title}
         </h3>

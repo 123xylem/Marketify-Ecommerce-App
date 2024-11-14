@@ -98,26 +98,33 @@ const ProfilePage = () => {
 
   if (loading) return <div>Loading...</div>;
   return (
-    <div className="flex flex-wrap flex-col gap-4">
-      <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage>
+    <div className="flex flex-wrap gap-4">
+      <div className="w-full">
+        <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage>
+      </div>
 
-      <form onSubmit={(e) => editUserData(e)}>
-        <div>
-          <label>Username:</label>
+      <form
+        className="flex flex-col bg-gray-200 gap-4 p-4 max-w-min justify-start"
+        onSubmit={(e) => editUserData(e)}
+      >
+        <div className="flex justify-start flex-col min-w-[250px]">
+          <label className="p-1 pl-0 font-semibold">Username:</label>
           <input
             type="text"
             value={userData.username}
             name="username"
             onChange={(e) => handleChange(e)}
+            className="bg-white p-1 rounded "
           />
         </div>
-        <div>
-          <label>Email:</label>
+        <div className="flex justify-start flex-col min-w-[250px]">
+          <label className="p-1 pl-0 font-semibold ">Email:</label>
           <input
             type="email"
             name="email"
             value={userData.email}
             onChange={(e) => handleChange(e)}
+            className="bg-white p-1 rounded "
           />
         </div>
         {/* <div>
@@ -139,16 +146,22 @@ const ProfilePage = () => {
           />
         </div> */}
 
-        <div>
-          <label>Address:</label>
-          <input
+        <div className="flex justify-start flex-col min-w-[250px]">
+          <label className="p-1 pl-0 font-semibold">Address:</label>
+          <textarea
             type="text"
             name="address"
             value={userData.address}
             onChange={(e) => handleChange(e)}
+            className="bg-white p-1 rounded"
           />
         </div>
-        <button type="submit">Edit Profile</button>
+        <button
+          className="bg-green-900 rounded font-bold text-white p-2"
+          type="submit"
+        >
+          Edit Profile
+        </button>
       </form>
       <OrderList />
     </div>

@@ -26,3 +26,10 @@
 .related-sidebar .product-card img {
   max-width: 100px;
 }
+
+.error {
+  color: red;
+}
+.success {
+  color: green;
+}
