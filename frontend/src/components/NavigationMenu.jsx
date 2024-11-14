@@ -8,8 +8,8 @@ const NavigationMenu = ({ categories }) => {
   const [showSubMenu, setShowSubMenu] = useState([]);
 
   const variants = {
-    open: { height: 'auto', x: 0, width: 'fit-content' },
-    closed: { height: 0, x: "10px", width: '15px' },
+    open: { height: "auto", x: 0, width: "fit-content" },
+    closed: { height: 0, x: "10px", width: "15px" },
   };
   const subMenuOnMouseEnterHandler = (subMenuId) => {
     setShowSubMenu((prev) => {
@@ -28,9 +28,12 @@ const NavigationMenu = ({ categories }) => {
 
   return (
     <nav>
-      <ul className="flex justify-around align-center sm:text-lg gap-4 w-full justify-center ">
+      <ul className="flex align-center sm:text-lg gap-4 w-full justify-start ">
         <div className="flex justify-between relative">
-          <Link to="/" className="flex justify-between w-full items-center flex-nowrap text-xl sm:text-2xl gap-2 font-bold">
+          <Link
+            to="/"
+            className="flex justify-between w-full items-center flex-nowrap text-xl sm:text-2xl gap-2 font-bold"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               xmlnsXlink="http://www.w3.org/1999/xlink"

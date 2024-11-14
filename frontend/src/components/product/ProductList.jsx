@@ -9,7 +9,7 @@ const ProductList = ({ products, related }) => {
   return (
     <>
       <div
-        className={`product-list-container justify-center flex flex-wrap gap-4 ${related ? "related-sidebar" : ""}`}
+        className={`product-list-container justify-center sm:justify-start flex flex-wrap gap-4 ${related ? "related-sidebar" : ""}`}
       >
         {related
           ? products.map((item) => (

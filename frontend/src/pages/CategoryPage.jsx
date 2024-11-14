@@ -53,6 +53,8 @@ const CategoryPage = () => {
   const location = useLocation();
   const { pathname } = location;
   const category = pathname.split("/")[3];
+  console.log(pathname, category);
+
   const { isPending, isError, data, error } = useQuery({
     queryKey: [`products-${category}`, category],
     queryFn: async () => {

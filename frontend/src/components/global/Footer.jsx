@@ -45,8 +45,8 @@ const Footer = () => {
   });
 
   return (
-    <div className=" p-4 sm:p-8 flex flex-col">
-      <div className="flex flex-col justify-center content-center">
+    <div className=" p-4 sm:p-8 flex flex-col bg-blue-800">
+      <div className="flex flex-col container mx-auto py-8 px-4 flex gap-4 sm:gap-8 justify-center content-center">
         {!isCategoryLoading && !isCategoryError && (
           <>{<NavigationMenu categories={CategoryData} />}</>
         )}

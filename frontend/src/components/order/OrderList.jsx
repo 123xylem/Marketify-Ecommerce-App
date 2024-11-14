@@ -4,14 +4,15 @@ import { useState, useEffect } from "react";
 import api from "../../api";
 import { ResponseMessage } from "../ResponseMessage";
 import { useQuery } from "@tanstack/react-query";
+import OrderProductCard from "./OrderProductCard";
+import OrderListController from "./OrderListController";
 
 const OrderList = () => {
   const username = localStorage.getItem("username");
   const userID = localStorage.getItem("userID");
   // const [orderData, setOrderData] = useState(null);
   const [pageNum, setPageNum] = useState(null);
-  const [nextPage, setNextPage] = useState(null);
-  const [prevPage, setPrevPage] = useState(null);
+
   const { isPending, isError, data, error, refetch } = useQuery({
     queryKey: ["order-data", username + userID, pageNum],
     queryFn: async ({ queryKey }) => {
@@ -36,81 +37,50 @@ const OrderList = () => {
     }
   }, [pageNum, refetch]);
 
-  const previousOrders = async () => {
-    if (pageNum > 1) {
-      setPageNum((prev) => prev - 1);
-      // refetch({ queryKey: ["order-data", username + userID, pageNum - 1] });
-    }
-  };
-
-  const nextOrders = async () => {
-    if (data?.count > pageNum / 3 || !pageNum) {
-      console.log(pageNum, data?.count);
-      setPageNum((prev) => (prev === null ? 1 : prev + 1));
-      // refetch({ queryKey: ["order-data", username + userID, pageNum + 1] });
-    }
-  };
-
   return (
-    <div className="order-list flex-box">
-      {/* <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage> */}
-      {data?.count && <div>Total Orders: {data?.count}</div>}
-
-      {data?.count == null || pageNum == 0 ? (
-        <>
-          {/* <button onClick={getOrderData}>Show Past orders</button> */}
-          <button onClick={nextOrders}>Show Past orders</button>
-        </>
-      ) : (
-        ""
-      )}
-
-      {isError && <span>Error: {error.message}</span>}
-
-      {data?.count > 1 && pageNum > 0 ? (
-        <>
-          <div>Page Num: {pageNum}</div>
-
-          <button disabled={pageNum == 1} onClick={previousOrders}>
-            Previous
-          </button>
-          <button disabled={pageNum >= data.count / 3} onClick={nextOrders}>
-            Next
-          </button>
+    <div className="order-list">
+      <OrderListController
+        data={data}
+        error={error}
+        isPending={isPending}
+        isError={isError}
+        pageNum={pageNum}
+        setPageNum={setPageNum}
+      />
+      {data?.count > 0 && pageNum > 0 ? (
+        <div className="order-list-orders bg-gray-100 flex flex-wrap">
           {data?.results.map((item) => (
-            <div className="order-item flex-item" key={item.id}>
-              <h3>
-                ID: {item.id} - Date: {item.created_at}
-              </h3>
-              <div className="product-list grid-box">
+            <div
+              className="order-item border bg-white gap-4 m-4 p-4 flex border flex-col"
+              key={item.id}
+            >
+              <h2 className="font-semi-bold  ">
+                <span className="font-bold text-lg"> Order ID: {item.id}</span>
+                <br></br>
+                Total: ${item.total_price} <br></br>Date:{" "}
+                {item.created_at.slice(0, 10)}
+              </h2>
+              <div className="product-list flex flex-wrap gap-4 ">
                 {item.products_list
                   ? item.products_list.map((product) => (
                       <div
                         className="product-item grid-item"
                         key={`${item.id}-${product.id}`}
                       >
-                        <p>{product.product.title}</p>
-                        <p>${product.product.price}</p>
-                        <img
-                          src={product.product.image}
-                          alt={product.product.image}
-                        ></img>
-                        <p>Quantity: {product.quantity}</p>
+                        <OrderProductCard cartItem={true} item={product} />
                       </div>
                     ))
                   : ""}
               </div>
-              <p>Total: ${item.total_price}</p>
             </div>
           ))}
-        </>
+        </div>
       ) : (
         ""
       )}
     </div>
   );
 };
-
 OrderList.propTypes = {
   data: PropTypes.array,
 };
