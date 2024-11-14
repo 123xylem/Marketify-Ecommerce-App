@@ -29,8 +29,8 @@ const HomePage = () => {
   return (
     <div>
       <ResponseMessage message={""} err={error?.message}></ResponseMessage>
+      <h1 className="font-bold text-xl">Welcome</h1>
       <ProductList products={data}></ProductList>
-      Home
     </div>
   );
 };

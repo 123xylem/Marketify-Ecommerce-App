@@ -56,7 +56,7 @@ function App() {
       persistOptions={persistOptions}
       client={queryClient}
     >
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
 
       <BrowserRouter>
         <CssBaseline />

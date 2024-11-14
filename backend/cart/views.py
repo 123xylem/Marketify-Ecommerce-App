@@ -67,7 +67,8 @@ class CartViewSet(viewsets.ModelViewSet):
       @action(detail=False, url_path='remove/(?P<pk>[^/.]+)', methods=['post'])
       def remove_product(self, request, pk=None):
           cart = self.get_cart()
-          cart_item = CartItem.objects.get(product=pk)
+          cart_item = CartItem.objects.filter(cart=cart, product=pk).first()
+
           if cart_item.quantity > 1:
              cart_item.quantity -= 1
              cart_item.save()
@@ -81,28 +82,41 @@ class CartViewSet(viewsets.ModelViewSet):
       def add_product(self, request, pk=None):
           cart = self.get_cart()
           product = Product.objects.filter(id=pk).first()
-          quantity_update = request.GET.get('quantity')
-          print(pk, product, 'product match?')
-          cart_item = CartItem.objects.filter(product=pk).first()
-          print(quantity_update, request.GET, 'here')
-          if quantity_update:
-            if cart_item:
-              cart_item.quantity += 1
-              cart_item.save()
-              cart_products = cart.cartitem_set.all().order_by('id')
-              serializer = CartItemSerializer(cart_products, many=True).data
-              return Response({'cart': serializer}, status=status.HTTP_200_OK)
-
+          cart_page_action = request.GET.get('cart-update')
+          buy_now_action = 'buy_now' in request.data and request.data['buy_now']
           cart_product, created = CartItem.objects.get_or_create(cart=cart, product=product)
-          if not created:
-             cart_product.quantity += 1
-             cart_product.save()
+          if created:
+            # cart_product.quantity += 1
+            # cart_product.save()
+            print(request.data, 'CREATD')
+            if buy_now_action:
+              print('REDIRECT TO CART')
+              return Response(data={'redirect_url': '/api/cart/frontend/cart', 'message': 'Redirecting to cart'}, status=status.HTTP_200_OK)
+            print('JUST Added')
 
-          if 'buy_now' in request.data and request.data['buy_now']:
+            return Response({'status': 'product added to cart'}, status=status.HTTP_200_OK)
+          
+
+
+          cart_item = cart_product
+          # print(pk, product, 'product match?')
+          # cart_item = CartItem.objects.filter(cart=cart, product=pk).first()
+          print( 'NOT CREATED', cart_item)
+          print(cart_item.quantity, cart.cartitem_set.all())
+          cart_item.quantity += 1
+          cart_item.save()
+          cart_products = cart.cartitem_set.all().order_by('id')
+          serializer = CartItemSerializer(cart_products, many=True).data
+          
+          if buy_now_action:
             print('REDIRECT TO CART')
             return Response(data={'redirect_url': '/api/cart/frontend/cart', 'message': 'Redirecting to cart'}, status=status.HTTP_200_OK)
 
+          if cart_page_action:
+            return Response({'cart': serializer}, status=status.HTTP_200_OK)
+          
           return Response({'status': 'product added to cart'}, status=status.HTTP_200_OK)
+
 
       @action(detail=False, url_path='checkout', methods=['post'])
       def checkout(self, request, pk=None):

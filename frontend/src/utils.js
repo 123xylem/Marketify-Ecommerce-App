@@ -13,3 +13,10 @@ export function getCookie(name) {
   }
   return cookieValue;
 }
+
+export function truncateString(string, len) {
+  if (string.length >= len) {
+    return `${string.slice(0, len)}...`;
+  }
+  return string;
+}
