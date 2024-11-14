@@ -45,12 +45,12 @@ const Footer = () => {
   });
 
   return (
-    <div className=" p-4 sm:p-8 flex flex-col">
-      <div className="flex flex-col justify-center content-center">
+    <div className=" p-4 bg-blue-800 sm:p-8 flex flex-col">
+      <div className="flex flex-col justify-center content-center gap-4">
         {!isCategoryLoading && !isCategoryError && (
           <>{<NavigationMenu categories={CategoryData} />}</>
         )}
-        <div className="footer-text-block">
+        <div className="footer-text-block ">
           <p className="footer-text">
             Marketify is an ecommerce platform built in Django and React. &copy;
           </p>
