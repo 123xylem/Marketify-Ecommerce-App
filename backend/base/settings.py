@@ -20,6 +20,9 @@ VITE_OAUTH_CALLBACK_URL = config('VITE_OAUTH_CALLBACK_URL')
 LOGIN_URL = 'marketify_login'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-hzmt=xtcc1)djj&p^dddf1v@7b(e&=#z43(x(xe)+8kpka)ysl'
+EMAIL_HOST_NAME=config('EMAIL_HOST')
+EMAIL_PW=config('EMAIL_PW')
+EMAIL_USER=config('EMAIL_USER')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -278,7 +281,16 @@ CSRF_COOKIE_SAMESITE=None
 CSRF_COOKIE_SECURE=False
 
 
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
+# # EMAIL_FILE_PATH = 'email_logs/'  
+EMAIL_HOST= EMAIL_HOST_NAME
+EMAIL_PORT= 587
+EMAIL_USE_TLS= True
+EMAIL_HOST_USER= EMAIL_USER
+EMAIL_HOST_PASSWORD= EMAIL_PW
 
 
 # IMAGE PACKAGE:

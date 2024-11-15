@@ -14,7 +14,7 @@ const UserWelcome = ({ username }) => {
         />
       </Link>
       <Link to="/profile/" className="nav-link-parent items-end flex">
-        <p className="sm:flex hidden  mt-auto">Hi {username}</p>
+        <p className="sm:flex hidden sm:leading-none mt-auto">Hi {username}</p>
         <FaUserAlt style={{ marginLeft: "8px" }} color={"white"} size={24} />
       </Link>
     </div>

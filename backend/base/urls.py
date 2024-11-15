@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from product import views
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from .views import GlobalSiteContentViewSet
+from .views import GlobalSiteContentViewSet, handle_email
 from product.views import CategoryView
 
 urlpatterns = [
@@ -19,6 +19,7 @@ urlpatterns = [
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path("api/category/", CategoryView.as_view(), name="category_list"),
     path('accounts/', include('allauth.urls')),  # Google login
+    path('api/handle-email/', handle_email, name="handle_email")
 ]
 
 if settings.DEBUG:

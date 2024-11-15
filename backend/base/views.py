@@ -3,23 +3,23 @@ from .models import GlobalSiteContent
 from .serializers import GlobalSiteContentSerializer
 from typing import Any
 from django.shortcuts import render, get_object_or_404
-
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework_simplejwt.tokens import RefreshToken
+# from rest_framework_simplejwt.tokens import RefreshToken
 import requests
 from rest_framework.response import Response
 from django.shortcuts import redirect
-from accountprofile.models import CustomAccountProfile
+from django.http import HttpResponse
+# from accountprofile.models import CustomAccountProfile
 # from .utils import get_random_string
-import uuid
-from django.dispatch import receiver
-
-from allauth.socialaccount.signals import pre_social_login
-
-# from django.core.cache import cache
+# import uuid
+from django.utils.html import escape
+import json
+from django.core.mail import send_mail
 
 @extend_schema(responses=GlobalSiteContentSerializer)
 class GlobalSiteContentViewSet(viewsets.ModelViewSet):
@@ -42,26 +42,28 @@ class GlobalSiteContentViewSet(viewsets.ModelViewSet):
         return Response({
             'content': serializer.data,
         })
+    
+@csrf_exempt
+@api_view(['POST'])
+def handle_email(req):
+    try:
+        req_data = json.loads(req.body.decode('utf-8'))
+        email_data = req_data['formData']
+        name = escape(email_data['name'])
+        email = escape(email_data['email'])
+        message = escape(email_data['message'])
+        subject = f'Marketify message from: {name} - {email}'
 
+        send_mail(
+            subject,
+            message,
+            email,
+            ["cucullen111@gmail.com"],
+            fail_silently=False,
+        )
+        return Response({'Sent' : [subject, message, email]}, status=201)
 
-# @receiver(pre_social_login)
-# def on_pre_social_login(sender, request, sociallogin, **kwargs):
-#     user = sociallogin.user
-    
-#     # Generate a unique identifier for this login attempt
-#     user_identifier = str(uuid.uuid4())
-    
-#     # Generate JWT token
-#     refresh = RefreshToken.for_user(user)
-#     token = str(refresh.access_token)
-    
-#     # Store token in session with unique identifier
-#     session_key = f"{user_identifier}-jwt_token"
-#     print(session_key, 'aaa')
-#     request.session[session_key] = token
-#     print(request.session[session_key], 'the token?????')
-#     # Construct redirect URL with user identifier
-#     redirect_url = f"http://localhost:5173/login?user_identifier={user_identifier}"
-    
-#     return redirect(redirect_url)
+    except (json.JSONDecodeError, AttributeError) as e:
+        print("Error:", e)
+        return HttpResponse("Invalid data", status=400)
 
