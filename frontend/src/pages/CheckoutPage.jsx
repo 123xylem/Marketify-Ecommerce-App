@@ -35,22 +35,25 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div id="checkout">
-      <h1 className="text-black text-xl font-bold pb-4">
+    <div
+      id="checkout"
+      className={`${checkoutSuccess ? "bg-green-700 p-4 text-white" : ""}`}
+    >
+      <h1 className=" text-xl font-bold pb-4">
         {isError && ("Error:", error)}
         {checkoutSuccess ? "ORDER SUCCESS" : "The order was not processed"}
       </h1>
       <div className="order-list flex">
         {isPending && "Loading...."}
         {lastOrder && checkoutSuccess ? (
-          <div className="order-item flex flex-col" key={lastOrder.id}>
-            <h2 className="font-semi-bold  py-4">
+          <div className="order-item flex gap-4 flex-col" key={lastOrder.id}>
+            <h2 className="font-semi-bold">
               <span className="font-bold text-lg"> ID: {lastOrder.id}</span>
               <br></br>
-              Total: ${lastOrder.total_price} <br></br>Date:{" "}
+              Total: ${lastOrder.total_price.toLocaleString()} <br></br>Date:{" "}
               {lastOrder.created_at.slice(0, 10)}
             </h2>
-            <div className="product-list flex flex-wrap gap-4 ">
+            <div className="product-list bg-white text-black flex flex-wrap gap-4 ">
               {lastOrder.products_list
                 ? lastOrder.products_list.map((product) => (
                     <div

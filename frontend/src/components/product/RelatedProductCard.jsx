@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const RelatedProductCard = ({ item }) => {
   return (
-    <div className="product-card">
+    <div className="product-card flex-1 ">
       <Link to={"/products/product/" + item.slug + "/"} state={{ item }}>
         <img src={item.image} alt={item.image}></img>
         <h3 className="product-title truncate font-bold">{item.title}</h3>
