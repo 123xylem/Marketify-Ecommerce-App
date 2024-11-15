@@ -48,7 +48,7 @@ const OrderList = () => {
         setPageNum={setPageNum}
       />
       {data?.count > 0 && pageNum > 0 ? (
-        <div className="order-list-orders bg-gray-100 flex flex-wrap">
+        <div className="order-list-orders bg-gray-100 flex flex-col">
           {data?.results.map((item) => (
             <div
               className="order-item border bg-white gap-4 m-4 p-4 flex border flex-col"
@@ -57,7 +57,7 @@ const OrderList = () => {
               <h2 className="font-semi-bold  ">
                 <span className="font-bold text-lg"> Order ID: {item.id}</span>
                 <br></br>
-                Total: ${item.total_price} <br></br>Date:{" "}
+                Total: ${item.total_price.toLocaleString()} <br></br>Date:{" "}
                 {item.created_at.slice(0, 10)}
               </h2>
               <div className="product-list flex flex-wrap gap-4 ">

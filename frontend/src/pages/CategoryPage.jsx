@@ -78,7 +78,10 @@ const CategoryPage = () => {
   return (
     <div>
       <ResponseMessage message={""} err={error?.message}></ResponseMessage>
-      <h1>Category page {category}</h1>
+      <h1 className="text-black text-xl font-bold pb-4">
+        {" "}
+        {decodeURIComponent(category)}
+      </h1>
       <ProductList products={data}></ProductList>
     </div>
   );

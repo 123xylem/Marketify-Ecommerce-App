@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // import { Outlet, Link } from "react-router-dom";
 import api from "../../api";
-import NavigationMenu from "../NavigationMenu";
+import NavigationMenu from "./NavigationMenu";
 import { useQuery } from "@tanstack/react-query";
 
 const Footer = () => {
@@ -45,8 +45,8 @@ const Footer = () => {
   });
 
   return (
-    <div className=" p-4 bg-blue-800 sm:p-8 flex flex-col">
-      <div className="flex flex-col justify-center content-center gap-4">
+    <div className=" p-4 bg-blue-800 sm:p-8 flex flex-col ">
+      <div className="flex flex-col justify-center container mx-auto content-center gap-4">
         {!isCategoryLoading && !isCategoryError && (
           <>{<NavigationMenu categories={CategoryData} />}</>
         )}
