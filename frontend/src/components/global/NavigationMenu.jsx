@@ -74,7 +74,7 @@ const NavigationMenu = ({ categories }) => {
               <motion.ul
                 variants={variants}
                 animate={modalHovered ? "open" : "closed"}
-                className="absolute text-black bg-white  min-w-min justify-center items-start h-max-h border  py-4 px-4 flex flex-col"
+                className="absolute z-50 text-black bg-white  min-w-min justify-center items-start h-max-h border  py-4 px-4 flex flex-col"
               >
                 {categories
                   ?.filter((cat) => cat.parent == null)

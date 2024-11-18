@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <div className="nav-container bg-blue-800 ">
       {/* TODO://Remove breakpoints here  */}
-      <div className="fixed top-0 right-0 m-8 flex items-center justify-center rounded-full text-[100px] bg-gray-900 px-3 py-2 text-white">
+      <div className="fixed top-0 right-0 m-8 flex items-center justify-center rounded-full text-[20px] bg-gray-900 px-3 py-2 text-white">
         <span className="block sm:hidden">base</span>
         <span className="hidden sm:block md:hidden">sm</span>
         <span className="hidden md:block lg:hidden">md</span>
