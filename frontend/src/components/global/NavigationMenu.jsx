@@ -21,7 +21,7 @@ const NavigationMenu = ({ categories }) => {
   const leaveMenu = () => {
     setTimeout(() => {
       setModalHovered(false);
-    }, 500);
+    }, 300);
   };
 
   const subMenuOnClick = (e, subMenuId) => {
@@ -33,9 +33,27 @@ const NavigationMenu = ({ categories }) => {
     });
   };
 
+  const handleNavClick = (e) => {
+    document
+      .getElementById("hamburger-icon")
+      .addEventListener("click", function () {
+        const navMenu = document.querySelector(".nav-menu-ul");
+        navMenu.classList.toggle("hidden");
+      });
+  };
   return (
     <nav className="">
-      <ul className="flex items-center sm:text-lg gap-4 w-full text-white justify-start ">
+      <button
+        onClick={handleNavClick}
+        className="md:hidden text-white"
+        id="hamburger-icon"
+      >
+        <span className="block w-6 h-1 bg-white mb-1"></span>
+        <span className="block w-6 h-1 bg-white mb-1"></span>
+        <span className="block w-6 h-1 bg-white"></span>
+      </button>
+
+      <ul className="nav-menu-ul flex  flex-col pt-4  md:pt-0 hidden items-start  sm:text-lg gap-4 w-full text-white justify-start   z-50 absolute bordered bg-black text-white p-4 left-10 max-w-max md:flex-row md:flex md:items-center md:bg-transparent md:max-w-auto ">
         <div className="flex justify-between relative">
           <Link
             to="/"
@@ -60,7 +78,7 @@ const NavigationMenu = ({ categories }) => {
             <h6 className="text-[#fff] text-base sm:text-xl "> Marketify</h6>
           </Link>
         </div>
-        <div className="relative modal-menu">
+        <div className="relative flex products-modal-menu">
           <ul
             onMouseEnter={() => setModalHovered(true)}
             onMouseLeave={() => leaveMenu()}
@@ -74,7 +92,7 @@ const NavigationMenu = ({ categories }) => {
               <motion.ul
                 variants={variants}
                 animate={modalHovered ? "open" : "closed"}
-                className="absolute z-50 text-black bg-white  min-w-min justify-center items-start h-max-h border  py-4 px-4 flex flex-col"
+                className="absolute z-50  flex-col text-black bg-white  min-w-min justify-center items-start h-max-h border gap-2 left-20 md:left-5 md:top-7 top-1 py-4 px-4 flex flex-col"
               >
                 {categories
                   ?.filter((cat) => cat.parent == null)
@@ -132,14 +150,10 @@ const NavigationMenu = ({ categories }) => {
             )}
           </ul>
         </div>
-        <Link to="/profile/" className="nav-link-parent">
+        <Link to="/profile/" className="nav-link-parent flex w-full flex-1">
           Profile
         </Link>
-        {/* <Link to="/cart/" className="nav-link-parent">
-          Cart
-          <FaCartShopping size={18} />
-        </Link> */}
-        <Link to="/contact" className="nav-link-parent">
+        <Link to="/contact" className="nav-link-parent flex w-full flex-1">
           Contact
         </Link>
       </ul>
