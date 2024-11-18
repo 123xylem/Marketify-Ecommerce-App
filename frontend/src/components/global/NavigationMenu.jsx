@@ -34,12 +34,16 @@ const NavigationMenu = ({ categories }) => {
   };
 
   const handleNavClick = (e) => {
-    document
-      .getElementById("hamburger-icon")
-      .addEventListener("click", function () {
-        const navMenu = document.querySelector(".nav-menu-ul");
-        navMenu.classList.toggle("hidden");
+    const hamburgerIcons = document.querySelectorAll("#hamburger-icon");
+    const navMenus = document.querySelectorAll(".nav-menu-ul");
+
+    hamburgerIcons.forEach((icon, index) => {
+      icon.addEventListener("click", () => {
+        if (navMenus[index]) {
+          navMenus[index].classList.toggle("hidden");
+        }
       });
+    });
   };
   return (
     <nav className="flex min-h-[25px]">
