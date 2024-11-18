@@ -26,6 +26,7 @@ const Header = () => {
       persist: true,
     },
   });
+
   return (
     <div className="nav-container bg-blue-800 ">
       {/* TODO://Remove breakpoints here  */}
@@ -41,7 +42,6 @@ const Header = () => {
         {!isCategoryLoading && !isCategoryError && (
           <NavigationMenu categories={CategoryData} />
         )}
-
         <SearchBar />
         <UserWelcome username={username} />
       </div>
