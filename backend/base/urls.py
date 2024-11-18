@@ -9,7 +9,6 @@ from product.views import CategoryView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', views.HomePageView.as_view(), name='home'),
     path('api/products/', include('product.urls', namespace='product')),  
     path('api/site-content/<str:slug>', GlobalSiteContentViewSet.as_view({'get': 'retrieve'})),  
     path('api/cart/', include('cart.urls', namespace='cart')),

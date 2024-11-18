@@ -57,7 +57,7 @@ const NavigationMenu = ({ categories }) => {
         <span className="block w-6 h-1 bg-white"></span>
       </button>
 
-      <ul className="nav-menu-ul flex relative  flex-col  md:pt-0 hidden items-start  sm:text-lg gap-4 w-full text-white justify-start p-4  sm:py-4 z-50 absolute bordered bg-black text-white  max-w-max md:flex-row md:flex md:items-center md:bg-transparent md:max-w-auto ">
+      <ul className="nav-menu-ul flex relative  flex-col  md:pt-0 hidden items-start  sm:text-lg gap-4 w-full text-white justify-start p-4 sm:px-0 sm:py-4 z-50 absolute bordered bg-black text-white  max-w-max md:flex-row md:flex md:items-center md:bg-transparent md:max-w-auto ">
         <div className="flex justify-between relative">
           <Link
             to="/"

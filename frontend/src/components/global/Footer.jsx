@@ -51,17 +51,16 @@ const Footer = () => {
           <>{<NavigationMenu categories={CategoryData} />}</>
         )}
         <div className="footer-text-block ">
-          <p className="footer-text">
+          <p className="footer-text text-white">
             Marketify is an ecommerce platform built in Django and React. &copy;
           </p>
           {isFooterLoading && <span>Loading footer content...</span>}
           {isFooterError && <span>Error: {footerError.message}</span>}
           {!isFooterLoading && !isFooterError && (
             <>
-              <p className="footer-text">{footerData?.content.content}</p>
-              {footerData?.content.image && (
-                <img src={footerData?.content.image} alt="Footer" />
-              )}
+              <p className="footer-text text-white">
+                {footerData?.content.content}
+              </p>
             </>
           )}
         </div>
