@@ -37,14 +37,14 @@ export function ProductBtn({ productId, buyNow, setState }) {
     <>
       {buyNow ? (
         <button
-          className="buy-now-btn min-w-min p-2 bg-pink-600 border rounded-md text-white font-bold"
+          className="buy-now-btn min-w-min p-2 bg-green-700 border hover:underline rounded-md text-white font-bold"
           onClick={() => handleClick(productId, buyNow, null, navigate)}
         >
           Buy Now
         </button>
       ) : (
         <button
-          className="add-to-cart-btn p-2 bg-green-700 border rounded-md text-white font-bold"
+          className="add-to-cart-btn p-2 bg-black border rounded-md hover:underline text-white font-bold"
           onClick={() => handleClick(productId, false, setState)}
         >
           Add to Cart

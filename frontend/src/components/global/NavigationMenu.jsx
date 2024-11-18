@@ -42,10 +42,10 @@ const NavigationMenu = ({ categories }) => {
       });
   };
   return (
-    <nav className="">
+    <nav className="flex min-h-[25px]">
       <button
         onClick={handleNavClick}
-        className="md:hidden text-white"
+        className="md:hidden  flex-col flex text-white"
         id="hamburger-icon"
       >
         <span className="block w-6 h-1 bg-white mb-1"></span>
@@ -53,7 +53,7 @@ const NavigationMenu = ({ categories }) => {
         <span className="block w-6 h-1 bg-white"></span>
       </button>
 
-      <ul className="nav-menu-ul flex  flex-col pt-4  md:pt-0 hidden items-start  sm:text-lg gap-4 w-full text-white justify-start   z-50 absolute bordered bg-black text-white p-4 left-10 max-w-max md:flex-row md:flex md:items-center md:bg-transparent md:max-w-auto ">
+      <ul className="nav-menu-ul flex relative  flex-col  md:pt-0 hidden items-start  sm:text-lg gap-4 w-full text-white justify-start p-4  sm:py-4 z-50 absolute bordered bg-black text-white  max-w-max md:flex-row md:flex md:items-center md:bg-transparent md:max-w-auto ">
         <div className="flex justify-between relative">
           <Link
             to="/"
