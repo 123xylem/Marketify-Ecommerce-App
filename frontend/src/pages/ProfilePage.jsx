@@ -98,10 +98,10 @@ const ProfilePage = () => {
 
   if (loading) return <div>Loading...</div>;
   return (
-    <div className="flex flex-wrap gap-4">
-      <div className="w-full">
+    <div className="flex  gap-4">
+      {/* <div className="w-full">
         <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage>
-      </div>
+      </div> */}
 
       <form
         className="flex flex-col bg-gray-200 gap-4 p-4 max-w-min justify-start"

@@ -57,7 +57,7 @@ const CheckoutPage = () => {
               {lastOrder.products_list
                 ? lastOrder.products_list.map((product) => (
                     <div
-                      className="product-item grid-item"
+                      className="product-item"
                       key={`${lastOrder.id}-${product.id}`}
                     >
                       <OrderProductCard cartItem={true} item={product} />
