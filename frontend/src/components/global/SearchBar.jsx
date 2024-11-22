@@ -40,8 +40,8 @@ const SearchBar = () => {
   };
   return (
     <>
-      <div className="sm:ml-auto  flex items-center gap-1 ">
-        <form onSubmit={handleSubmit} className="search-bar-form">
+      <div className="ml-auto  flex items-center gap-1 ">
+        <form onSubmit={handleSubmit} className="search-bar-form flex nowrap">
           <input
             type="text"
             placeholder="Search products"
@@ -49,7 +49,7 @@ const SearchBar = () => {
             value={searchTerm}
             className="p-1"
           />
-          <button className="pl-2 text-xl" type="submit">
+          <button className="pl-2 text-xl hidden md:flex" type="submit">
             🔍
           </button>
         </form>

@@ -3,7 +3,6 @@ import os
 from decouple import config
 from datetime import timedelta
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 PRODUCT_DIR = os.path.join(PROJECT_DIR, 'product')
 CART_DIR = os.path.join(PROJECT_DIR, 'cart')

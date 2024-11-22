@@ -602,6 +602,14 @@ video {
   position: relative;
 }
 
+.inset-0{
+  inset: 0px;
+}
+
+.inset-10{
+  inset: 2.5rem;
+}
+
 .left-20{
   left: 5rem;
 }
@@ -624,6 +632,18 @@ video {
 
 .top-5{
   top: 1.25rem;
+}
+
+.top-10{
+  top: 2.5rem;
+}
+
+.left-0{
+  left: 0px;
+}
+
+.left-10{
+  left: 2.5rem;
 }
 
 .z-50{
@@ -750,11 +770,6 @@ video {
   min-width: min-content;
 }
 
-.min-w-max{
-  min-width: -moz-max-content;
-  min-width: max-content;
-}
-
 .max-w-6{
   max-width: 1.5rem;
 }
@@ -869,6 +884,10 @@ video {
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
+}
+
+.overflow-hidden{
+  overflow: hidden;
 }
 
 .truncate{
@@ -1035,6 +1054,11 @@ video {
 .py-8{
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.px-0{
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .pb-2{
@@ -1225,6 +1249,38 @@ video {
 }
 
 @media (min-width: 640px){
+  .sm\:static{
+    position: static;
+  }
+
+  .sm\:fixed{
+    position: fixed;
+  }
+
+  .sm\:relative{
+    position: relative;
+  }
+
+  .sm\:left-0{
+    left: 0px;
+  }
+
+  .sm\:left-10{
+    left: 2.5rem;
+  }
+
+  .sm\:top-0{
+    top: 0px;
+  }
+
+  .sm\:top-5{
+    top: 1.25rem;
+  }
+
+  .sm\:z-50{
+    z-index: 50;
+  }
+
   .sm\:m-4{
     margin: 1rem;
   }
@@ -1315,12 +1371,12 @@ video {
     gap: 2rem;
   }
 
-  .sm\:p-8{
-    padding: 2rem;
-  }
-
   .sm\:p-2{
     padding: 0.5rem;
+  }
+
+  .sm\:p-8{
+    padding: 2rem;
   }
 
   .sm\:px-0{
@@ -1343,6 +1399,33 @@ video {
     padding-bottom: 2rem;
   }
 
+  .sm\:px-2{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .sm\:py-6{
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .sm\:py-5{
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .sm\:pl-0{
+    padding-left: 0px;
+  }
+
+  .sm\:pb-0{
+    padding-bottom: 0px;
+  }
+
+  .sm\:pl-2{
+    padding-left: 0.5rem;
+  }
+
   .sm\:text-2xl{
     font-size: 1.5rem;
     line-height: 2rem;
@@ -1351,16 +1434,6 @@ video {
   .sm\:text-base{
     font-size: 1rem;
     line-height: 1.5rem;
-  }
-
-  .sm\:text-lg{
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-  }
-
-  .sm\:text-xl{
-    font-size: 1.25rem;
-    line-height: 1.75rem;
   }
 
   .sm\:leading-none{
@@ -1403,6 +1476,18 @@ video {
 
   .md\:pt-0{
     padding-top: 0px;
+  }
+
+  .md\:pl-0{
+    padding-left: 0px;
+  }
+
+  .md\:pl-2{
+    padding-left: 0.5rem;
+  }
+
+  .md\:pb-0{
+    padding-bottom: 0px;
   }
 }
 

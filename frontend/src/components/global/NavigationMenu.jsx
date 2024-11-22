@@ -13,12 +13,12 @@ const NavigationMenu = ({ categories, header = false }) => {
   const variants = {
     open: {
       width: "max-content",
-      // fontSize: "18px",
     },
     closed: { fontSize: "0px" },
   };
 
   const leaveMenu = () => {
+    console.log("leaving");
     setTimeout(() => {
       setModalHovered(false);
     }, 300);
@@ -33,22 +33,34 @@ const NavigationMenu = ({ categories, header = false }) => {
     });
   };
 
-  if (header) {
-    let hamburgerIcon = document.querySelector("#hamburger-icon-header");
-    let navMenus = document.querySelector(".nav-menu-ul-header");
+  // let hamburgerIcon = document.querySelector("#hamburger-icon-header") || false;
+  let navMenus = document.querySelector(".nav-menu-ul-header") || false;
 
-    if (hamburgerIcon)
-      hamburgerIcon.addEventListener("click", () => {
-        navMenus.classList.toggle("hidden");
-      });
-  }
+  const hideNavMenus = (event) => {
+    if (navMenus === null || !navMenus) {
+      return;
+    }
+    if (!navMenus.contains(event.target) && event.target !== navMenus) {
+      navMenus.classList.add("hidden");
+    }
+  };
+
+  document.addEventListener("touchstart", hideNavMenus);
+
+  const handleNavClick = () => {
+    // if (hamburgerIcon)
+    //   hamburgerIcon.addEventListener("click", () => {
+    event.stopPropagation();
+    navMenus.classList.toggle("hidden");
+    // });
+  };
 
   return (
-    <nav className="flex min-h-[25px]">
+    <nav className="flex min-h-[25px] relative">
       {header && (
         <button
-          // onClick={handleNavClick}
-          className="md:hidden  flex-col flex text-white"
+          onClick={handleNavClick}
+          className="md:hidden  flex-col  flex text-white z-100"
           id={`hamburger-icon${header ? "-header" : ""}`}
         >
           <span className="block w-6 h-1 bg-white mb-1"></span>
@@ -57,9 +69,10 @@ const NavigationMenu = ({ categories, header = false }) => {
         </button>
       )}
       <ul
-        className={`nav-menu-ul${header ? "-header hidden " : ""} flex relative  flex-col  md:pt-0  items-start   gap-4 w-full text-white justify-start p-4 sm:px-0 sm:py-4 z-50 absolute bordered bg-black text-white  max-w-max md:flex-row md:flex md:items-center md:bg-transparent md:max-w-auto`}
+        className={`nav-menu-ul${header ? "-header hidden flex-col sm:static bg-black items-start justify-start max-w-full md:pl-0 p-4 md:pb-0 fixed left-10 top-5 z-50 " : " items-center px-0 "} flex   md:pt-0   
+          gap-4 w-full text-white bordered text-white max-w-max md:flex-row md:flex md:items-center md:bg-transparent md:max-w-auto`}
       >
-        <div className="flex justify-between relative">
+        <div className="flex justify-between relative z-50">
           <Link
             to="/"
             className="flex justify-between items-center w-full flex-nowrap  gap-2 font-bold"
@@ -90,7 +103,6 @@ const NavigationMenu = ({ categories, header = false }) => {
           <div className="relative flex products-modal-menu">
             <ul
               onMouseEnter={() => setModalHovered(true)}
-              onMouseLeave={() => leaveMenu()}
               key={999}
               className="relative  items-center"
             >
@@ -101,6 +113,8 @@ const NavigationMenu = ({ categories, header = false }) => {
                 <motion.ul
                   variants={variants}
                   animate={modalHovered ? "open" : "closed"}
+                  onMouseEnter={() => setModalHovered(true)}
+                  onMouseLeave={() => leaveMenu()}
                   className="absolute z-50  flex-col text-black bg-white sm:text-md min-w-min justify-center items-start h-max-h border gap-2 left-20 md:left-5 md:top-7 top-1 py-4 px-4 flex flex-col"
                 >
                   {categories
@@ -163,10 +177,16 @@ const NavigationMenu = ({ categories, header = false }) => {
             </ul>
           </div>
         )}
-        <Link to="/profile/" className="nav-link-parent flex w-full flex-1 ">
+        <Link
+          to="/profile/"
+          className="nav-link-parent flex w-full z-50 flex-1 "
+        >
           Profile
         </Link>
-        <Link to="/contact" className="nav-link-parent flex w-full flex-1 ">
+        <Link
+          to="/contact"
+          className="nav-link-parent flex w-full z-200 flex-1 "
+        >
           Contact
         </Link>
       </ul>
