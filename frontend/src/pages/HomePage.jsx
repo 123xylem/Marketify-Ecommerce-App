@@ -25,7 +25,6 @@ const HomePage = () => {
   if (isError) {
     return <span>Error: {error.message}</span>;
   }
-
   return (
     <div>
       <ResponseMessage message={""} err={error?.message}></ResponseMessage>
@@ -36,7 +35,6 @@ const HomePage = () => {
         textColor={"white"}
         // text={"Our Products"}
       />
-      {/* <h1 className="font-bold text-xl">Welcome</h1> */}
       <ProductList products={data}></ProductList>
     </div>
   );

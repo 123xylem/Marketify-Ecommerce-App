@@ -217,8 +217,8 @@ SOCIALACCOUNT_PROVIDERS = {
 # }
 
 
-LOGIN_REDIRECT_URL="http://localhost:5173/login?jwtNeeded=true"
-LOGOUT_REDIRECT_URL="http://localhost:5173/logout?loggedout=true"
+LOGIN_REDIRECT_URL="http://192.168.1.102:5173/login?jwtNeeded=true"
+LOGOUT_REDIRECT_URL="http://192.168.1.102:5173/logout?loggedout=true"
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
@@ -261,24 +261,61 @@ SPECTACULAR_SETTINGS = {
 }
 
 
+# CORS_ALLOWED_ORIGINS = [
+#  'http://localhost:5173',
+#  'http://192.168.1.102:5173'
+# ]
+# CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOW_HEADERS = '*' 
+# CSRF_TRUSTED_ORIGINS = ['http://localhost:5173', 'http://192.168.1.102:5173']
+# CORS_ALLOW_CREDENTIALS = True
+
+# CORS_ALLOW_METHODS = (
+#     'GET',
+#     'POST',
+#     'PUT',
+#     'OPTIONS',
+# )
+
+# CSRF_COOKIE_SAMESITE=None
+# CSRF_COOKIE_SECURE=False
+
 CORS_ALLOWED_ORIGINS = [
- 'http://localhost:5173'
+    'http://localhost:5173',
+    'http://192.168.1.102:5173',
 ]
-CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOW_HEADERS = '*' 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False 
 
-CORS_ALLOW_METHODS = (
+# CORS_ALLOW_HEADERS = [
+#     'content-type',
+#     'authorization',
+#     'x-csrf-token',
+#     'accept',
+#     'origin',
+#     'x-requested-with',
+# ]
+
+CORS_ALLOW_CREDENTIALS = True 
+
+CORS_ALLOW_METHODS = [
     'GET',
     'POST',
     'PUT',
+    'DELETE',
+    'PATCH',
     'OPTIONS',
-)
+]
 
-CSRF_COOKIE_SAMESITE=None
-CSRF_COOKIE_SECURE=False
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:5173',
+    'http://192.168.1.102:5173',
+]
+
+CSRF_COOKIE_SAMESITE = 'Lax'  
+CSRF_COOKIE_SECURE = False  # True for production with HTTPS
+
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

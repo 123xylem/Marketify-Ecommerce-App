@@ -1,10 +1,12 @@
 import axios from "axios";
 import { ACCESS_TOKEN } from "./constants";
 import { getCookie } from "./utils";
-import { refreshToken } from "./components/global/ProtectedRoutes";
+import { refreshToken } from "./utils";
 
+//Temp hardcode api as .env vars are saved to a cache
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
+  // baseURL: import.meta.env.VITE_BACKEND_URL,
+  baseURL: "http://192.168.1.102:8000/api/",
   headers: {
     Accept: "*/*",
     "Content-Type": "application/json",
@@ -32,6 +34,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   async (response) => response,
   async (error) => {
+    // alert(error, JSON.stringify(error));
     if (!localStorage.getItem("refresh-token")) {
       console.log(error, "probably in login/registration");
       return Promise.reject(error);
@@ -51,7 +54,7 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         console.error("Token refresh failed", refreshError);
-        // Optionally, redirect to login or handle as needed
+
         return Promise.reject(refreshError);
       }
     }

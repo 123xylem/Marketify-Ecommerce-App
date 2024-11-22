@@ -9,6 +9,8 @@ export default defineConfig({
       plugins: [tailwindcss()],
     },
   },
+  envDir: "../",
+  cacheDir: "node_modules/.vite_cache",
 });
 
 // export default defineConfig({

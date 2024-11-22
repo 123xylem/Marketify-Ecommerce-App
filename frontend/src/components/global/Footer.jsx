@@ -56,10 +56,10 @@ const Footer = () => {
           </p>
           {isFooterLoading && <span>Loading footer content...</span>}
           {isFooterError && <span>Error: {footerError.message}</span>}
-          {!isFooterLoading && !isFooterError && (
+          {!isFooterLoading && !isFooterError && footerData && (
             <>
               <p className="footer-text text-white">
-                {footerData?.content.content}
+                {footerData?.content?.content}
               </p>
             </>
           )}

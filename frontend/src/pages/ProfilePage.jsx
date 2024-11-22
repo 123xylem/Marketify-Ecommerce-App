@@ -98,13 +98,13 @@ const ProfilePage = () => {
 
   if (loading) return <div>Loading...</div>;
   return (
-    <div className="flex  gap-4">
-      {/* <div className="w-full">
+    <div className="flex flex-wrap relative sm:flex-nowrap  gap-4">
+      <div className="w-full absolute top-5 left-5">
         <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage>
-      </div> */}
+      </div>
 
       <form
-        className="flex flex-col bg-gray-200 gap-4 p-4 max-w-min justify-start"
+        className="flex flex-col bg-gray-200 gap-4 p-4 max-w-max sm:max-w-min justify-start"
         onSubmit={(e) => editUserData(e)}
       >
         <div className="flex justify-start flex-col min-w-[250px]">
@@ -146,7 +146,7 @@ const ProfilePage = () => {
           />
         </div> */}
 
-        <div className="flex justify-start flex-col min-w-[250px]">
+        <div className={`flex justify-start flex-col min-w-[250px] `}>
           <label className="p-1 pl-0 font-semibold">Address:</label>
           <textarea
             type="text"

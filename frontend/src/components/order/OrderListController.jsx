@@ -21,7 +21,7 @@ const OrderListController = ({ data, isError, error, pageNum, setPageNum }) => {
   };
 
   return (
-    <div className="order-list-controller bg-gray-200  w-full p-4 flex flex-col gap-2 flex-wrap max-w-min min-w-[180px]">
+    <div className="order-list-controller bg-gray-200  w-full p-4 flex flex-col gap-2 flex-wrap max-w-min min-w-[180px] ">
       {data?.count == "undefined" ||
         (pageNum === null && (
           <>

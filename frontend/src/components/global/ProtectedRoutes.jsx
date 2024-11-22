@@ -1,29 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Navigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import api from "../../api";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../../constants";
+// import api from "../../api";
+import { ACCESS_TOKEN } from "../../constants";
 import { useState, useEffect } from "react";
-
-// Exporting refreshToken for use in Axios interceptor
-export const refreshToken = async () => {
-  const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-  try {
-    const res = await api.post("accountprofile/token/refresh/", {
-      refresh: refreshToken,
-    });
-
-    if (res.status === 200) {
-      localStorage.setItem(ACCESS_TOKEN, res.data.access);
-      return res.data.access; // Return the new access token
-    } else {
-      throw new Error("Failed to refresh token");
-    }
-  } catch (err) {
-    console.log(err);
-    throw err; // Rethrow the error to handle it in the interceptor
-  }
-};
+import { refreshToken } from "../../utils";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthorized, setisAuthorized] = useState(null);

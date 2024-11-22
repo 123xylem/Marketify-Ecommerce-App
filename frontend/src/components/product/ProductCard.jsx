@@ -5,12 +5,13 @@ import { CartProductBtn } from "./CartProductBtn";
 
 const ProductCard = ({ item, cartItem = false }) => {
   return (
-    <div className="product-card flex-1 border flex flex-col border-gray-700 p-4 gap-4  sm:min-w-[250px] ">
+    <div className="product-card flex-1 border flex flex-col border-gray-700 p-2 gap-4  sm:min-w-[250px] ">
       <Link
         className="product-card gap-2 flex  flex-col max-w-[220px]"
         to={"/products/product/" + item.slug + "/"}
         state={{ item }}
       >
+        {console.log(item.image)}
         <img
           loading="lazy"
           className={`object-cotain ${cartItem ? "max-w-[150px] sm:max-w-[100px]" : "max-w-[8rem] sm:w-[250px] sm:h-auto"}`}

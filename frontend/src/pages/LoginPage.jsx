@@ -69,7 +69,7 @@ export default function SignIn(props) {
   useEffect(() => {
     if (searchTerm) {
       api
-        .post(`http://localhost:8000/api/accountprofile/auth/token/retrieve/`, {
+        .post(`/accountprofile/auth/token/retrieve/`, {
           em_id: searchTerm,
         })
         .then((response) => {
@@ -106,10 +106,7 @@ export default function SignIn(props) {
       password,
     });
     try {
-      let response = await api.post(
-        "http://localhost:8000/api/accountprofile/token/",
-        bodyContent
-      );
+      let response = await api.post("/accountprofile/token/", bodyContent);
 
       if (response && response.status === 200) {
         let responseData = response.data;

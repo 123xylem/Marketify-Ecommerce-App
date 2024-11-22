@@ -31,6 +31,6 @@ class ProductSerializer(serializers.ModelSerializer):
         if obj.image:
             if request:
                 return request.build_absolute_uri(obj.image.url)
-            return f'http://localhost:8000{settings.MEDIA_URL}{obj.image}'
-        return f'http://localhost:8000/media/__sized__/__placeholder__/images/placeholder-crop-c0-5__0-5-200x200-70.jpg'
+            return f'http://192.168.1.102:8000{settings.MEDIA_URL}{obj.image}'
+        return f'http://192.168.1.102:8000/media/__sized__/__placeholder__/images/placeholder-crop-c0-5__0-5-200x200-70.jpg'
 

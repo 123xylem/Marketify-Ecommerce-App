@@ -40,7 +40,7 @@ const Header = () => {
       </div>
       <div className="inner container mx-auto px-4 py-8 flex gap-4 sm:gap-8 flex-wrap">
         {!isCategoryLoading && !isCategoryError && (
-          <NavigationMenu categories={CategoryData} />
+          <NavigationMenu categories={CategoryData} header={true} />
         )}
         <SearchBar />
         <UserWelcome username={username} />

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const OrderProductCard = ({ item, cartItem = false }) => {
   return (
-    <div className="product-card flex-1 flex flex-col border-gray-700 p-4 gap-2  min-w-min ">
+    <div className="product-card flex-1 flex flex-col border-gray-700 p-2 gap-2  min-w-min ">
       <Link
         className="product-card  flex flex-col max-w-[220px]"
         to={"/products/product/" + item.slug + "/"}

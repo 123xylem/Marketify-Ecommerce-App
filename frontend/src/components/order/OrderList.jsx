@@ -2,7 +2,6 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import api from "../../api";
-import { ResponseMessage } from "../ResponseMessage";
 import { useQuery } from "@tanstack/react-query";
 import OrderProductCard from "./OrderProductCard";
 import OrderListController from "./OrderListController";
@@ -48,10 +47,10 @@ const OrderList = () => {
         setPageNum={setPageNum}
       />
       {data?.count > 0 && pageNum > 0 ? (
-        <div className="order-list-orders bg-gray-100 flex flex-col">
+        <div className="order-list-orders max-w-full bg-gray-100 flex flex-col">
           {data?.results.map((item) => (
             <div
-              className="order-item border bg-white gap-4 m-4 p-4 flex border flex-col"
+              className="order-item border bg-white gap-4 my-4 p-4 flex border flex-col sm:m-4"
               key={item.id}
             >
               <h2 className="font-semi-bold  ">
