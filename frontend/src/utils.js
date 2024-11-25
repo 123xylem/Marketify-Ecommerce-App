@@ -43,3 +43,35 @@ export const refreshToken = async () => {
     throw err; // Rethrow the error to handle it in the interceptor
   }
 };
+
+export const redirectToCartIfCartItem = async () => {
+  const cartItem = localStorage.getItem("cartItem");
+  const token = localStorage.getItem(ACCESS_TOKEN);
+  if (!cartItem || !token) {
+    window.location.href = "/";
+  } else {
+    try {
+      const url = `cart/add/${cartItem}/`;
+      const response = await api.post(url, {
+        body: JSON.stringify({
+          product_id: cartItem,
+        }),
+      });
+      if (response) {
+        if (response.status === 200) {
+          localStorage.removeItem("cartItem");
+          window.location.href = "/cart";
+        }
+      } else {
+        window.location.href = "/";
+        console.error("Failed to update item", response.data);
+      }
+    } catch (error) {
+      console.log(error, "err");
+      if (error.status === 401) {
+        console.log("Error Redirecting to cart");
+        window.location.href = "/";
+      }
+    }
+  }
+};

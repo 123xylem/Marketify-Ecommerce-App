@@ -36,17 +36,16 @@ api.interceptors.response.use(
   async (error) => {
     // alert(error, JSON.stringify(error));
     if (!localStorage.getItem("refresh-token")) {
-      console.log(error, "probably in login/registration");
+      console.error(error, "User has no JWT");
       return Promise.reject(error);
     }
-    console.log(error, "EXPIRED TOKEN?, REFRESHING");
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
         // Call your refresh token endpoint
-
+        console.log(error, "EXPIRED access TOKEN??, Attempting to refresh it");
         const accessToken = await refreshToken(); // Update the original request's authorization header
         originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
 

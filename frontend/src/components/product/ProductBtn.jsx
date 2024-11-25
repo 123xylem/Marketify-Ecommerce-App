@@ -13,7 +13,7 @@ const handleClick = async (productId, buyNow = false, setState, navigate) => {
     });
     if (response) {
       const data = await response.data;
-      if (response.status === 200) {
+      if (response.response.status === 200) {
         if (!buyNow) {
           setState();
         }
@@ -26,6 +26,12 @@ const handleClick = async (productId, buyNow = false, setState, navigate) => {
       console.error("Failed to update item", response);
     }
   } catch (error) {
+    if (error.status === 401) {
+      localStorage.setItem("cartItem", `${productId}`);
+      window.location.href = "/login";
+      console.log("You must login to make a purchase");
+    }
+
     console.error("Error updating cart item:", error);
   }
 };

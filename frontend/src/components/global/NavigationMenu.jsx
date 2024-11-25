@@ -18,7 +18,6 @@ const NavigationMenu = ({ categories, header = false }) => {
   };
 
   const leaveMenu = () => {
-    console.log("leaving");
     setTimeout(() => {
       setModalHovered(false);
     }, 300);

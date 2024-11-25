@@ -39,6 +39,7 @@ class CartViewSet(viewsets.ModelViewSet):
              cart.buy_product_now(product_id)
 
           cart.save()
+          print(vars(cart), cart.user, 'hey')
           return Response({'data': f'{self.serializer_class(cart).data} Created or something'})
   
       def list(self, request):

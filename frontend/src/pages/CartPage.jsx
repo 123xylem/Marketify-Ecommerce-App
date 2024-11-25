@@ -21,7 +21,6 @@ const CartPage = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.data;
-        console.log(data);
         setCartData(data);
       } catch (err) {
         setErrorMsg(err.message);
