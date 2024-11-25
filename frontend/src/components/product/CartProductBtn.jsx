@@ -5,7 +5,7 @@ export function CartProductBtn({ action, id, onClick }) {
   return (
     <>
       <button
-        className={`cart-btn min-w-min py-1 px-2 bg-pink-600 border  rounded-md cursor-pointer hover:text-underline text-sm sm:text-base text-white font-bold ${add ? "bg-gray-800" : "bg-red-500"}`}
+        className={`cart-btn min-w-min py-1 px-2  border  rounded-md cursor-pointer hover:text-underline text-xs sm:text-sm text-white font-bold ${add ? "bg-green-800" : "bg-red-900"}`}
         onClick={onClick}
         value={[id, action]}
       >

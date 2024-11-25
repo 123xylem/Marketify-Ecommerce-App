@@ -48,6 +48,7 @@ function Logout() {
   localStorage.removeItem("refresh-token");
   localStorage.removeItem("username");
   localStorage.removeItem("userID");
+  localStorage.removeItem("cartItem");
   return <Navigate to="/login" element={<Login />} />;
 }
 

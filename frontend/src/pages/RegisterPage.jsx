@@ -14,7 +14,7 @@ import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import api from "../api";
 import SocialLoginBtn from "../components/SocialLoginBtn";
-
+import { redirectToCartIfCartItem } from "../utils";
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -120,8 +120,6 @@ export default function SignUp() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    console.log(event);
-
     // const data = new FormData(event.currentTarget);
     const username = event.target.form[0].value;
     const email = event.target.form[2].value;
@@ -165,7 +163,6 @@ export default function SignUp() {
             localStorage.setItem("access-token", accessToken);
             localStorage.setItem("username", username);
             localStorage.setItem("userID", userID);
-            window.location.href = "/";
           }
         } catch (err) {
           console.error(
@@ -173,6 +170,8 @@ export default function SignUp() {
             err.response.status,
             err.response.statusText
           );
+        } finally {
+          redirectToCartIfCartItem();
         }
       }
     } catch (err) {

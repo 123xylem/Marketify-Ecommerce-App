@@ -17,6 +17,7 @@ import SocialLoginBtn from "../components/SocialLoginBtn";
 import api from "../api";
 import { useSearchParams } from "react-router-dom";
 import { ResponseMessage } from "../components/ResponseMessage";
+import { redirectToCartIfCartItem } from "../utils";
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -121,7 +122,7 @@ export default function SignIn(props) {
         localStorage.setItem("access-token", accessToken);
         localStorage.setItem("username", username);
         localStorage.setItem("userID", userID);
-        window.location.href = "/";
+        redirectToCartIfCartItem();
       }
     } catch (err) {
       console.log(err, "err");
