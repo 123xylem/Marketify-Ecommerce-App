@@ -33,7 +33,6 @@ const NavigationMenu = ({ categories, header = false }) => {
     });
   };
 
-  // let hamburgerIcon = document.querySelector("#hamburger-icon-header") || false;
   let navMenus = document.querySelector(".nav-menu-ul-header") || false;
 
   const hideNavMenus = (event) => {
@@ -48,11 +47,8 @@ const NavigationMenu = ({ categories, header = false }) => {
   document.addEventListener("touchstart", hideNavMenus);
 
   const handleNavClick = () => {
-    // if (hamburgerIcon)
-    //   hamburgerIcon.addEventListener("click", () => {
     event.stopPropagation();
     navMenus.classList.toggle("hidden");
-    // });
   };
 
   return (

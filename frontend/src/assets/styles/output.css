@@ -602,12 +602,8 @@ video {
   position: relative;
 }
 
-.inset-0{
-  inset: 0px;
-}
-
-.inset-10{
-  inset: 2.5rem;
+.left-10{
+  left: 2.5rem;
 }
 
 .left-20{
@@ -622,28 +618,16 @@ video {
   right: 0px;
 }
 
-.top-0{
-  top: 0px;
-}
-
 .top-1{
   top: 0.25rem;
-}
-
-.top-5{
-  top: 1.25rem;
 }
 
 .top-10{
   top: 2.5rem;
 }
 
-.left-0{
-  left: 0px;
-}
-
-.left-10{
-  left: 2.5rem;
+.top-5{
+  top: 1.25rem;
 }
 
 .z-50{
@@ -886,10 +870,6 @@ video {
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
 
-.overflow-hidden{
-  overflow: hidden;
-}
-
 .truncate{
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1021,6 +1001,11 @@ video {
   padding: 1.5rem;
 }
 
+.px-0{
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 .px-2{
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -1054,11 +1039,6 @@ video {
 .py-8{
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-
-.px-0{
-  padding-left: 0px;
-  padding-right: 0px;
 }
 
 .pb-2{
@@ -1253,34 +1233,6 @@ video {
     position: static;
   }
 
-  .sm\:fixed{
-    position: fixed;
-  }
-
-  .sm\:relative{
-    position: relative;
-  }
-
-  .sm\:left-0{
-    left: 0px;
-  }
-
-  .sm\:left-10{
-    left: 2.5rem;
-  }
-
-  .sm\:top-0{
-    top: 0px;
-  }
-
-  .sm\:top-5{
-    top: 1.25rem;
-  }
-
-  .sm\:z-50{
-    z-index: 50;
-  }
-
   .sm\:m-4{
     margin: 1rem;
   }
@@ -1292,10 +1244,6 @@ video {
 
   .sm\:-ml-0{
     margin-left: -0px;
-  }
-
-  .sm\:ml-auto{
-    margin-left: auto;
   }
 
   .sm\:block{
@@ -1379,11 +1327,6 @@ video {
     padding: 2rem;
   }
 
-  .sm\:px-0{
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-
   .sm\:px-8{
     padding-left: 2rem;
     padding-right: 2rem;
@@ -1392,38 +1335,6 @@ video {
   .sm\:py-4{
     padding-top: 1rem;
     padding-bottom: 1rem;
-  }
-
-  .sm\:py-8{
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-
-  .sm\:px-2{
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-
-  .sm\:py-6{
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
-  }
-
-  .sm\:py-5{
-    padding-top: 1.25rem;
-    padding-bottom: 1.25rem;
-  }
-
-  .sm\:pl-0{
-    padding-left: 0px;
-  }
-
-  .sm\:pb-0{
-    padding-bottom: 0px;
-  }
-
-  .sm\:pl-2{
-    padding-left: 0.5rem;
   }
 
   .sm\:text-2xl{
@@ -1474,20 +1385,16 @@ video {
     background-color: transparent;
   }
 
-  .md\:pt-0{
-    padding-top: 0px;
+  .md\:pb-0{
+    padding-bottom: 0px;
   }
 
   .md\:pl-0{
     padding-left: 0px;
   }
 
-  .md\:pl-2{
-    padding-left: 0.5rem;
-  }
-
-  .md\:pb-0{
-    padding-bottom: 0px;
+  .md\:pt-0{
+    padding-top: 0px;
   }
 }
 
