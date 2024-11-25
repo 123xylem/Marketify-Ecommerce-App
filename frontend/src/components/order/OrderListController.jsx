@@ -1,22 +1,15 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
 
 const OrderListController = ({ data, isError, error, pageNum, setPageNum }) => {
-  // const [nextPage, setNextPage] = useState(null);
-  // const [prevPage, setPrevPage] = useState(null);
-
   const previousOrders = async () => {
     if (pageNum > 1) {
       setPageNum((prev) => prev - 1);
-      // refetch({ queryKey: ["order-data", username + userID, pageNum - 1] });
     }
   };
 
   const nextOrders = async () => {
     if (data?.count > pageNum / 3 || !pageNum) {
-      console.log(pageNum, data?.count);
       setPageNum((prev) => (prev === null ? 1 : prev + 1));
-      // refetch({ queryKey: ["order-data", username + userID, pageNum + 1] });
     }
   };
 
@@ -34,15 +27,13 @@ const OrderListController = ({ data, isError, error, pageNum, setPageNum }) => {
           </>
         ))}
 
-      {data?.count && (
+      {data?.count !== undefined && (
         <div className="font-semibold text-lg ">
           Total Orders: {data?.count}
         </div>
       )}
-      {console.log(data, pageNum)}
 
       {isError && <span>Error: {error.message}</span>}
-      {/* {console.log(data.count, "aaa", pageNum)} */}
       {data?.count > 0 && pageNum > 0 && (
         <>
           <div>Page Num: {pageNum}</div>

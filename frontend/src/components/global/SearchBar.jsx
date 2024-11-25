@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../../api";
 import { useNavigate } from "react-router-dom";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const SearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,7 +42,10 @@ const SearchBar = () => {
   return (
     <>
       <div className="ml-auto  flex items-center gap-1 ">
-        <form onSubmit={handleSubmit} className="search-bar-form flex nowrap">
+        <form
+          onSubmit={handleSubmit}
+          className="search-bar-form items-center flex nowrap"
+        >
           <input
             type="text"
             placeholder="Search products"
@@ -50,7 +54,7 @@ const SearchBar = () => {
             className="p-1"
           />
           <button className="pl-2 text-xl hidden md:flex" type="submit">
-            🔍
+            <FaMagnifyingGlass color={"white"} />
           </button>
         </form>
       </div>

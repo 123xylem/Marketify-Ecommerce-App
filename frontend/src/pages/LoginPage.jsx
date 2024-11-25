@@ -39,7 +39,6 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
   padding: 20,
-  marginTop: "10vh",
   "&::before": {
     content: '""',
     display: "block",
@@ -173,9 +172,10 @@ export default function SignIn(props) {
 
   return (
     <div>
-      <CssBaseline enableColorScheme />
-      <ResponseMessage message={""} err={errorMessage}></ResponseMessage>
+      {/* <CssBaseline enableColorScheme /> */}
       <SignInContainer direction="column" justifyContent="space-between">
+        <ResponseMessage message={""} err={errorMessage}></ResponseMessage>
+
         <Card variant="outlined">
           <Typography
             component="h1"
@@ -215,14 +215,6 @@ export default function SignIn(props) {
             <FormControl>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <FormLabel htmlFor="password">Password</FormLabel>
-                <Link
-                  component="button"
-                  onClick={handleClickOpen}
-                  variant="body2"
-                  sx={{ alignSelf: "baseline" }}
-                >
-                  Forgot your password?
-                </Link>
               </Box>
               <TextField
                 error={passwordError}
@@ -266,8 +258,8 @@ export default function SignIn(props) {
             </Typography>
           </Box>
         </Card>
+        <SocialLoginBtn login={true} />
       </SignInContainer>
-      <SocialLoginBtn />
     </div>
   );
 }

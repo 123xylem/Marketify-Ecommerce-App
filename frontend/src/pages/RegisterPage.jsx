@@ -175,7 +175,6 @@ export default function SignUp() {
         }
       }
     } catch (err) {
-      console.log(err, "2");
       if (err.response.data.email) {
         setEmailError(true);
         setEmailErrorMessage([err.response.data.email]);
@@ -194,7 +193,7 @@ export default function SignUp() {
   }
 
   return (
-    <SignUpContainer>
+    <SignUpContainer className="flex-col">
       <CssBaseline enableColorScheme />
       <div direction="column">
         <Card variant="outlined">
@@ -205,6 +204,8 @@ export default function SignUp() {
           >
             Register
           </Typography>
+          <SocialLoginBtn />
+
           <Box
             component="form"
             onSubmit={(e) => validateInputs(e)}
@@ -299,7 +300,6 @@ export default function SignUp() {
           </Box>
         </Card>
       </div>
-      <SocialLoginBtn />
     </SignUpContainer>
   );
 }

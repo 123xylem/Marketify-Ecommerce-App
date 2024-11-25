@@ -8,19 +8,12 @@ const ProfilePage = () => {
   const [sucessMsg, setSuccessMsg] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [userData, setUserData] = useState(null);
-  // const [orderData, setOrderData] = useState(null);
   const [recievedData, setReceivedData] = useState(null);
 
-  // let bodyContent = JSON.stringify({
-  //   access: localStorage.getItem("access-token"),
-  // });
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await api.get(
-          "/accountprofile/profile?page=1"
-          // bodyContent,
-        );
+        const response = await api.get("/accountprofile/profile?page=1");
         if (!response.status) {
           throw new Error("Network response was not ok");
         }
@@ -99,14 +92,12 @@ const ProfilePage = () => {
   if (loading) return <div>Loading...</div>;
   return (
     <div className="flex flex-wrap relative sm:flex-nowrap  gap-4">
-      <div className="w-full absolute top-5 left-5">
-        <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage>
-      </div>
-
       <form
         className="flex flex-col bg-gray-200 gap-4 p-4 max-w-max sm:max-w-min justify-start"
         onSubmit={(e) => editUserData(e)}
       >
+        <ResponseMessage message={sucessMsg} err={errorMsg}></ResponseMessage>
+
         <div className="flex justify-start flex-col min-w-[250px]">
           <label className="p-1 pl-0 font-semibold">Username:</label>
           <input
@@ -128,23 +119,23 @@ const ProfilePage = () => {
           />
         </div>
         {/* <div>
-          <label>Old Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={userData.password}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div>
-          <label>New Password:</label>
-          <input
-            type="password"
-            name="password2"
-            value={userData.password2}
-            onChange={(e) => handleChange(e)}
-          />
-        </div> */}
+            <label>Old Password:</label>
+            <input
+              type="password"
+              name="password"
+              value={userData.password}
+              onChange={(e) => handleChange(e)}
+            />
+          </div>
+          <div>
+            <label>New Password:</label>
+            <input
+              type="password"
+              name="password2"
+              value={userData.password2}
+              onChange={(e) => handleChange(e)}
+            />
+          </div> */}
 
         <div className={`flex justify-start flex-col min-w-[250px] `}>
           <label className="p-1 pl-0 font-semibold">Address:</label>

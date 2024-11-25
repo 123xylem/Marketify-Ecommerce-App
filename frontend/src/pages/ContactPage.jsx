@@ -4,7 +4,7 @@ import PageBanner from "../components/PageBanner";
 const ContactPage = () => {
   return (
     <>
-      <div className="contact-container flex flex-col">
+      <div className="contact-container flex justify-center items-center flex-col">
         <PageBanner
           title={"Contact Us"}
           bgColor="black"
@@ -14,8 +14,6 @@ const ContactPage = () => {
           textColor={"white"}
         />
 
-        {/* <h1 className="font-bold text-xl text-black">Contact Us</h1> */}
-        <p className=""></p>
         <ContactForm />
       </div>
     </>

@@ -16,9 +16,6 @@ const OrderList = () => {
     queryKey: ["order-data", username + userID, pageNum],
     queryFn: async ({ queryKey }) => {
       const [, , currentPageNum] = queryKey;
-      console.log(pageNum, currentPageNum, "pages");
-      console.log("Post?: ", currentPageNum);
-
       const response = await api.get(`/orders/?page=${currentPageNum || 1}`);
       if (!response.status) {
         throw new Error("Network response was not ok");
