@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { BACKEND_DOMAIN } from "../constants";
 
 const SocialLoginBtn = ({ login }) => {
