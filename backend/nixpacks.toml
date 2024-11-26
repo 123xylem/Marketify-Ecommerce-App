@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["...", "file"]
+nixPkgs = ["...", "file", "cowsay"]
 
 
 [phases.build]
