@@ -1,23 +1,21 @@
 [phases.setup]
-nixPkgs = ["...", "file", "zlib"]
+nixPkgs = ["...", "file", "zlib", "libmagic"]  # Added libmagic explicitly
+env = {
+  LD_LIBRARY_PATH = "${file}/lib:${libmagic}/lib:$LD_LIBRARY_PATH"
+}
 
 [phases.build]
 commands = [
   "...",
-  "echo START DEBBBBUG $LD_LIBRARY_PATH",  # Print library path
-  "find / -name 'libmagic.so*' 2>/dev/null",  # Search for libmagic library
-  "echo VERSIONNNNNNNNNNN",
+  "echo START DEBUG Library Path: $LD_LIBRARY_PATH",
+  "echo Searching for libmagic.so:",
+  "find / -name 'libmagic.so*' 2>/dev/null | head -n 10",  # Limit to first 10 results
+  "echo File Command Version:",
   "file --version",
-    "echo FILLEEEEEE NNNNN",
-
-  "ldd $(which file)",  # Show library dependencies of file command
-  "python -c \"import sys; print(sys.path)\"",  # Python module search paths
-    "echo IMNPORTTTTT NNNN",
-
-  "python -c \"import ctypes.util; print(ctypes.util.find_library('magic'))\""  # Try to locate magic library
-]
-
-[env]
-PYTHON_LD_LIBRARY_PATH = [
-  "pkgs.file"
+  "echo File Command Library Dependencies:",
+  "ldd $(which file)",
+  "echo Python Module Search Paths:",
+  "python -c \"import sys; print('\\n'.join(sys.path))\"",
+  "echo Magic Library Location:",
+  "python -c \"import ctypes.util; print(ctypes.util.find_library('magic'))\""
 ]
