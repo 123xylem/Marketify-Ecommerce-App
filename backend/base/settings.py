@@ -1,5 +1,5 @@
 from pathlib import Path
-import os 
+import os, json
 from decouple import config
 from datetime import timedelta
 
@@ -8,29 +8,53 @@ PRODUCT_DIR = os.path.join(PROJECT_DIR, 'product')
 CART_DIR = os.path.join(PROJECT_DIR, 'cart')
 BASE_DIR = os.path.join(PROJECT_DIR, 'base')
 ORDER_DIR = os.path.join(PROJECT_DIR, 'order')
-DB_NAME = config('DB_NAME')
-DB_PW = config('DB_PW')
-DB_USER = config('DB_USER')
-VITE_OAUTH_CLIENT_ID = config('VITE_OAUTH_CLIENT_ID')
-VITE_OAUTH_CLIENT_SECRET = config('VITE_OAUTH_CLIENT_SECRET')
-VITE_OAUTH_CALLBACK_URL = config('VITE_OAUTH_CALLBACK_URL')
+
+
+email_db_env = json.loads(config('EMAIL_DB_ENV'))
+
+EMAIL_HOST = email_db_env['host']
+EMAIL_USER = email_db_env['EMAIL_USER']
+EMAIL_PW = email_db_env['EMAIL_PW']
+DB_NAME = email_db_env['DB_NAME']
+DB_USER = email_db_env['DB_USER']
+DB_PW = email_db_env['DB_PW']
+SECRET_KEY = email_db_env['DJANGO_SECRET']
+DEBUG = email_db_env['DEBUG'] == 'True'
+
+FRONTEND_DOMAIN = config('FRONTEND_DOMAIN')
+
+STRIPE_SK = config('STRIPE_SK')
+
+# Parse the VITE_AUTH_ID_SECRET_CALLBACK variable
+vite_auth_data = json.loads(config('VITE_AUTH_ID_SECRET_CALLBACK'))
+
+VITE_OAUTH_CLIENT_ID = vite_auth_data['VITE_OAUTH_CLIENT_ID']
+VITE_OAUTH_CLIENT_SECRET = vite_auth_data['VITE_OAUTH_CLIENT_SECRET']
+VITE_OAUTH_CALLBACK_URL = vite_auth_data['VITE_OAUTH_CALLBACK_URL']
+
+# Access VITE_BACKEND_URL
+VITE_BACKEND_URL = config('VITE_BACKEND_URL')
+
+# DB_NAME = config('DB_NAME')
+# DB_PW = config('DB_PW')
+# DB_USER = config('DB_USER')
+# VITE_OAUTH_CLIENT_ID = config('VITE_OAUTH_CLIENT_ID')
+# VITE_OAUTH_CLIENT_SECRET = config('VITE_OAUTH_CLIENT_SECRET')
+# VITE_OAUTH_CALLBACK_URL = config('VITE_OAUTH_CALLBACK_URL')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 LOGIN_URL = 'marketify_login'
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-hzmt=xtcc1)djj&p^dddf1v@7b(e&=#z43(x(xe)+8kpka)ysl'
-EMAIL_HOST_NAME=config('EMAIL_HOST')
-EMAIL_PW=config('EMAIL_PW')
-EMAIL_USER=config('EMAIL_USER')
+# EMAIL_HOST_NAME=config('EMAIL_HOST')
+# EMAIL_PW=config('EMAIL_PW')
+# EMAIL_USER=config('EMAIL_USER')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+# DEBUG = config('DEBUG', default=False, cast=bool)
 AUTH_USER_MODEL = 'accountprofile.CustomAccountProfile'
 # ACCOUNT_EMAIL_MODEL = 'base.CustomEmailAddress'
 
 ALLOWED_HOSTS = ['*']
-
-
+   
 # Application definition
 SITE_ID=2
 INSTALLED_APPS = [
@@ -322,7 +346,7 @@ CSRF_COOKIE_SECURE = False  # True for production with HTTPS
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 # # EMAIL_FILE_PATH = 'email_logs/'  
-EMAIL_HOST= EMAIL_HOST_NAME
+EMAIL_HOST= EMAIL_HOST
 EMAIL_PORT= 587
 EMAIL_USE_TLS= True
 EMAIL_HOST_USER= EMAIL_USER
