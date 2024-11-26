@@ -1,14 +1,19 @@
 [phases.setup]
-nixPkgs = ["...", "file", "libmagic"]
+nixPkgs = ["...", "file", "libmagic", "zlib"]
 
 [phases.build]
 commands = [
   "...",
-  "echo $LD_LIBRARY_PATH",  # Print library path
+  "echo START DEBBBBUG $LD_LIBRARY_PATH",  # Print library path
   "find / -name 'libmagic.so*' 2>/dev/null",  # Search for libmagic library
+  "echo VERSIONNNNNNNNNNN::::"
   "file --version",
+    "echo FILLEEEEEE::::",
+
   "ldd $(which file)",  # Show library dependencies of file command
   "python -c \"import sys; print(sys.path)\"",  # Python module search paths
+    "echo IMNPORTTTTT::::"
+
   "python -c \"import ctypes.util; print(ctypes.util.find_library('magic'))\""  # Try to locate magic library
 ]
 
