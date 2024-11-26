@@ -5,7 +5,7 @@
   },
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "python manage.py migrate && python manage.py collectstatic --noinput",
+    "buildCommand": "apt-get install libmagic-dev && python manage.py migrate && python manage.py collectstatic --noinput",
     "watchPatterns": [
       "/backend/**/*"
     ],
