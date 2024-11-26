@@ -16,3 +16,9 @@ commands = [
 
   "python -c \"import ctypes.util; print(ctypes.util.find_library('magic'))\""  # Try to locate magic library
 ]
+
+[env]
+PYTHON_LD_LIBRARY_PATH = [
+  "pkgs.zlib",
+  "pkgs.file"
+]
