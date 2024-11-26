@@ -120,7 +120,10 @@ const CartPage = () => {
         {cartData.cart && cartData.cart.length > 0 ? (
           <div className="justify-center sm:justify-start flex flex-wrap gap-4 product-list">
             {cartData.cart.map((product) => (
-              <div className="cart-item flex-1" key={product.id}>
+              <div
+                className="cart-item flex-1 max-w-[260px] sm:min-w-[250px]"
+                key={product.id}
+              >
                 <ProductCard
                   key={product.id}
                   item={product}

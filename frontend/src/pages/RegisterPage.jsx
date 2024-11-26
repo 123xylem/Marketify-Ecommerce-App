@@ -193,7 +193,7 @@ export default function SignUp() {
   }
 
   return (
-    <SignUpContainer className="flex-col">
+    <SignUpContainer>
       <CssBaseline enableColorScheme />
       <div direction="column">
         <Card variant="outlined">
