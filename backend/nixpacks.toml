@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["...", "file", "zlib", "libmagic"]  # Added libmagic explicitly
+nixPkgs = ["...", "file", "zlib", "libmagic-full"]  # Added libmagic explicitly
 
 [env]
 LD_LIBRARY_PATH = "${file}/lib:${libmagic}/lib:$LD_LIBRARY_PATH"
