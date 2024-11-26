@@ -1,6 +1,25 @@
 [phases.setup]
-nixPkgs = ["...", "file", "cowsay"]
+nixPkgs = ["...", "file", "libmagic"]
 
 
 [phases.build]
-commands = ["...", "file --version"]
+commands = ["...", "libmagic --version"]
+
+env = {
+  LD_LIBRARY_PATH = "${libmagic}/lib",
+  MAGIC_VERBOSE = "1",  # Enable verbose magic library loading
+  LD_DEBUG = "libs"     # Detailed library loading information
+}
+
+[phases.build]
+commands = [
+  "...",
+  "echo $LD_LIBRARY_PATH",  # Print library path
+  "find / -name 'libmagic.so*' 2>/dev/null",  # Search for libmagic library
+  "file --version",
+  "ldd $(which file)",  # Show library dependencies of file command
+  "python -c \"import sys; print(sys.path)\"",  # Python module search paths
+  "python -c \"import ctypes.util; print(ctypes.util.find_library('magic'))\"",  # Try to locate magic library
+]
+
+
