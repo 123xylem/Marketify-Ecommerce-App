@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["...", "file", "zlib", "libmagic-full"]  # Added libmagic explicitly
+nixPkgs = ["...", "file", "zlib", "libmagic-dev"] 
 
 [env]
 LD_LIBRARY_PATH = "${file}/lib:${libmagic}/lib:$LD_LIBRARY_PATH"
@@ -10,7 +10,7 @@ commands = [
   "...",
   "echo START DEBUG Library Path: $LD_LIBRARY_PATH",
   "echo Searching for libmagic.so:",
-  "find / -name 'libmagic.so*' 2>/dev/null | head -n 10",  # Limit to first 10 results
+  "find / -name 'libmagic.so*' 2>/dev/null | head -n 10",  
   "echo File Command Version:",
   "file --version",
   "echo File Command Library Dependencies:",
