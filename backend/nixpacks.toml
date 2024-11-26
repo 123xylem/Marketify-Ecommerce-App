@@ -11,9 +11,3 @@ commands = [
   "python -c \"import sys; print(sys.path)\"",  # Python module search paths
   "python -c \"import ctypes.util; print(ctypes.util.find_library('magic'))\""  # Try to locate magic library
 ]
-
-env = {
-  LD_LIBRARY_PATH = "${libmagic}/lib",
-  MAGIC_VERBOSE = "1",  # Enable verbose magic library loading
-  LD_DEBUG = "libs"     # Detailed library loading information
-}
