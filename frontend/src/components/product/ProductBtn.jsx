@@ -13,7 +13,7 @@ const handleClick = async (productId, buyNow = false, setState, navigate) => {
     });
     if (response) {
       const data = await response.data;
-      if (response.response.status === 200) {
+      if (response.status === 200) {
         if (!buyNow) {
           setState();
         }
