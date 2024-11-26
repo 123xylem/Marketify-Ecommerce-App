@@ -1,2 +1,6 @@
 [phases.setup]
-nixPkgs = ['...', 'file']
+nixPkgs = ["...", "file"]
+
+
+[phases.build]
+commands = ["...", "file --version"]
