@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["...", "file", "libmagic", "zlib"]
+nixPkgs = ["...", "file", "zlib"]
 
 [phases.build]
 commands = [
