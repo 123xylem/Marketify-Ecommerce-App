@@ -314,7 +314,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://192.168.1.102:5173',
     'http://192.168.1.102:3000',
-    FRONTEND_DOMAIN
+    FRONTEND_DOMAIN,
+    VITE_BACKEND_URL
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False 
