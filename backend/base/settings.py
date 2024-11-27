@@ -315,6 +315,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://192.168.1.102:5173',
     'http://192.168.1.102:3000',
     FRONTEND_DOMAIN,
+   'https://marketify.up.railway.app',
     'https://marketify-backend.up.railway.app'
 ]
 
@@ -335,7 +336,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:5173',
     'http://192.168.1.102:5173',
     FRONTEND_DOMAIN,
-   'https://marketify-backend.up.railway.app'
+   'https://marketify-backend.up.railway.app',
+   'https://marketify.up.railway.app',
 ]
 
 CSRF_COOKIE_SAMESITE = 'Lax'  
