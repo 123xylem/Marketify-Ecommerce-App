@@ -1,12 +1,15 @@
+from typing import Literal
 from django.db import models
 from django.dispatch import receiver
-from versatileimagefield.fields import VersatileImageField, PPOIField
-from versatileimagefield.placeholder import OnStoragePlaceholderImage
-from versatileimagefield.image_warmer import VersatileImageFieldWarmer
+# from versatileimagefield.fields import VersatileImageField, PPOIField
+# from versatileimagefield.placeholder import OnStoragePlaceholderImage
+# from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from django.utils.timezone import timezone, datetime
-from django.utils.safestring import mark_safe
+from django.utils.safestring import SafeText, mark_safe
 from django.utils.html import escape
 from django.utils.text import slugify
+from cloudinary.models import CloudinaryField
+# from cloudinary_storage.storage import get_storage_class
 
 # Create your models here.
 class Category(models.Model):
@@ -29,13 +32,17 @@ class Product(models.Model):
   category = models.ManyToManyField(Category, blank=True, related_name="categories")
   title = models.CharField(max_length=40, unique=True)
   slug = models.CharField(max_length=100, blank=True, null=True)
-  image = VersatileImageField(
-        'Image',
-        upload_to='images/products/',
-        blank=True,
-        placeholder_image=OnStoragePlaceholderImage(
-        path='images/placeholder.jpg')
-  )
+  # image = VersatileImageField(
+  #       'Image',
+  #       upload_to='images/products/',
+  #       blank=True,
+  #       placeholder_image=OnStoragePlaceholderImage(
+  #       path='images/placeholder.jpg')
+  # )
+  # image = models.ImageField('products/', blank=True)
+  image = CloudinaryField('image',  blank=True, null=True)
+  # placeholder_image = CloudinaryField('placeholder', path='images/placeholder.jpg')
+
   description = models.TextField(default='The Product Description is here')
   created_at = models.TimeField(default=datetime.now)
   price = models.DecimalField(max_digits=6, decimal_places=2, default=9.99)
@@ -45,8 +52,8 @@ class Product(models.Model):
   def __str__(self):
       return self.title
   
-  def image_tag(self):
-    return mark_safe(f'<img src="{escape(self.image.url)}" width="50" height="50" />')
+  def image_tag(self) -> SafeText | Literal['']:
+    return mark_safe(f'<img src="{escape(self.image.url)}" width="50" height="50" />') if self.image else ''
   image_tag.short_description = 'Image'
   image_tag.allow_tags = True
 
@@ -65,12 +72,12 @@ class Product(models.Model):
 
 
 
-@receiver(models.signals.post_save, sender=Product)
-def warm_products_list_img(sender, instance, **kwargs):
-    """Ensures Product List images are created post-save"""
-    product_img_warmer = VersatileImageFieldWarmer(
-        instance_or_queryset=instance,
-        rendition_key_set='product_grid_image',
-        image_attr='image'
-    )
-    num_created, failed_to_create = product_img_warmer.warm()
+# @receiver(models.signals.post_save, sender=Product)
+# def warm_products_list_img(sender, instance, **kwargs):
+#     """Ensures Product List images are created post-save"""
+#     product_img_warmer = VersatileImageFieldWarmer(
+#         instance_or_queryset=instance,
+#         rendition_key_set='product_grid_image',
+#         image_attr='image'
+#     )
+#     num_created, failed_to_create = product_img_warmer.warm()
