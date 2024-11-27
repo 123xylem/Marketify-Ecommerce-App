@@ -5,8 +5,8 @@ import { refreshToken } from "./utils";
 
 //Temp hardcode api as .env vars are saved to a cache
 const api = axios.create({
-  // baseURL: import.meta.env.VITE_BACKEND_URL,
-  baseURL: "http://192.168.1.102:8000/api/",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
+  // baseURL: "http://192.168.1.102:8000/api/",
   headers: {
     Accept: "*/*",
     "Content-Type": "application/json",
