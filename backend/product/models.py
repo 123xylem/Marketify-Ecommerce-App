@@ -40,7 +40,7 @@ class Product(models.Model):
   #       path='images/placeholder.jpg')
   # )
   # image = models.ImageField('products/', blank=True)
-  image = CloudinaryField('image',  blank=True, null=True)
+  image = CloudinaryField('image', use_filename=True, blank=True, null=True)
   # placeholder_image = CloudinaryField('placeholder', path='images/placeholder.jpg')
 
   description = models.TextField(default='The Product Description is here')
