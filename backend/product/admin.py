@@ -10,8 +10,9 @@ class ProductAdmin(admin.ModelAdmin):
     get_categories.short_description = 'Categories'
 
     def display_image(self, obj):
-        url = obj.image.url
-        return f'<img src=f"{url}">'
+        if obj.image:
+            return f'<img src="{obj.image.url}" width="50" height="50" />'
+        return 'No image'
     display_image.short_description = 'Img'
 
 admin.site.register(Product, ProductAdmin)

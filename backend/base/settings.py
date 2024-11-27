@@ -37,7 +37,7 @@ VITE_OAUTH_CALLBACK_URL = vite_auth_data['VITE_OAUTH_CALLBACK_URL']
 
 # Access VITE_BACKEND_URL
 VITE_BACKEND_URL = config('VITE_BACKEND_URL')
-
+IMAGE_HOST_SECRET = config('IMAGE_HOST_SECRET')
 # DB_NAME = config('DB_NAME')
 # DB_PW = config('DB_PW')
 # DB_USER = config('DB_USER')
@@ -92,7 +92,31 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     # 'dj_rest_auth',
     # 'dj_rest_auth.registration',
+    'cloudinary_storage',
+    'cloudinary',   
+
+
 ]
+import cloudinary
+
+cloudinary.config(
+    cloud_name="dnwglax7z",
+    api_key="185675124494865",
+    api_secret="EDWYj2xXn2nzRbzgXmIAGr6_UAw",
+    # secure=True
+)
+
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': 'dnwglax7z',
+#     'API_KEY': '185675124494865',
+#     'API_SECRET': 'EDWYj2xXn2nzRbzgXmIAGr6_UAw',
+# }
+
+# print(CLOUDINARY_STORAGE)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -359,36 +383,36 @@ EMAIL_HOST_PASSWORD= EMAIL_PW
 
 # IMAGE PACKAGE:
 
-VERSATILEIMAGEFIELD_SETTINGS = {
-    # The amount of time, in seconds, that references to created images
-    # should be stored in the cache. Defaults to `2592000` (30 days)
-    'cache_length': 2592000,
-    # The name of the cache you'd like `django-versatileimagefield` to use.
-    # Defaults to 'versatileimagefield_cache'. If no cache exists with the name
-    # provided, the 'default' cache will be used instead.
-    'cache_name': 'versatileimagefield_cache',
-    # The save quality of modified JPEG images. More info here:
-    # https://pillow.readthedocs.io/en/latest/handbook/image-file-formats.html#jpeg
-    # Defaults to 70
-    'jpeg_resize_quality': 70,
-    # The name of the top-level folder within storage classes to save all
-    # sized images. Defaults to '__sized__'
-    'sized_directory_name': '__sized__',
-    # The name of the directory to save all filtered images within.
-    # Defaults to '__filtered__':
-    'filtered_directory_name': '__filtered__',
-    # The name of the directory to save placeholder images within.
-    # Defaults to '__placeholder__':
-    'placeholder_directory_name': '__placeholder__',
-    # Whether or not to create new images on-the-fly. Set this to `False` for
-    # speedy performance but don't forget to 'pre-warm' to ensure they're
-    # created and available at the appropriate URL.
-    'create_images_on_demand': True,
-    'image_key_post_processor': None,
-    # Whether to create progressive JPEGs. Read more about progressive JPEGs
-    # here: https://optimus.io/support/progressive-jpeg/
-    'progressive_jpeg': False
-}
+# VERSATILEIMAGEFIELD_SETTINGS = {
+#     # The amount of time, in seconds, that references to created images
+#     # should be stored in the cache. Defaults to `2592000` (30 days)
+#     'cache_length': 2592000,
+#     # The name of the cache you'd like `django-versatileimagefield` to use.
+#     # Defaults to 'versatileimagefield_cache'. If no cache exists with the name
+#     # provided, the 'default' cache will be used instead.
+#     'cache_name': 'versatileimagefield_cache',
+#     # The save quality of modified JPEG images. More info here:
+#     # https://pillow.readthedocs.io/en/latest/handbook/image-file-formats.html#jpeg
+#     # Defaults to 70
+#     'jpeg_resize_quality': 70,
+#     # The name of the top-level folder within storage classes to save all
+#     # sized images. Defaults to '__sized__'
+#     'sized_directory_name': '__sized__',
+#     # The name of the directory to save all filtered images within.
+#     # Defaults to '__filtered__':
+#     'filtered_directory_name': '__filtered__',
+#     # The name of the directory to save placeholder images within.
+#     # Defaults to '__placeholder__':
+#     'placeholder_directory_name': '__placeholder__',
+#     # Whether or not to create new images on-the-fly. Set this to `False` for
+#     # speedy performance but don't forget to 'pre-warm' to ensure they're
+#     # created and available at the appropriate URL.
+#     'create_images_on_demand': True,
+#     'image_key_post_processor': None,
+#     # Whether to create progressive JPEGs. Read more about progressive JPEGs
+#     # here: https://optimus.io/support/progressive-jpeg/
+#     'progressive_jpeg': False
+# }
 
 VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     'primary_image_detail': [
@@ -400,3 +424,4 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ('detail', 'crop__400x400'),
     ],
 }
+
