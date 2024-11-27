@@ -2,6 +2,8 @@ from pathlib import Path
 import os, json
 from decouple import config
 from datetime import timedelta
+import dj_database_url
+
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 PRODUCT_DIR = os.path.join(PROJECT_DIR, 'product')
@@ -15,13 +17,14 @@ email_db_env = json.loads(config('EMAIL_DB_ENV'))
 EMAIL_HOST = email_db_env['host']
 EMAIL_USER = email_db_env['EMAIL_USER']
 EMAIL_PW = email_db_env['EMAIL_PW']
-DB_NAME = email_db_env['DB_NAME']
-DB_USER = email_db_env['DB_USER']
-DB_PW = email_db_env['DB_PW']
+# DB_NAME = email_db_env['DB_NAME']
+# DB_USER = email_db_env['DB_USER']
+# DB_PW = email_db_env['DB_PW']
 SECRET_KEY = email_db_env['DJANGO_SECRET']
 DEBUG = email_db_env['DEBUG'] == 'True'
 
 FRONTEND_DOMAIN = config('FRONTEND_DOMAIN')
+DATABASE_URL = config('DATABASE_URL')
 
 STRIPE_SK = config('STRIPE_SK')
 
@@ -141,19 +144,22 @@ WSGI_APPLICATION = 'base.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME':  DB_NAME,
+#         'USER': DB_USER,
+#         'PASSWORD': DB_PW,
+#         'HOST': 'localhost',  # or your database host
+#         'PORT': '5432',       # or your database port
+
+#     }
+# }
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME':  DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PW,
-        'HOST': 'localhost',  # or your database host
-        'PORT': '5432',       # or your database port
-
-    }
+    'default': dj_database_url.config(default=DATABASE_URL)
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
