@@ -102,7 +102,7 @@ import cloudinary
 cloudinary.config(
     cloud_name="dnwglax7z",
     api_key="185675124494865",
-    api_secret="EDWYj2xXn2nzRbzgXmIAGr6_UAw",
+    api_secret=IMAGE_HOST_SECRET,
     # secure=True
 )
 
