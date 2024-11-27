@@ -8,6 +8,7 @@ colorama==0.4.6
 cryptography==43.0.3
 cssbeautifier==1.15.1
 defusedxml==0.7.1
+dj-database-url==2.3.0
 Django==5.1.1
 django-allauth==0.61.1
 django-cors-headers==4.4.0
