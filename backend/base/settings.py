@@ -315,19 +315,10 @@ CORS_ALLOWED_ORIGINS = [
     'http://192.168.1.102:5173',
     'http://192.168.1.102:3000',
     FRONTEND_DOMAIN,
-    VITE_BACKEND_URL
+    'https://marketify-backend.up.railway.app'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False 
-
-# CORS_ALLOW_HEADERS = [
-#     'content-type',
-#     'authorization',
-#     'x-csrf-token',
-#     'accept',
-#     'origin',
-#     'x-requested-with',
-# ]
 
 CORS_ALLOW_CREDENTIALS = True 
 
@@ -344,7 +335,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:5173',
     'http://192.168.1.102:5173',
     FRONTEND_DOMAIN,
-   VITE_BACKEND_URL
+   'https://marketify-backend.up.railway.app'
 ]
 
 CSRF_COOKIE_SAMESITE = 'Lax'  
