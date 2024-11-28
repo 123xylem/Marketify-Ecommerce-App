@@ -74,23 +74,6 @@ class ProductViewSet(viewsets.ModelViewSet):
             'related_products': related_serializer.data
         })
 
-# @permission_classes([AllowAny])
-# @extend_schema(responses=ProductSerializer)
-# class ProductDetailView(DetailView):
-#     model= Product
-#     template_name='product-detail.html'
-#     print('hit ')
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         print(context, 'c')
-#         product = self.object
-#         categories = product.category.all()
-#         context['categories'] = categories
-
-#         if categories:
-#             related_products = Product.objects.filter(category=categories.first()).exclude(pk=product.pk)
-#             context['related_products'] = related_products
-#         return context
 
 
 @permission_classes([AllowAny])

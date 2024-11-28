@@ -20,8 +20,6 @@ class CartViewSet(viewsets.ModelViewSet):
       # print(serializer_class, queryset)
       permission_classes = [IsAuthenticated]
       def get_queryset(self):
-        # print(vars(self.request.user), '=========')
-        # # print(self.request.__dict__)
         return Cart.objects.filter(user=self.request.user)
       
       def get_cart(self):
@@ -33,29 +31,23 @@ class CartViewSet(viewsets.ModelViewSet):
           cart = self.get_cart()
           product_id = self.request.data.get('product_id')
           buy_now = self.request.data.get('buy_now')
-          product = get_object_or_404(Product, id=product_id)
           cart.add_product(product_id)
           if buy_now:
              cart.buy_product_now(product_id)
 
           cart.save()
-          print(vars(cart), cart.user, 'hey')
           return Response({'data': f'{self.serializer_class(cart).data} Created or something'})
   
       def list(self, request):
           cart = self.get_cart()
           cart_products = cart.cartitem_set.all()
-          # product_data = ProductSerializer(products, many=True).data
           serializer = CartItemSerializer(cart_products, many=True).data
-
           return Response({'cart': serializer})
 
 
       def update(self, request, pk=None):
         cart = self.get_cart()
         serializer = self.get_serializer(cart)
-        print(request, 'update????????????????????')
-
         return Response({
           'data': serializer.data
         })
@@ -87,9 +79,6 @@ class CartViewSet(viewsets.ModelViewSet):
           buy_now_action = 'buy_now' in request.data and request.data['buy_now']
           cart_product, created = CartItem.objects.get_or_create(cart=cart, product=product)
           if created:
-            # cart_product.quantity += 1
-            # cart_product.save()
-            print(request.data, 'CREATD')
             if buy_now_action:
               print('REDIRECT TO CART')
               return Response(data={'redirect_url': '/api/cart/frontend/cart', 'message': 'Redirecting to cart'}, status=status.HTTP_200_OK)
@@ -100,8 +89,6 @@ class CartViewSet(viewsets.ModelViewSet):
 
 
           cart_item = cart_product
-          # print(pk, product, 'product match?')
-          # cart_item = CartItem.objects.filter(cart=cart, product=pk).first()
           print( 'NOT CREATED', cart_item)
           print(cart_item.quantity, cart.cartitem_set.all())
           cart_item.quantity += 1
@@ -129,8 +116,6 @@ class CartViewSet(viewsets.ModelViewSet):
           cart.clear_products_list()
           print(order, 'order DATA')
           return render(request, 'order/order.html', {'order_data': order, 'order_id': order.id, 'user': request.user})
-
-          return Response({'status': 'Checkout started'}, status=status.HTTP_200_OK)
 
 def cart_viewer(request):
   cart, created = Cart.objects.get_or_create(user=request.user)

@@ -3,7 +3,7 @@ import os, json
 from decouple import config
 from datetime import timedelta
 import dj_database_url
-
+import cloudinary
 
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 PRODUCT_DIR = os.path.join(PROJECT_DIR, 'product')
@@ -38,23 +38,12 @@ VITE_OAUTH_CALLBACK_URL = vite_auth_data['VITE_OAUTH_CALLBACK_URL']
 # Access VITE_BACKEND_URL
 VITE_BACKEND_URL = config('VITE_BACKEND_URL')
 IMAGE_HOST_SECRET = config('IMAGE_HOST_SECRET')
-# DB_NAME = config('DB_NAME')
-# DB_PW = config('DB_PW')
-# DB_USER = config('DB_USER')
-# VITE_OAUTH_CLIENT_ID = config('VITE_OAUTH_CLIENT_ID')
-# VITE_OAUTH_CLIENT_SECRET = config('VITE_OAUTH_CLIENT_SECRET')
-# VITE_OAUTH_CALLBACK_URL = config('VITE_OAUTH_CALLBACK_URL')
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+
 LOGIN_URL = 'marketify_login'
-# EMAIL_HOST_NAME=config('EMAIL_HOST')
-# EMAIL_PW=config('EMAIL_PW')
-# EMAIL_USER=config('EMAIL_USER')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = config('DEBUG', default=False, cast=bool)
 AUTH_USER_MODEL = 'accountprofile.CustomAccountProfile'
-# ACCOUNT_EMAIL_MODEL = 'base.CustomEmailAddress'
 
 ALLOWED_HOSTS = ['*']
    
@@ -97,7 +86,6 @@ INSTALLED_APPS = [
 
 
 ]
-import cloudinary
 
 cloudinary.config(
     cloud_name="dnwglax7z",
@@ -106,13 +94,6 @@ cloudinary.config(
     # secure=True
 )
 
-# CLOUDINARY_STORAGE = {
-#     'CLOUD_NAME': 'dnwglax7z',
-#     'API_KEY': '185675124494865',
-#     'API_SECRET': 'EDWYj2xXn2nzRbzgXmIAGr6_UAw',
-# }
-
-# print(CLOUDINARY_STORAGE)
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
@@ -162,6 +143,35 @@ TEMPLATES = [
 
 
 WSGI_APPLICATION = 'base.wsgi.application'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'propagate': False,
+        },
+    },
+}
 
 
 
