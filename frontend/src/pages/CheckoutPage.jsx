@@ -41,10 +41,13 @@ const CheckoutPage = () => {
     >
       <h1 className=" text-xl font-bold pb-4">
         {isError && ("Error:", error)}
-        {checkoutSuccess ? "ORDER SUCCESS" : "The order was not processed"}
+        {isPending
+          ? "Loading...."
+          : checkoutSuccess
+            ? "Order Processed"
+            : "Order Not Processed"}
       </h1>
       <div className="order-list flex">
-        {isPending && "Loading...."}
         {lastOrder && checkoutSuccess ? (
           <div className="order-item flex gap-4 flex-col" key={lastOrder.id}>
             <h2 className="font-semi-bold">

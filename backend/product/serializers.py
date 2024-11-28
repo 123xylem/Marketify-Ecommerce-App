@@ -29,7 +29,7 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_image(self, obj) -> str:
         request = self.context.get('request')
         if obj.image:
-            print(obj.image, self.context)
+
             if request:
                 return request.build_absolute_uri(obj.image.url)
             return f'https://res.cloudinary.com/dnwglax7z/image/upload/v1732733854/hehnx9fnpogct5e4jhid.jpg'
