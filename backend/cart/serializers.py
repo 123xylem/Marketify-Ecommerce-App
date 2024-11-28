@@ -2,7 +2,6 @@ from rest_framework import  serializers
 from .models import Cart, CartItem
 from product.serializers import ProductSerializer
 class CartSerializer(serializers.ModelSerializer):
-
   class Meta:
     model = Cart
     fields = ['user', 'products_list']
@@ -14,7 +13,7 @@ class CartItemSerializer(serializers.ModelSerializer):
   class Meta:
     model = CartItem
     fields = ['id', 'product', 'quantity']
-
+  
   def to_representation(self, instance):
       # Call the parent class's to_representation to get the default representation
       representation = super().to_representation(instance)
@@ -35,3 +34,4 @@ class CartItemSerializer(serializers.ModelSerializer):
       }
 
       return flattened_representation
+  

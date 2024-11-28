@@ -17,23 +17,19 @@ from rest_framework.decorators import action
 class CartViewSet(viewsets.ModelViewSet):
       serializer_class = CartSerializer
       queryset = Cart.objects.all()
-      # print(serializer_class, queryset)
       permission_classes = [IsAuthenticated]
+
       def get_queryset(self):
-        # print(vars(self.request.user), '=========')
-        # # print(self.request.__dict__)
         return Cart.objects.filter(user=self.request.user)
       
       def get_cart(self):
         cart, created = Cart.objects.get_or_create(user=self.request.user)
         return cart
 
-
       def create(self, request, *args, **kwargs):
           cart = self.get_cart()
           product_id = self.request.data.get('product_id')
           buy_now = self.request.data.get('buy_now')
-          product = get_object_or_404(Product, id=product_id)
           cart.add_product(product_id)
           if buy_now:
              cart.buy_product_now(product_id)
@@ -45,10 +41,14 @@ class CartViewSet(viewsets.ModelViewSet):
       def list(self, request):
           cart = self.get_cart()
           cart_products = cart.cartitem_set.all()
-          # product_data = ProductSerializer(products, many=True).data
-          serializer = CartItemSerializer(cart_products, many=True).data
+          serializer = CartItemSerializer(cart_products, many=True, context=self.get_serializer_context()).data
 
           return Response({'cart': serializer})
+
+      #Used to give context (like request to serializer so serializer can return for instance a URL)
+      def get_serializer_context(self):
+        context = super(CartViewSet, self).get_serializer_context()
+        return context
 
 
       def update(self, request, pk=None):
@@ -129,26 +129,3 @@ class CartViewSet(viewsets.ModelViewSet):
           cart.clear_products_list()
           print(order, 'order DATA')
           return render(request, 'order/order.html', {'order_data': order, 'order_id': order.id, 'user': request.user})
-
-          return Response({'status': 'Checkout started'}, status=status.HTTP_200_OK)
-
-def cart_viewer(request):
-  cart, created = Cart.objects.get_or_create(user=request.user)
-  products = cart.products_list.all()
-  return render(request, 'cart/cart.html', {'products': products, 'user': request.user})
-
-
-def add_to_cart(request, id):
-  #create and/or add product id to cart
-  print('here?')
-  product = get_object_or_404(Product, id=id)
-
-  print(id, product)
-  return Response(product)
-
-def remove_from_cart(request, id):
-  #Remove product id from cart
-  pass
-
-
-# %%

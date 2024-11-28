@@ -29,6 +29,7 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_image(self, obj) -> str:
         request = self.context.get('request')
         if obj.image:
+            print(obj.image, self.context)
             if request:
                 return request.build_absolute_uri(obj.image.url)
             return f'http://192.168.1.102:8000{settings.MEDIA_URL}{obj.image}'
