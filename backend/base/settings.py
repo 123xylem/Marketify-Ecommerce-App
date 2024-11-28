@@ -234,7 +234,6 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static/'),
     os.path.join(PRODUCT_DIR, 'static/'),
     os.path.join(ORDER_DIR, 'static/'),
-    # os.path.join(CART_DIR, 'static/'),
 ]
 
 # STATIC_ROOT = os.path.join(PROJECT_DIR, STATIC_URL)
@@ -268,20 +267,9 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 
-
-
-# HEADLESS_ONLY = True
-# HEADLESS_FRONTEND_URLS = {
-#     "account_confirm_email": "/account/verify-email/{key}",
-#     "account_reset_password": "/account/password/reset",
-#     "account_reset_password_from_key": "/account/password/reset/key/{key}",
-#     "account_signup": "/account/signup",
-#     "socialaccount_login_error": "/account/provider/callback",
-# }
-
-
-LOGIN_REDIRECT_URL="http://192.168.1.102:5173/login?jwtNeeded=true"
-LOGOUT_REDIRECT_URL="http://192.168.1.102:5173/logout?loggedout=true"
+LOGIN_REDIRECT_URL=FRONTEND_DOMAIN+"/login?jwtNeeded=true"
+LOGOUT_REDIRECT_URL=FRONTEND_DOMAIN+"/logout?loggedout=true"
+print(LOGIN_REDIRECT_URL)
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
