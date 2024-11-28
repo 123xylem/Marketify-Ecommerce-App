@@ -137,7 +137,6 @@ def CreateCheckoutSession(request):
                 "username": request.user
               }
           }
-          print(FRONTEND_DOMAIN, 'aaaaaaaahdiaosahdoaihdsoihasoihdsoidsahosaihsoudsuasdoiuhasdiodsahou')
 
           session = stripe.checkout.Session.create(
               payment_method_types=['card'],
