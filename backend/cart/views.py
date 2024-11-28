@@ -35,7 +35,6 @@ class CartViewSet(viewsets.ModelViewSet):
              cart.buy_product_now(product_id)
 
           cart.save()
-          print(vars(cart), cart.user, 'hey')
           return Response({'data': f'{self.serializer_class(cart).data} Created or something'})
   
       def list(self, request):
@@ -54,8 +53,6 @@ class CartViewSet(viewsets.ModelViewSet):
       def update(self, request, pk=None):
         cart = self.get_cart()
         serializer = self.get_serializer(cart)
-        print(request, 'update????????????????????')
-
         return Response({
           'data': serializer.data
         })
@@ -87,9 +84,6 @@ class CartViewSet(viewsets.ModelViewSet):
           buy_now_action = 'buy_now' in request.data and request.data['buy_now']
           cart_product, created = CartItem.objects.get_or_create(cart=cart, product=product)
           if created:
-            # cart_product.quantity += 1
-            # cart_product.save()
-            print(request.data, 'CREATD')
             if buy_now_action:
               print('REDIRECT TO CART')
               return Response(data={'redirect_url': '/api/cart/frontend/cart', 'message': 'Redirecting to cart'}, status=status.HTTP_200_OK)
@@ -100,8 +94,6 @@ class CartViewSet(viewsets.ModelViewSet):
 
 
           cart_item = cart_product
-          # print(pk, product, 'product match?')
-          # cart_item = CartItem.objects.filter(cart=cart, product=pk).first()
           print( 'NOT CREATED', cart_item)
           print(cart_item.quantity, cart.cartitem_set.all())
           cart_item.quantity += 1
