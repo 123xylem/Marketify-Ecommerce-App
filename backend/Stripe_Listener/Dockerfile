@@ -5,13 +5,13 @@ FROM stripe/stripe-cli:latest
 WORKDIR /app/Stripe_Listener
 
 # Copy the entryPoint.sh script to the container
-COPY entryPoint.sh /usr/local/bin/entryPoint.sh
+# COPY entryPoint.sh /usr/local/bin/entryPoint.sh
 
-# Make the script executable
-RUN chmod +x /usr/local/bin/entryPoint.sh
+# # Make the script executable
+# RUN chmod +x /usr/local/bin/entryPoint.sh
 
-# Set the entrypoint to the script that starts the Stripe listener
-ENTRYPOINT ["/usr/local/bin/entryPoint.sh"]
+# # Set the entrypoint to the script that starts the Stripe listener
+# ENTRYPOINT ["/usr/local/bin/entryPoint.sh"]
 
 # FROM stripe/stripe-cli:latest
 
