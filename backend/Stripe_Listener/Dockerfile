@@ -18,5 +18,5 @@ FROM stripe/stripe-cli:latest
 
 # ENV STRIPE_SK=sk_test_4eC39HqLyjWDarjtT1zdp7dc
 # ENV BACKEND_DOMAIN=http://your-backend-domain
-
+RUN echo "STRIPE_SK" "$STRIPE_SK"
 CMD ["listen", "--api-key", "$STRIPE_SK", "--forward-to", "$BACKEND_DOMAIN/api/orders/stripe/payment-handler/"]
