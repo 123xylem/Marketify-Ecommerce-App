@@ -1,16 +1,15 @@
-# Use an official Node.js runtime as a parent image (if your backend is Node.js-based)
+# Use an official Node.js runtime as the base image
 FROM node:16
 
 # Set the working directory in the container
-WORKDIR /app/backend/Stripe_Listener
+WORKDIR /app/Stripe_Listener
 
-# Install curl (required for Stripe CLI installation)
-RUN apt-get update && apt-get install -y curl
+# Download and install the Stripe CLI in the same folder
+RUN apt-get update && apt-get install -y stripe
 
-# Install Stripe CLI
-RUN curl -sSL https://github.com/stripe/stripe-cli/releases/download/v1.10.0/stripe-cli_1.10.0_linux_x86_64.tar.gz | tar -xz
-RUN mv stripe /usr/local/bin/
+# Copy the entrypoint script to the container
+COPY entryPoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entryPoint.sh
 
-# Continue with your other installation steps
-# COPY your application code and install dependencies
-COPY . .
+# Set the entrypoint to start the Stripe listener
+ENTRYPOINT ["/usr/local/bin/entryPoint.sh"]
