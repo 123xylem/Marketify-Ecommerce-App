@@ -51,7 +51,7 @@ const SearchBar = () => {
             placeholder="Search products"
             onChange={handleChange}
             value={searchTerm}
-            className="p-1"
+            className="p-1 sm:max-w-min max-w-[100px] rounded"
           />
           <button className="pl-2 text-xl hidden md:flex" type="submit">
             <FaMagnifyingGlass color={"white"} />

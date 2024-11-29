@@ -52,28 +52,38 @@ const NavigationMenu = ({ categories, header = false }) => {
   return (
     <nav className="flex min-h-[25px] relative">
       {header && (
-        <button
-          onClick={handleNavClick}
-          className="md:hidden  flex-col  flex text-white z-100"
-          id={`hamburger-icon${header ? "-header" : ""}`}
-        >
-          <span className="block w-6 h-1 bg-white mb-1"></span>
-          <span className="block w-6 h-1 bg-white mb-1"></span>
-          <span className="block w-6 h-1 bg-white"></span>
-        </button>
+        <>
+          <div className="flex justify-between relative z-50 sm:hidden flex">
+            <Link
+              to="/"
+              className="flex justify-between items-center w-full flex-nowrap  gap-2 font-bold"
+            >
+              <TbHexagonLetterM color="white" size="42" />
+            </Link>
+          </div>
+
+          <button
+            onClick={handleNavClick}
+            className="md:hidden  flex-col  flex text-white z-100"
+            id={`hamburger-icon${header ? "-header" : ""}`}
+          >
+            <span className="block w-6 h-1 bg-white mb-1"></span>
+            <span className="block w-6 h-1 bg-white mb-1"></span>
+            <span className="block w-6 h-1 bg-white"></span>
+          </button>
+        </>
       )}
       <ul
         className={`nav-menu-ul${header ? "-header hidden flex-col sm:static bg-black items-start justify-start max-w-full md:pl-0 p-4 md:pb-0 fixed left-10 top-5 z-50 " : " items-center px-0 "} flex   md:pt-0   
           gap-4 w-full text-white bordered text-white max-w-max md:flex-row md:flex md:items-center md:bg-transparent md:max-w-auto`}
       >
-        <div className="flex justify-between relative z-50">
+        <div className="flex justify-between relative z-50 hidden sm:flex">
           <Link
             to="/"
             className="flex justify-between items-center w-full flex-nowrap  gap-2 font-bold"
           >
             <TbHexagonLetterM color="white" size="42" />
             <h6 className="text-[#fff] text-base text-xl sm:text-2xl ">
-              {" "}
               Marketify
             </h6>
           </Link>
