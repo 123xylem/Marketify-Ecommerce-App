@@ -44,6 +44,7 @@ LOGIN_URL = 'marketify_login'
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = config('DEBUG', default=False, cast=bool)
 AUTH_USER_MODEL = 'accountprofile.CustomAccountProfile'
+SOCIALACCOUNT_AUTO_SIGNUP = True
 
 ALLOWED_HOSTS = ['*']
    
@@ -176,20 +177,6 @@ LOGGING = {
 
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME':  DB_NAME,
-#         'USER': DB_USER,
-#         'PASSWORD': DB_PW,
-#         'HOST': 'localhost',  # or your database host
-#         'PORT': '5432',       # or your database port
-
-#     }
-# }
-
 
 DATABASES = {
     'default': dj_database_url.config(default=DATABASE_URL)
@@ -312,26 +299,6 @@ SPECTACULAR_SETTINGS = {
 }
 
 
-# CORS_ALLOWED_ORIGINS = [
-#  'http://localhost:5173',
-#  'http://192.168.1.102:5173'
-# ]
-# CORS_ALLOW_ALL_ORIGINS = True
-
-# CORS_ALLOW_HEADERS = '*' 
-# CSRF_TRUSTED_ORIGINS = ['http://localhost:5173', 'http://192.168.1.102:5173']
-# CORS_ALLOW_CREDENTIALS = True
-
-# CORS_ALLOW_METHODS = (
-#     'GET',
-#     'POST',
-#     'PUT',
-#     'OPTIONS',
-# )
-
-# CSRF_COOKIE_SAMESITE=None
-# CSRF_COOKIE_SECURE=False
-
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://192.168.1.102:5173',
@@ -360,6 +327,7 @@ CSRF_TRUSTED_ORIGINS = [
     FRONTEND_DOMAIN,
    'https://marketify-backend.up.railway.app',
    'https://marketify.up.railway.app',
+   'https://accounts.google.com'
 ]
 
 CSRF_COOKIE_SAMESITE = 'Lax'  

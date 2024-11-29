@@ -5,7 +5,7 @@ import { FaUserAlt } from "react-icons/fa";
 
 const UserWelcome = ({ username }) => {
   return (
-    <div className="user-welcome flex font-semibold items-center gap-4 text-white ">
+    <div className="user-welcome flex font-semibold items-center sm:gap-2 text-white ">
       <Link to="/cart/" className="nav-link-parent flex">
         <FaCartShopping
           style={{ marginRight: "8px" }}
