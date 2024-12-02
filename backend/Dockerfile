@@ -34,7 +34,7 @@ FROM nginx:alpine AS production
 RUN apk add --no-cache python3 py3-pip
 
 # Set environment variables for Gunicorn
-ENV GUNICORN_CMD_ARGS="--bind 0.0.0.0:8000 --workers 3"
+# ENV GUNICORN_CMD_ARGS="--bind 0.0.0.0:8000 --workers 3"
 
 # Copy NGINX configuration
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
