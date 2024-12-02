@@ -11,15 +11,12 @@ CART_DIR = os.path.join(PROJECT_DIR, 'cart')
 BASE_DIR = os.path.join(PROJECT_DIR, 'base')
 ORDER_DIR = os.path.join(PROJECT_DIR, 'order')
 
-
 email_db_env = json.loads(config('EMAIL_DB_ENV'))
 
 EMAIL_HOST = email_db_env['host']
 EMAIL_USER = email_db_env['EMAIL_USER']
 EMAIL_PW = email_db_env['EMAIL_PW']
-# DB_NAME = email_db_env['DB_NAME']
-# DB_USER = email_db_env['DB_USER']
-# DB_PW = email_db_env['DB_PW']
+
 SECRET_KEY = email_db_env['DJANGO_SECRET']
 DEBUG = email_db_env['DEBUG'] == 'True'
 FRONTEND_DOMAIN = config('FRONTEND_DOMAIN')
@@ -40,14 +37,18 @@ IMAGE_HOST_SECRET = config('IMAGE_HOST_SECRET')
 
 LOGIN_URL = 'marketify_login'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = config('DEBUG', default=False, cast=bool)
 AUTH_USER_MODEL = 'accountprofile.CustomAccountProfile'
 SOCIALACCOUNT_AUTO_SIGNUP = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [    
+     FRONTEND_DOMAIN,
+    'https://marketify.up.railway.app',
+    'https://marketify-backend.up.railway.app'
+]
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
    
-# Application definition
 SITE_ID=2
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -83,21 +84,17 @@ INSTALLED_APPS = [
     # 'dj_rest_auth.registration',
     'cloudinary_storage',
     'cloudinary',   
-
-
 ]
 
 cloudinary.config(
     cloud_name="dnwglax7z",
     api_key="185675124494865",
     api_secret=IMAGE_HOST_SECRET,
-    # secure=True
+    secure=True
 )
 
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -173,7 +170,6 @@ LOGGING = {
         },
     },
 }
-
 
 
 # Database
@@ -259,11 +255,9 @@ LOGOUT_REDIRECT_URL=FRONTEND_DOMAIN+"/logout?loggedout=true"
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_USERNAME_REQUIRED = False
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
 
 
@@ -330,54 +324,26 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 CSRF_COOKIE_SAMESITE = 'Lax'  
-CSRF_COOKIE_SECURE = False  # True for production with HTTPS
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+if DEBUG:
+    CSRF_COOKIE_SECURE = False
 
 
-
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-# # EMAIL_FILE_PATH = 'email_logs/'  
 EMAIL_HOST= EMAIL_HOST
 EMAIL_PORT= 587
 EMAIL_USE_TLS= True
 EMAIL_HOST_USER= EMAIL_USER
 EMAIL_HOST_PASSWORD= EMAIL_PW
 
-
-# IMAGE PACKAGE:
-
-# VERSATILEIMAGEFIELD_SETTINGS = {
-#     # The amount of time, in seconds, that references to created images
-#     # should be stored in the cache. Defaults to `2592000` (30 days)
-#     'cache_length': 2592000,
-#     # The name of the cache you'd like `django-versatileimagefield` to use.
-#     # Defaults to 'versatileimagefield_cache'. If no cache exists with the name
-#     # provided, the 'default' cache will be used instead.
-#     'cache_name': 'versatileimagefield_cache',
-#     # The save quality of modified JPEG images. More info here:
-#     # https://pillow.readthedocs.io/en/latest/handbook/image-file-formats.html#jpeg
-#     # Defaults to 70
-#     'jpeg_resize_quality': 70,
-#     # The name of the top-level folder within storage classes to save all
-#     # sized images. Defaults to '__sized__'
-#     'sized_directory_name': '__sized__',
-#     # The name of the directory to save all filtered images within.
-#     # Defaults to '__filtered__':
-#     'filtered_directory_name': '__filtered__',
-#     # The name of the directory to save placeholder images within.
-#     # Defaults to '__placeholder__':
-#     'placeholder_directory_name': '__placeholder__',
-#     # Whether or not to create new images on-the-fly. Set this to `False` for
-#     # speedy performance but don't forget to 'pre-warm' to ensure they're
-#     # created and available at the appropriate URL.
-#     'create_images_on_demand': True,
-#     'image_key_post_processor': None,
-#     # Whether to create progressive JPEGs. Read more about progressive JPEGs
-#     # here: https://optimus.io/support/progressive-jpeg/
-#     'progressive_jpeg': False
-# }
 
 VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     'primary_image_detail': [
