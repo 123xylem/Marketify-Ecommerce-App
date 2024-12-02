@@ -20,7 +20,7 @@ class CategorySerializer(serializers.ModelSerializer):
             
 
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategorySerializer( many=True, read_only=True)
+    category = CategorySerializer(many=True, read_only=True)
     image = serializers.SerializerMethodField()
     class Meta:
         model = Product
