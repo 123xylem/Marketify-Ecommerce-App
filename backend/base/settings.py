@@ -44,7 +44,9 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 ALLOWED_HOSTS = [    
      FRONTEND_DOMAIN,
     'https://marketify.up.railway.app',
-    'https://marketify-backend.up.railway.app'
+    'https://marketify-backend.up.railway.app',
+    'marketify-backend.up.railway.app',
+    'marketify.up.railway.app'
 ]
 if DEBUG:
     ALLOWED_HOSTS = ['*']
