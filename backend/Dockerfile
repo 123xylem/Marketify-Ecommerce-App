@@ -40,7 +40,7 @@ ENV GUNICORN_CMD_ARGS="--bind 0.0.0.0:8000 --workers 3"
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 # Copy static files from build stage
-COPY --from=build /app/staticfiles /static
+# COPY --from=build /app/staticfiles /static
 
 # Copy application code from build stage
 COPY --from=build /app /app
