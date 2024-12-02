@@ -22,7 +22,7 @@ class HomePageView(ListView):
 class ProductViewSet(viewsets.ModelViewSet):
     lookup_fields = ['pk', 'slug']
     serializer_class = ProductSerializer
-    queryset = Product.objects.all()
+    queryset = Product.objects.prefetch_related('categories').all()
 
     def get_queryset(self):
         """
@@ -33,15 +33,15 @@ class ProductViewSet(viewsets.ModelViewSet):
         if category:
             #link title of category to a product that has one of these via the ID's
             cat = Category.objects.filter(title__iexact=category).first()
-            queryset = Product.objects.filter(category=cat)
+            queryset = Product.objects.prefetch_related('categories').filter(category=cat)
             return queryset
         
         search = self.request.query_params.get('search', None)
         if search is not None:
-            queryset = Product.objects.filter(Q(title__icontains=search) | Q(description__icontains=search))
+            queryset = Product.objects.prefetch_related('categories').filter(Q(title__icontains=search) | Q(description__icontains=search))
             return queryset
         
-        return Product.objects.all()
+        return Product.objects.prefetch_related('categories').all()
 
 
     def list(self, request, *args, **kwargs) -> NoReturn:

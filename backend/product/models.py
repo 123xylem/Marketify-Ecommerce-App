@@ -9,7 +9,6 @@ from django.utils.safestring import SafeText, mark_safe
 from django.utils.html import escape
 from django.utils.text import slugify
 from cloudinary.models import CloudinaryField
-# from cloudinary_storage.storage import get_storage_class
 
 # Create your models here.
 class Category(models.Model):
