@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView
 from rest_framework.views import APIView
 from rest_framework.decorators import action
 from .models import Product, Category
-from .serializers import ProductSerializer, CategorySerializer
+from .serializers import ProductSerializer, CategorySerializer, DetailProductSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
@@ -22,7 +22,7 @@ class HomePageView(ListView):
 class ProductViewSet(viewsets.ModelViewSet):
     lookup_fields = ['pk', 'slug']
     serializer_class = ProductSerializer
-    queryset = Product.objects.all().only('id', 'title', 'image', 'slug', 'price')
+    queryset = Product.objects.all()
 
     def get_queryset(self):
         """
@@ -33,15 +33,15 @@ class ProductViewSet(viewsets.ModelViewSet):
         if category:
             #link title of category to a product that has one of these via the ID's
             cat = Category.objects.filter(title__iexact=category).first()
-            queryset = Product.objects.filter(category=cat).only('id', 'title', 'image', 'slug', 'price')
+            queryset = Product.objects.filter(category=cat)
             return queryset
         
         search = self.request.query_params.get('search', None)
         if search is not None:
-            queryset = Product.objects.filter(Q(title__icontains=search) | Q(description__icontains=search)).only('id', 'title', 'image', 'slug', 'price')
+            queryset = Product.objects.filter(Q(title__icontains=search) | Q(description__icontains=search))
             return queryset
         
-        return Product.objects.all().only('id', 'title', 'image', 'slug', 'price')  
+        return Product.objects.all()  
 
 
     def list(self, request, *args, **kwargs) -> NoReturn:
@@ -59,7 +59,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         else:
             product = get_object_or_404(self.queryset, slug=lookup_value)     
                                         
-        serializer = self.get_serializer(product)
+        serializer = DetailProductSerializer(product)
         categories = product.category.all()
 
         related_products = Product.objects.filter(category__in=categories).exclude(pk=product.pk).distinct()

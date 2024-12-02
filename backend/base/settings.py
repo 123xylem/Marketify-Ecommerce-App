@@ -109,7 +109,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-    # 'base.middleware.timelogging.LogRequestTimingMiddleware' ENABLE TO VIEW REQUEST TIMEs
+    # 'base.middleware.timelogging.LogRequestTimingMiddleware'# ENABLE TO VIEW REQUEST TIMEs
 ]
 ACCOUNT_ADAPTER = 'accountprofile.adapter.AccountAdapter'
 AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend", "allauth.account.auth_backends.AuthenticationBackend")

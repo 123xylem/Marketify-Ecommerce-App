@@ -19,12 +19,28 @@ class CategorySerializer(serializers.ModelSerializer):
                 return child_cats
             
 
-class ProductSerializer(serializers.ModelSerializer):
+class DetailProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(many=True, read_only=True)
     image = serializers.SerializerMethodField()
     class Meta:
         model = Product
         fields = ['id', 'title', 'slug', 'image', 'description', 'price', 'category', 'created_at']
+
+    def get_image(self, obj) -> str:
+        request = self.context.get('request')
+        if obj.image:
+
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return f'https://res.cloudinary.com/dnwglax7z/image/upload/v1732733854/hehnx9fnpogct5e4jhid.jpg'
+        return f'https://res.cloudinary.com/dnwglax7z/image/upload/v1732733854/hehnx9fnpogct5e4jhid.jpg'
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    class Meta:
+        model = Product
+        fields = ['id', 'title', 'slug', 'image', 'price']
 
     def get_image(self, obj) -> str:
         request = self.context.get('request')

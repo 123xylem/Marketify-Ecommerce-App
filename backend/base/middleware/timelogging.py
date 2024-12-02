@@ -11,5 +11,5 @@ class LogRequestTimingMiddleware:
         response = self.get_response(request)
         end_time = time.time()
         elapsed_time = (end_time - start_time) * 1000  # in milliseconds
-        logger.info(f"Method: {request.method}, Path: {request.META['RAW_URI']},  Time: {elapsed_time:.2f}ms")
+        logger.warning(f"Method: {request.method}, Path: {request.META['RAW_URI']},  Time: {elapsed_time:.2f}ms")
         return response
