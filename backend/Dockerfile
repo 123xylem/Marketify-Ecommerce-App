@@ -1,87 +1,84 @@
-# # Stage 1: Build Python dependencies and collect static files
-# FROM python:3.12-slim AS build
+# Stage 1: Build Python dependencies and collect static files
+FROM python:3.12-slim AS build
 
-# # Set environment variables
-# ENV PYTHONDONTWRITEBYTECODE=1
-# ENV PYTHONUNBUFFERED=1
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# # Install system dependencies
-# RUN apt-get update && apt-get install -y \
-#     libmagic1 \
-#     gcc \
-#     zlib1g-dev \
-#     && apt-get clean
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libmagic1 \
+    gcc \
+    zlib1g-dev \
+    && apt-get clean
 
-# # Set the working directory
-# WORKDIR /app/backend
+# Set the working directory
+WORKDIR /app/backend
 
-# # Copy Python dependencies
-# COPY ./requirements.txt .
-# RUN pip install --no-cache-dir -r requirements.txt
+# Copy Python dependencies
+COPY ./requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# # Copy application code
-# COPY . .
+# Copy application code
+COPY . .
 
-# # Collect static files
-# # RUN python manage.py collectstatic --noinput
-# ENV SKIP_COLLECTSTATIC=1
+# Collect static files
+# RUN python manage.py collectstatic --noinput
+ENV SKIP_COLLECTSTATIC=1
 
 
-# # Stage 2: Production with NGINX and Gunicorn
-# FROM nginx:alpine AS production
+# Stage 2: Production with NGINX and Gunicorn
+FROM nginx:alpine AS production
 
-# # Install dependencies
-# RUN apk add --no-cache python3 py3-pip
+# Install dependencies
+RUN apk add --no-cache python3 py3-pip
 
-# # Set environment variables for Gunicorn
-# # ENV GUNICORN_CMD_ARGS="--bind 0.0.0.0:8000 --workers 3"
+# Copy NGINX configuration
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
-# # Copy NGINX configuration
-# COPY nginx/nginx.conf /etc/nginx/nginx.conf
+# Copy static files from build stage
 
-# # Copy static files from build stage
+# COPY --from=build /app/staticfiles /static
 
-# # COPY --from=build /app/staticfiles /static
+# Copy application code from build stage
+COPY --from=build /app/backend /app/backend
 
-# # Copy application code from build stage
-# COPY --from=build /app /app
-
-# # Expose port for NGINX
-# EXPOSE 80
+# Expose port for NGINX
+EXPOSE 80
 
 # # Start Gunicorn and NGINX
 
 # # CMD ["sh", "-c", "gunicorn base.wsgi:application & nginx -g 'daemon off;'"]
 
 # Stage 1: Build Python dependencies and collect static files
-FROM python:3.12-slim AS build
+# FROM python:3.12-slim AS build
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# ENV PYTHONDONTWRITEBYTECODE=1
+# ENV PYTHONUNBUFFERED=1
 
-RUN apt-get update && apt-get install -y libmagic1 gcc zlib1g-dev && apt-get clean
+# RUN apt-get update && apt-get install -y libmagic1 gcc zlib1g-dev && apt-get clean
 
-WORKDIR /app/backend
+# WORKDIR /app/backend
 
-COPY ./requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# COPY ./requirements.txt .
+# RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# COPY . .
 # RUN python manage.py collectstatic --noinput
 
-# Stage 2: Production with NGINX and Gunicorn
-FROM nginx:alpine AS production
+# # Stage 2: Production with NGINX and Gunicorn
+# FROM nginx:alpine AS production
 
-RUN apk add --no-cache python3 py3-pip && pip install gunicorn
+# RUN apk add --no-cache python3 py3-pip && pip install gunicorn
 
 # ENV GUNICORN_CMD_ARGS="--bind 0.0.0.0:8000 --workers 3"
 
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
+# COPY nginx/nginx.conf /etc/nginx/nginx.conf
 # COPY --from=build /app/backend/staticfiles /static
-COPY --from=build /app/backend /app/backend
+# COPY --from=build /app/backend /app/backend
 
-WORKDIR /app/backend
+# WORKDIR /app/backend
 
-EXPOSE 80
+# EXPOSE 80
 
 # CMD ["sh", "-c", "gunicorn base.wsgi:application --bind 0.0.0.0:8000 --workers 3 & nginx -g 'daemon off;'"]
