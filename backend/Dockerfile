@@ -23,7 +23,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Collect static files
-RUN python manage.py collectstatic --noinput
+# RUN python manage.py collectstatic --noinput
+ENV SKIP_COLLECTSTATIC=1
+
 
 # Stage 2: Production with NGINX and Gunicorn
 FROM nginx:alpine AS production
@@ -47,4 +49,5 @@ COPY --from=build /app /app
 EXPOSE 80
 
 # Start Gunicorn and NGINX
-CMD ["sh", "-c", "gunicorn base.wsgi:application & nginx -g 'daemon off;'"]
+
+# CMD ["sh", "-c", "gunicorn base.wsgi:application & nginx -g 'daemon off;'"]
