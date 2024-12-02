@@ -22,7 +22,6 @@ EMAIL_PW = email_db_env['EMAIL_PW']
 # DB_PW = email_db_env['DB_PW']
 SECRET_KEY = email_db_env['DJANGO_SECRET']
 DEBUG = email_db_env['DEBUG'] == 'True'
-
 FRONTEND_DOMAIN = config('FRONTEND_DOMAIN')
 DATABASE_URL = config('DATABASE_URL')
 
@@ -110,6 +109,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'base.middleware.timelogging.LogRequestTimingMiddleware'
 ]
 ACCOUNT_ADAPTER = 'accountprofile.adapter.AccountAdapter'
 AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend", "allauth.account.auth_backends.AuthenticationBackend")
@@ -256,7 +256,6 @@ SOCIALACCOUNT_PROVIDERS = {
 
 LOGIN_REDIRECT_URL=FRONTEND_DOMAIN+"/login?jwtNeeded=true"
 LOGOUT_REDIRECT_URL=FRONTEND_DOMAIN+"/logout?loggedout=true"
-print(LOGIN_REDIRECT_URL)
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
