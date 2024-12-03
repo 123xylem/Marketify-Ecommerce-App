@@ -5,6 +5,7 @@ from datetime import timedelta
 import dj_database_url
 import cloudinary
 
+
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 PRODUCT_DIR = os.path.join(PROJECT_DIR, 'product')
 CART_DIR = os.path.join(PROJECT_DIR, 'cart')
@@ -34,13 +35,13 @@ VITE_OAUTH_CALLBACK_URL = vite_auth_data['VITE_OAUTH_CALLBACK_URL']
 # Access VITE_BACKEND_URL
 VITE_BACKEND_URL = config('VITE_BACKEND_URL')
 IMAGE_HOST_SECRET = config('IMAGE_HOST_SECRET')
-
 LOGIN_URL = 'marketify_login'
 
 # DEBUG = config('DEBUG', default=False, cast=bool)
 AUTH_USER_MODEL = 'accountprofile.CustomAccountProfile'
 SOCIALACCOUNT_AUTO_SIGNUP = True
 
+# print(DEBUG, 'aaa', email_db_env)
 ALLOWED_HOSTS = [    
      FRONTEND_DOMAIN,
     'https://marketify.up.railway.app',
@@ -60,8 +61,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-
-
 
     'product',
     'cart',
@@ -221,9 +220,7 @@ STATICFILES_DIRS = [
     os.path.join(ORDER_DIR, 'static/'),
 ]
 
-# STATIC_ROOT = os.path.join(PROJECT_DIR, STATIC_URL)
-
-# print(STATIC_ROOT)
+STATIC_ROOT = os.path.join(PROJECT_DIR, STATIC_URL)
 MEDIA_ROOT = PROJECT_DIR / 'media'
 MEDIA_URL = '/media/'
 # Default primary key field type
@@ -293,17 +290,18 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
 }
 
-
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://192.168.1.102:5173',
     'http://192.168.1.102:3000',
-    FRONTEND_DOMAIN,
-   'https://marketify.up.railway.app',
+     FRONTEND_DOMAIN,
+    'https://marketify.up.railway.app',
     'https://marketify-backend.up.railway.app'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False 
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True 
 
@@ -336,6 +334,7 @@ SECURE_HSTS_PRELOAD = True
 
 if DEBUG:
     CSRF_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = False
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

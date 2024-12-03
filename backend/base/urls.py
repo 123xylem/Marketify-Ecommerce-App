@@ -18,8 +18,11 @@ urlpatterns = [
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path("api/category/", CategoryView.as_view(), name="category_list"),
     path('accounts/', include('allauth.urls')),  # Google login
-    path('api/handle-email/', handle_email, name="handle_email")
-]
+    path('api/handle-email/', handle_email, name="handle_email"),
+    # url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root', settings.STATIC_ROOT})
+
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
