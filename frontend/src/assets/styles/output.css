@@ -602,10 +602,6 @@ video {
   position: relative;
 }
 
-.left-10{
-  left: 2.5rem;
-}
-
 .left-20{
   left: 5rem;
 }
@@ -628,10 +624,6 @@ video {
 
 .top-10{
   top: 2.5rem;
-}
-
-.top-5{
-  top: 1.25rem;
 }
 
 .z-50{
@@ -782,8 +774,8 @@ video {
   max-width: 1000px;
 }
 
-.max-w-\[100px\]{
-  max-width: 100px;
+.max-w-\[130px\]{
+  max-width: 130px;
 }
 
 .max-w-\[150px\]{
@@ -826,10 +818,6 @@ video {
 .max-w-min{
   max-width: -moz-min-content;
   max-width: min-content;
-}
-
-.max-w-\[130px\]{
-  max-width: 130px;
 }
 
 .flex-1{
@@ -1361,16 +1349,16 @@ video {
     justify-content: flex-start;
   }
 
+  .sm\:gap-2{
+    gap: 0.5rem;
+  }
+
   .sm\:gap-4{
     gap: 1rem;
   }
 
   .sm\:gap-8{
     gap: 2rem;
-  }
-
-  .sm\:gap-2{
-    gap: 0.5rem;
   }
 
   .sm\:p-2{
