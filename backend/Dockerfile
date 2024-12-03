@@ -46,9 +46,12 @@ EXPOSE 8000
 
 # CMD ["supervisord", "-c", "/app/supervisord.conf"] 
 # CMD ["sh", "-c", "supervisord -c /app/supervisord.conf && python manage.py collectstatic"]
-CMD ["sh", "-c", "echo 'Starting supervisord...'; \
+CMD ["sh", "-c", "
+  echo 'Starting supervisord...'; \
   supervisord -c /app/supervisord.conf && echo 'Supervisord started successfully' || echo 'Failed to start supervisord'; \
-echo 'Running collectstatic...'; \
+  echo 'Running collectstatic...'; \
   python manage.py collectstatic --noinput && echo 'Static files collected successfully' || echo 'Failed to collect static files'; \
-  echo 'Checking database connection...'; \ 
-  python -c 'import django from django.db import connections from django.db.utils import OperationalError django.setup() try: db_conn = connections[\"default\"] db_conn.cursor() print(\"Database connection successful\") except OperationalError as e: print(\"Database connection failed:\", e) || echo 'Database connection debug failed'; \ tail -f /dev/null"]
+  echo 'Checking database connection...'; \
+  python -c 'import django; from django.db import connections; from django.db.utils import OperationalError; django.setup(); try: db_conn = connections[\"default\"]; db_conn.cursor(); print(\"Database connection successful\"); except OperationalError as e: print(\"Database connection failed:\", e)' || echo 'Database connection debug failed'; \
+  tail -f /dev/null
+"]
