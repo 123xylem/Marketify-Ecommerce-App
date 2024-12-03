@@ -51,5 +51,4 @@ CMD ["sh", "-c", "echo 'Starting supervisord...'; \
 echo 'Running collectstatic...'; \
   python manage.py collectstatic --noinput && echo 'Static files collected successfully' || echo 'Failed to collect static files'; \
   echo 'Checking database connection...'; \ 
-  python -c 'import django from django.db import connections from django.db.utils import OperationalError django.setup() try: db_conn = connections[\"default\"] db_conn.cursor() print(\"Database connection successful\")
-except OperationalError as e: print(\"Database connection failed:\", e) || echo 'Database connection debug failed'; \ tail -f /dev/null"]
+  python -c 'import django from django.db import connections from django.db.utils import OperationalError django.setup() try: db_conn = connections[\"default\"] db_conn.cursor() print(\"Database connection successful\") except OperationalError as e: print(\"Database connection failed:\", e) || echo 'Database connection debug failed'; \ tail -f /dev/null"]
