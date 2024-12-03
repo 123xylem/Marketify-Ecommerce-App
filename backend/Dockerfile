@@ -46,8 +46,7 @@ EXPOSE 8000
 
 # CMD ["supervisord", "-c", "/app/supervisord.conf"] 
 # CMD ["sh", "-c", "supervisord -c /app/supervisord.conf && python manage.py collectstatic"]
-CMD ["sh", "-c", "
-  echo 'Starting supervisord...'; \
+CMD ["sh", "-c", "echo 'Starting supervisord...'; \
   supervisord -c /app/supervisord.conf && echo 'Supervisord started successfully' || echo 'Failed to start supervisord'; \
   echo 'Running collectstatic...'; \
   python manage.py collectstatic --noinput && echo 'Static files collected successfully' || echo 'Failed to collect static files'; \
