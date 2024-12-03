@@ -107,4 +107,5 @@ EXPOSE 8000
 # CMD ["sh", "-c", "echo 'hi'"]
 # COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-CMD ["supervisord", "-c", "/app/supervisord.conf"]
+# CMD ["supervisord", "-c", "/app/supervisord.conf"] 
+CMD ["sh", "-c", "supervisord -c /app/supervisord.conf && python print(base.settings.CORS_ALLOWED_ORIGINS) && python manage.py collectstatic"]
