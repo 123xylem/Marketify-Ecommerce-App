@@ -34,6 +34,7 @@ VITE_OAUTH_CALLBACK_URL = vite_auth_data['VITE_OAUTH_CALLBACK_URL']
 
 # Access VITE_BACKEND_URL
 VITE_BACKEND_URL = config('VITE_BACKEND_URL')
+BACKEND_DOMAIN = config('BACKEND_DOMAIN') if config('BACKEND_DOMAIN') else None
 IMAGE_HOST_SECRET = config('IMAGE_HOST_SECRET')
 LOGIN_URL = 'marketify_login'
 
@@ -49,7 +50,8 @@ ALLOWED_HOSTS = [
     'marketify-backend.up.railway.app',
     'marketify.up.railway.app',
      'https://frontend-xm67.onrender.com',
-     'https://backend-wgid.onrender.com'
+     'https://backend-wgid.onrender.com',
+     BACKEND_DOMAIN
 ]
 if DEBUG:
     ALLOWED_HOSTS = ['*']
@@ -303,7 +305,8 @@ CORS_ALLOWED_ORIGINS = [
     'https://marketify.up.railway.app',
     'https://marketify-backend.up.railway.app',
      'https://frontend-xm67.onrender.com',
-     'https://backend-wgid.onrender.com'
+     'https://backend-wgid.onrender.com',
+     BACKEND_DOMAIN
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False 
@@ -329,7 +332,8 @@ CSRF_TRUSTED_ORIGINS = [
    'https://marketify.up.railway.app',
    'https://backend-wgid.onrender.com',
    'https://frontend-xm67.onrender.com',
-   'https://accounts.google.com'
+   'https://accounts.google.com',
+     BACKEND_DOMAIN
 ]
 
 CSRF_COOKIE_SAMESITE = 'Lax'  
