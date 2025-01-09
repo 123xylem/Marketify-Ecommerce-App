@@ -1,7 +1,6 @@
 #!/bin/bash
 
-echo "STRIPE_SK: $STRIPE_SK"
-echo "BACKEND_DOMAIN: $BACKEND_DOMAIN"
+echo "BACKEND_DOMAIN hidebug: $BACKEND_DOMAIN"
 
 # Start listening to Stripe events and forward to the backend
 stripe listen --events payment_intent.created,customer.created,payment_intent.succeeded,charge.succeeded,checkout.session.completed,charge.failed \
