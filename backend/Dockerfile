@@ -38,6 +38,7 @@ RUN chmod +x /usr/local/bin/gunicorn
 
 # Expose port for the application
 EXPOSE 8000
+EXPOSE 80
 
 # Set the entry point to ensure the primary process is always managed
 ENTRYPOINT ["/bin/sh", "-c"]
