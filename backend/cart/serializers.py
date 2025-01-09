@@ -14,24 +14,22 @@ class CartItemSerializer(serializers.ModelSerializer):
     model = CartItem
     fields = ['id', 'product', 'quantity']
   
-  def to_representation(self, instance):
       # Call the parent class's to_representation to get the default representation
-      representation = super().to_representation(instance)
+  def to_representation(self, instance):
+    representation = super().to_representation(instance)
+    product = representation['product']
+    
+    flattened_representation = {
+        'id': representation.get('id', None),
+        'product_id': product.get('id', None),
+        'title': product.get('title', 'No title available'),
+        'slug': product.get('slug', 'No slug available'),
+        'image': product.get('image', None),
+        'description': product.get('description', 'No description available'),
+        'price': product.get('price', 0.0),
+        'category': product.get('category', 'Uncategorized'),
+        'created_at': product.get('created_at', None),
+        'quantity': representation.get('quantity', 0)
+    }
 
-      product = representation['product']
-      
-      flattened_representation = {
-          'id': representation['id'],
-          'product_id': product['id'],
-          'title': product['title'],
-          'slug': product['slug'],
-          'image': product['image'],
-          'description': product['description'],
-          'price': product['price'],
-          'category': product['category'],  
-          'created_at': product['created_at'],  
-          'quantity': representation['quantity']
-      }
-
-      return flattened_representation
-  
+    return flattened_representation
