@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 echo "BACKEND_DOMAIN hidebug: $BACKEND_DOMAIN"
 
