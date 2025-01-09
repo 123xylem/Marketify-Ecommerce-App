@@ -1,7 +1,3 @@
-
-# #!/bin/bash
-
-
 #!/bin/bash
 
 echo "STRIPE_SK: $STRIPE_SK"
