@@ -6,10 +6,10 @@ WORKDIR /app/stripe_listener
 
 
 # Copy your entrypoint script into the container
-COPY entryPoint.sh /app/entrypoint.sh
+COPY entryPoint.sh /app/stripe_listener/entryPoint.sh
 
 # Ensure the entrypoint script is executable
-RUN chmod +x /app/entrypoint.sh
+RUN chmod +x /app/stripe_listener/entryPoint.sh
 
 # Set the entrypoint to your script
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/app/stripe_listener/entryPoint.sh"]
