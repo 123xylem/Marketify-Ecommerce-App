@@ -34,8 +34,8 @@ VITE_OAUTH_CALLBACK_URL = vite_auth_data['VITE_OAUTH_CALLBACK_URL']
 
 # Access VITE_BACKEND_URL
 VITE_BACKEND_URL = config('VITE_BACKEND_URL')
-BACKEND_DOMAIN = config('BACKEND_DOMAIN') if config('BACKEND_DOMAIN') else None
-print(BACKEND_DOMAIN, 'herererrerere')
+BACKEND_DOMAIN = config('BACKEND_DOMAIN').replace('https://', '') if config('BACKEND_DOMAIN') else None
+print(BACKEND_DOMAIN, 'debughere')
 IMAGE_HOST_SECRET = config('IMAGE_HOST_SECRET')
 LOGIN_URL = 'marketify_login'
 
