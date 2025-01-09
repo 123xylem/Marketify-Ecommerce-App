@@ -45,7 +45,8 @@ EXPOSE 8000
 # COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # CMD ["supervisord", "-c", "/app/supervisord.conf"] 
-CMD ["sh", "-c", "supervisord -c /app/supervisord.conf & python manage.py collectstatic & tail -f /dev/null"]
+# CMD ["sh", "-c", "supervisord -c /app/supervisord.conf & python manage.py collectstatic & tail -f /dev/null"]
+CMD ["/bin/sh", "-c", "supervisord -c /app/supervisord.conf && python manage.py collectstatic && tail -f /dev/null"]
 
 
 # CMD ["sh", "-c", "
