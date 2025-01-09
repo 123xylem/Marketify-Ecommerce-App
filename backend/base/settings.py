@@ -34,8 +34,7 @@ VITE_OAUTH_CALLBACK_URL = vite_auth_data['VITE_OAUTH_CALLBACK_URL']
 
 # Access VITE_BACKEND_URL
 VITE_BACKEND_URL = config('VITE_BACKEND_URL')
-BACKEND_DOMAIN = config('BACKEND_DOMAIN').replace('https://', '') if config('BACKEND_DOMAIN') else None
-print(BACKEND_DOMAIN, 'debughere')
+BACKEND_DOMAIN = config('BACKEND_DOMAIN') if config('BACKEND_DOMAIN') else None
 IMAGE_HOST_SECRET = config('IMAGE_HOST_SECRET')
 LOGIN_URL = 'marketify_login'
 
@@ -50,10 +49,9 @@ ALLOWED_HOSTS = [
     'https://marketify-backend.up.railway.app',
     'marketify-backend.up.railway.app',
     'marketify.up.railway.app',
-     'https://frontend-xm67.onrender.com',
-     'https://backend-wgid.onrender.com',
-     BACKEND_DOMAIN
-]
+    'https://frontend-xm67.onrender.com',
+    'https://backend-wgid.onrender.com',
+    BACKEND_DOMAIN.replace('https://', '') ]
 if DEBUG:
     ALLOWED_HOSTS = ['*']
    
