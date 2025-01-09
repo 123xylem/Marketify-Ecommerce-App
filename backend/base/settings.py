@@ -47,7 +47,9 @@ ALLOWED_HOSTS = [
     'https://marketify.up.railway.app',
     'https://marketify-backend.up.railway.app',
     'marketify-backend.up.railway.app',
-    'marketify.up.railway.app'
+    'marketify.up.railway.app',
+     'https://frontend-xm67.onrender.com',
+     'https://backend-wgid.onrender.com'
 ]
 if DEBUG:
     ALLOWED_HOSTS = ['*']
@@ -296,7 +298,9 @@ CORS_ALLOWED_ORIGINS = [
     'http://192.168.1.102:3000',
      FRONTEND_DOMAIN,
     'https://marketify.up.railway.app',
-    'https://marketify-backend.up.railway.app'
+    'https://marketify-backend.up.railway.app',
+     'https://frontend-xm67.onrender.com',
+     'https://backend-wgid.onrender.com'
 ]
 
 CORS_ALLOW_ALL_ORIGINS = False 
@@ -320,6 +324,8 @@ CSRF_TRUSTED_ORIGINS = [
     FRONTEND_DOMAIN,
    'https://marketify-backend.up.railway.app',
    'https://marketify.up.railway.app',
+   'https://backend-wgid.onrender.com',
+   'https://frontend-xm67.onrender.com',
    'https://accounts.google.com'
 ]
 
