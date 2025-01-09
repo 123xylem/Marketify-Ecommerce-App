@@ -9,7 +9,6 @@ RUN apt-get update && apt-get install -y \
     libmagic1 \
     gcc \
     zlib1g-dev \
-    nginx \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -27,14 +26,7 @@ COPY . .
 
 # Collect static files (if needed)
 ENV SKIP_COLLECTSTATIC=1
-# Uncomment the following line if you want to collect static files
-# RUN python manage.py collectstatic --noinput
 
-# Copy NGINX configuration
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
-
-# Ensure gunicorn is executable (just in case)
-RUN chmod +x /usr/local/bin/gunicorn
 
 # Expose port for the application
 EXPOSE 8000
