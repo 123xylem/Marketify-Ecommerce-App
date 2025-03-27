@@ -3,10 +3,8 @@ import { ACCESS_TOKEN } from "./constants";
 import { getCookie } from "./utils";
 import { refreshToken } from "./utils";
 
-//Temp hardcode api as .env vars are saved to a cache
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL,
-  // baseURL: "http://192.168.1.102:8000/api/",
   headers: {
     Accept: "*/*",
     "Content-Type": "application/json",
@@ -27,6 +25,7 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.log(error, "ERROR in req");
     return Promise.reject(error);
   }
 );
@@ -34,11 +33,18 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   async (response) => response,
   async (error) => {
-    // alert(error, JSON.stringify(error));
-    if (!localStorage.getItem("refresh-token")) {
+    console.log(error, "ERROR", error.config);
+    alert(error, JSON.stringify(error));
+
+    // Check if user has any tokens before proceeding with refresh logic
+    const hasTokens =
+      localStorage.getItem(ACCESS_TOKEN) ||
+      localStorage.getItem("refresh-token");
+    if (!hasTokens) {
       console.error(error, "User has no JWT");
       return Promise.reject(error);
     }
+
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;

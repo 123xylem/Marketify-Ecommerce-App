@@ -19,7 +19,8 @@ EMAIL_USER = email_db_env['EMAIL_USER']
 EMAIL_PW = email_db_env['EMAIL_PW']
 
 SECRET_KEY = email_db_env['DJANGO_SECRET']
-DEBUG = email_db_env['DEBUG'] == 'True'
+DEBUG = config('PROD') == 'False'
+
 FRONTEND_DOMAIN = config('FRONTEND_DOMAIN')
 DATABASE_URL = config('DATABASE_URL')
 
@@ -51,10 +52,10 @@ ALLOWED_HOSTS = [
     'marketify.up.railway.app',
     'https://frontend-xm67.onrender.com',
     'https://backend-wgid.onrender.com',
+    'http://192.168.1.102',
     BACKEND_DOMAIN.replace('https://', '') ]
 if DEBUG:
     ALLOWED_HOSTS = ['*']
-   
 SITE_ID=2
 INSTALLED_APPS = [
     'django.contrib.admin',

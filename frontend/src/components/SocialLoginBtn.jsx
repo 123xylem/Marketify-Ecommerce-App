@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { BACKEND_DOMAIN } from "../constants";
-
 const SocialLoginBtn = ({ login }) => {
-  const loginUrl = BACKEND_DOMAIN + "/accounts/google/login/";
+  // const loginUrl = BACKEND_DOMAIN + "/accounts/google/login/";
+  const loginUrl = "http://localhost:8000/accounts/google/login/";
 
   const handleLogin = async () => {
     try {
