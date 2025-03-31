@@ -1,10 +1,3 @@
-// /Define form
-// Define SubmitEvent
-
-// on submit make fetch request to create user endpoint
-
-// Return Message response... eventually new view in response ...
-
 document
   .getElementById("registration-form")
   .addEventListener("submit", async function (event) {

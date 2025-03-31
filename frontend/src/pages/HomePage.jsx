@@ -35,7 +35,7 @@ const HomePage = () => {
         textColor={"white"}
         // text={"Our Products"}
       />
-      <ProductList products={data}></ProductList>
+      <ProductList products={data ? data : []}></ProductList>
     </div>
   );
 };

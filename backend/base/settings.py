@@ -180,10 +180,25 @@ LOGGING = {
 
 # Database
 
-DATABASES = {
-    'default': dj_database_url.config(default=DATABASE_URL)
-}
-# Password validation
+if not DEBUG:
+    # Use dj_database_url for Docker environment
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL')
+        )
+    }
+else:
+    # Use local config for development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': email_db_env['DB_NAME'],
+            'USER': email_db_env['DB_USER'],
+            'PASSWORD': email_db_env['DB_PW'],
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }# Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [

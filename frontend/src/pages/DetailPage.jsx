@@ -25,7 +25,7 @@ const DetailPage = () => {
   if (isError) {
     return <span>Error: {error.message}</span>;
   }
-
+  console.log(data, "DATA");
   return (
     <>
       {data && (

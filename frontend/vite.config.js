@@ -9,12 +9,11 @@ export default defineConfig({
       plugins: [tailwindcss()],
     },
   },
-  envDir: "../",
   cacheDir: "node_modules/.vite_cache",
+  server: {
+    host: "0.0.0.0", // This makes Vite listen on all network interfaces
+    port: 5173,
+    strictPort: true,
+    allowedHosts: ["marketify.com", "localhost", "127.0.0.1"],
+  },
 });
-
-// export default defineConfig({
-//   cacheDir: "node_modules/.vite_cache",
-//   plugins: [react()],
-//   envDir: "../",
-// });

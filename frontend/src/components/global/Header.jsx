@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-// import { useEffect, useState } from "react";
 import NavigationMenu from "./NavigationMenu";
 import SearchBar from "./SearchBar";
 import api from "../../api";
@@ -12,6 +11,7 @@ const Header = () => {
     isLoading: isCategoryLoading,
     isError: isCategoryError,
     data: CategoryData,
+    refetch,
   } = useQuery({
     queryKey: ["get-categories"],
     queryFn: async () => {
@@ -19,11 +19,24 @@ const Header = () => {
       if (!response.status) {
         throw new Error("Network response was not ok");
       }
-      return await response.data;
+      // If categories are empty, throw error to trigger retry
+      if (!response.data || response.data.length === 0) {
+        throw new Error(
+          "Categories are empty - is backend url correct/running?"
+        );
+      }
+      return response.data;
     },
     staleTime: 60 * 1000 * 60,
+    retry: 3, // Retry 3 times if empty
+    retryDelay: 1000, // Wait 1 second between retries
     meta: {
-      persist: true,
+      persist: false, // Don't persist empty results
+    },
+    onError: (error) => {
+      console.log("Error fetching categories:", error);
+      // You can trigger a manual refetch after some time
+      setTimeout(() => refetch(), 5000);
     },
   });
 
@@ -39,7 +52,7 @@ const Header = () => {
         <span className="hidden 2xl:block">2xl</span>
       </div> */}
       <div className="inner container mx-auto px-4 py-8 flex gap-4 sm:gap-8 flex-wrap z-1000">
-        {!isCategoryLoading && !isCategoryError && (
+        {!isCategoryLoading && !isCategoryError && CategoryData && (
           <NavigationMenu categories={CategoryData} header={true} />
         )}
         <SearchBar />

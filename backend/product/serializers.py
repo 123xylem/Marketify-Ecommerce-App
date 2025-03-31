@@ -27,13 +27,17 @@ class DetailProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'slug', 'image', 'description', 'price', 'category', 'created_at']
 
     def get_image(self, obj) -> str:
+        # If no image exists, return default
+        if not obj.image:
+            return 'https://res.cloudinary.com/dnwglax7z/image/upload/v1732733854/hehnx9fnpogct5e4jhid.jpg'
+        
+        # If we have a request, return absolute URI
         request = self.context.get('request')
-        if obj.image:
-
-            if request:
-                return request.build_absolute_uri(obj.image.url)
-            return f'https://res.cloudinary.com/dnwglax7z/image/upload/v1732733854/hehnx9fnpogct5e4jhid.jpg'
-        return f'https://res.cloudinary.com/dnwglax7z/image/upload/v1732733854/hehnx9fnpogct5e4jhid.jpg'
+        if request:
+            return request.build_absolute_uri(obj.image.url)
+        
+        # If we have image but no request, return direct URL
+        return obj.image.url
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -43,11 +47,13 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'slug', 'image', 'price']
 
     def get_image(self, obj) -> str:
+        if not obj.image:
+            return 'https://res.cloudinary.com/dnwglax7z/image/upload/v1732733854/hehnx9fnpogct5e4jhid.jpg'
+        
         request = self.context.get('request')
-        if obj.image:
-
-            if request:
-                return request.build_absolute_uri(obj.image.url)
-            return f'https://res.cloudinary.com/dnwglax7z/image/upload/v1732733854/hehnx9fnpogct5e4jhid.jpg'
-        return f'https://res.cloudinary.com/dnwglax7z/image/upload/v1732733854/hehnx9fnpogct5e4jhid.jpg'
+        if request:
+            return request.build_absolute_uri(obj.image.url)
+        
+        # If we have image but no request, return direct URL
+        return obj.image.url
 

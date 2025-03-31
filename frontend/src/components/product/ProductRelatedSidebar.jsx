@@ -4,6 +4,7 @@ const ProductSidebar = ({ relatedProducts }) => {
   if (!relatedProducts || relatedProducts.length === 0) {
     return <div className="product-sidebar">0 Related Products found</div>;
   }
+
   return (
     <>
       <div className="product-sidebar items-center mx-auto sm:mx-0 sm:items-start">

@@ -33,9 +33,6 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   async (response) => response,
   async (error) => {
-    console.log(error, "ERROR", error.config);
-    alert(error, JSON.stringify(error));
-
     // Check if user has any tokens before proceeding with refresh logic
     const hasTokens =
       localStorage.getItem(ACCESS_TOKEN) ||
